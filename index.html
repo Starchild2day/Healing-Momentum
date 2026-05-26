@@ -262,14 +262,16 @@
     max-height: 92vh; display: flex; flex-direction: column;
   }
   .disclaimer-header { text-align: center; margin-bottom: 1.2rem; }
-  .disclaimer-header .d-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-  .disclaimer-header h2 { font-size: 1.3rem; font-weight: 700; color: var(--navy); }
-  .disclaimer-header p { font-size: 0.8rem; color: var(--text-mid); margin-top: 0.3rem; }
+  .disclaimer-header .d-icon { font-size: 3.5rem; margin-bottom: 0.6rem; }
+  .disclaimer-header h2 { font-size: 2rem; font-weight: 800; color: var(--navy); }
+  .disclaimer-header p { font-size: 1.1rem; color: var(--text-mid); margin-top: 0.4rem; font-weight: 500; }
   .disclaimer-scroll {
-    flex: 1; overflow-y: auto; border: 1.5px solid var(--border);
-    border-radius: 12px; padding: 1rem; margin-bottom: 1rem;
-    font-size: 1rem; line-height: 1.7; color: var(--text-mid);
+    flex: 1; overflow-y: auto;
+    border: 6px solid #2d7a4f;
+    border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem;
+    font-size: 1rem; line-height: 1.7; color: #1a2e4a;
     max-height: 340px;
+    background: #eaf7ef;
   }
   .disclaimer-scroll h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 0.8rem 0 0.3rem; }
   .disclaimer-scroll h3:first-child { margin-top: 0; }
@@ -284,6 +286,7 @@
     width: 100%; padding: 1rem; background: var(--border); border: none;
     border-radius: 12px; color: var(--text-light); font-size: 1.15rem; font-weight: 600;
     cursor: not-allowed; font-family: 'Source Sans 3', sans-serif; transition: all 0.3s;
+    opacity: 0.5;
   }
   .disclaimer-btn.enabled { background: var(--gold); color: var(--white); cursor: pointer; }
   .disclaimer-btn.enabled:hover { background: var(--gold-light); }
@@ -319,6 +322,297 @@
     .task-name { font-size: 1.05rem; }
     .task-desc { font-size: 0.92rem; }
   }
+
+  /* ── MOBILE READABILITY OVERRIDES ────────────────────────────────── */
+  /* Force larger base font and higher contrast everywhere */
+  html, body {
+    font-size: 20px !important;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Checkboxes — much bigger and more visible */
+  .task-check {
+    width: 36px !important;
+    height: 36px !important;
+    border: 3px solid #1a2e4a !important;
+    flex-shrink: 0 !important;
+    border-radius: 50% !important;
+  }
+  .task-item.done .task-check {
+    background: #2d7a4f !important;
+    border-color: #2d7a4f !important;
+  }
+  .task-check-inner {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* Task names — bigger, darker, bolder */
+  .task-name {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: #1a2e4a !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Task descriptions — larger and darker */
+  .task-desc {
+    font-size: 1rem !important;
+    color: #2a3d52 !important;
+    line-height: 1.6 !important;
+    font-weight: 400 !important;
+  }
+
+  /* Task items — more padding for easier tapping */
+  .task-item {
+    padding: 1.1rem 1rem !important;
+    gap: 14px !important;
+  }
+
+  /* Section headers — bigger and bolder */
+  .section-title {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #1a2e4a !important;
+  }
+  .section-header {
+    padding: 1rem !important;
+  }
+
+  /* Progress text */
+  .section-progress {
+    font-size: 1rem !important;
+    color: #1a2e4a !important;
+    font-weight: 600 !important;
+  }
+
+  /* Gate and disclaimer forms — bigger inputs */
+  .gate-form input, .gate-form select {
+    font-size: 1.15rem !important;
+    padding: 1rem !important;
+    color: #1a2e4a !important;
+  }
+  .gate-form input::placeholder {
+    color: #6a7e92 !important;
+  }
+
+  /* Gate logo */
+  .gate-logo h1 {
+    font-size: 2.2rem !important;
+    font-weight: 700 !important;
+  }
+  .gate-logo p {
+    font-size: 1.1rem !important;
+    color: #2a3d52 !important;
+  }
+
+  /* Disclaimer text */
+  .disclaimer-scroll {
+    font-size: 1.05rem !important;
+    color: #1a2e4a !important;
+    line-height: 1.75 !important;
+  }
+  .disclaimer-scroll h3 {
+    font-size: 1.1rem !important;
+    color: #1a2e4a !important;
+  }
+  .disclaimer-check label {
+    font-size: 1.05rem !important;
+    color: #1a2e4a !important;
+    font-weight: 500 !important;
+  }
+  .disclaimer-check input[type=checkbox] {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  /* Buttons — bigger and bolder */
+  .gate-btn, .disclaimer-btn, .injury-btn {
+    font-size: 1.2rem !important;
+    padding: 1.1rem !important;
+    font-weight: 700 !important;
+  }
+
+  /* App header name */
+  .header-name {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+  }
+  .greeting {
+    font-size: 1.1rem !important;
+  }
+
+  /* Quote */
+  .quote {
+    font-size: 1.05rem !important;
+    color: rgba(255,255,255,0.95) !important;
+    font-weight: 500 !important;
+  }
+
+  /* Injury selector */
+  .injury-label {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: #1a2e4a !important;
+  }
+  .injury-sub {
+    font-size: 1rem !important;
+    color: #2a3d52 !important;
+  }
+  .injury-card h2 {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+  }
+  .injury-card p {
+    font-size: 1.05rem !important;
+    color: #2a3d52 !important;
+  }
+
+  /* Timer */
+  .task-timer {
+    font-size: 0.95rem !important;
+    padding: 6px 12px !important;
+    font-weight: 600 !important;
+  }
+  .timer-display {
+    font-size: 4rem !important;
+    font-weight: 700 !important;
+    color: #1a2e4a !important;
+  }
+
+  /* Encourage bar */
+  .encourage-bar p {
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Progress ring */
+  .ring-pct {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+  }
+  .ring-done {
+    font-size: 0.95rem !important;
+  }
+
+
+  /* ══ MAJOR VISUAL FIXES ══════════════════════════════════════════════ */
+
+  /* CHECKBOXES — dark navy, impossible to miss */
+  .task-check {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border: 3px solid #1a2e4a !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .task-item.done .task-check {
+    background: #2d7a4f !important;
+    border-color: #2d7a4f !important;
+  }
+  .task-check-inner {
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 50% !important;
+    background: white !important;
+  }
+
+  /* APP HEADER — greeting bigger, name much bigger */
+  .greeting {
+    font-size: 1.2rem !important;
+    color: rgba(255,255,255,0.85) !important;
+    font-weight: 500 !important;
+  }
+  .header-name {
+    font-size: 2.6rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    line-height: 1.1 !important;
+  }
+  .app-header {
+    padding: 1.5rem 1.5rem 0 !important;
+  }
+  .header-top {
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* PROGRESS RING — twice as big, gold on navy */
+  .ring-container {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .ring-svg {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .ring-bg {
+    stroke: rgba(255,255,255,0.15) !important;
+    stroke-width: 14 !important;
+    cx: 100 !important;
+    cy: 100 !important;
+    r: 84 !important;
+  }
+  .ring-fill {
+    stroke: #c9923a !important;
+    stroke-width: 14 !important;
+    cx: 100 !important;
+    cy: 100 !important;
+    r: 84 !important;
+    stroke-dasharray: 528 !important;
+    stroke-dashoffset: 528 !important;
+  }
+  .ring-pct {
+    font-size: 2.8rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+  }
+  .ring-done {
+    font-size: 1.1rem !important;
+    color: rgba(255,255,255,0.85) !important;
+    font-weight: 500 !important;
+  }
+  .progress-ring-wrap {
+    padding: 1rem 0 0.5rem !important;
+  }
+
+  /* MOTIVATIONAL QUOTE — twice as big */
+  .quote {
+    font-size: 1.2rem !important;
+    color: rgba(255,255,255,0.95) !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+    border-left: 4px solid #c9923a !important;
+    padding: 1rem 1.2rem !important;
+  }
+  .quote-wrap {
+    padding: 0.8rem 1.5rem 1.2rem !important;
+  }
+
+  /* SECTION TITLES — bigger and bolder */
+  .section-title {
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    color: #1a2e4a !important;
+  }
+
+  /* TASK NAMES AND DESCRIPTIONS — darker and more readable */
+  .task-name {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: #1a2e4a !important;
+  }
+  .task-desc {
+    font-size: 1rem !important;
+    color: #243d5e !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+  }
+
 </style>
 </head>
 <body>
@@ -327,7 +621,7 @@
 <div id="disclaimer" class="screen active">
   <div class="disclaimer-card">
     <div class="disclaimer-header">
-      <div class="d-icon">⚠️</div>
+      <div class="d-icon">💗</div>
       <h2>Before You Begin</h2>
       <p>Please read and agree to continue</p>
     </div>
@@ -358,7 +652,7 @@
       <input type="checkbox" id="agree-check" onchange="toggleAgree()">
       <label for="agree-check">I have read and understood this disclaimer. I agree to use Healing Momentum at my own risk and accept full responsibility for my health decisions.</label>
     </div>
-    <button class="disclaimer-btn" id="disclaimer-btn" onclick="acceptDisclaimer()" disabled>I Agree — Continue</button>
+    <button class="disclaimer-btn" id="disclaimer-btn" onclick="acceptDisclaimer()">I Agree — Continue</button>
   </div>
 </div>
 
@@ -450,10 +744,10 @@
     </div>
     <div class="progress-ring-wrap">
       <div class="ring-container">
-        <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
-          <circle class="ring-bg" cx="60" cy="60" r="50"/>
-          <circle class="ring-fill" id="progress-ring" cx="60" cy="60" r="50"
-            stroke-dasharray="314" stroke-dashoffset="314"/>
+        <svg class="ring-svg" width="200" height="200" viewBox="0 0 200 200">
+          <circle class="ring-bg" cx="100" cy="100" r="84"/>
+          <circle class="ring-fill" id="progress-ring" cx="100" cy="100" r="84"
+            stroke-dasharray="528" stroke-dashoffset="528"/>
         </svg>
         <div class="ring-center">
           <div class="ring-pct" id="pct-text">0%</div>
@@ -471,7 +765,7 @@
     <div class="section-card">
       <div class="section-header" onclick="toggleSection('morning')">
         <div class="section-icon">🌅</div>
-        <div class="section-title">Morning Recovery</div>
+        <div class="section-title" id="morning-section-title">Morning Recovery</div>
         <div class="section-progress" id="morning-prog">0 / 5</div>
         <div class="section-arrow" id="morning-arrow">▼</div>
       </div>
@@ -682,12 +976,22 @@
   function toggleAgree() {
     const checked = document.getElementById('agree-check').checked;
     const btn = document.getElementById('disclaimer-btn');
-    btn.disabled = !checked;
-    btn.classList.toggle('enabled', checked);
+    if (checked) {
+      btn.style.background = '#c9923a';
+      btn.style.color = '#ffffff';
+      btn.style.cursor = 'pointer';
+      btn.style.opacity = '1';
+    } else {
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.cursor = 'not-allowed';
+      btn.style.opacity = '0.5';
+    }
   }
 
   function acceptDisclaimer() {
-    if (!document.getElementById('agree-check').checked) return;
+    const checked = document.getElementById('agree-check').checked;
+    if (!checked) { alert('Please scroll through and check the box to agree before continuing.'); return; }
     showScreen('gate');
   }
 
@@ -715,68 +1019,68 @@
 
   const PROTOCOLS = {
     shoulder: {
-      m1: ['Pendulum Swings', 'Lean forward, let your arm hang completely loose, make slow circles — 10x forward, 10x backward. Let gravity do the work. This decompresses the joint without engaging the injured muscles — the #1 first exercise PTs prescribe.'],
+      m1: ['Pendulum Swings', 'Stand next to a table or chair. Lean forward from your hips and rest your non-injured hand on the surface for support. Let your injured arm hang straight down toward the floor — completely relaxed. Make slow, small circles with that arm: 10 clockwise, 10 counterclockwise. Let gravity do the work — never swing or force it. This decompresses the joint without engaging the injured muscles — the #1 first exercise PTs prescribe.'],
       m2: ['Ice Pack — 15 Minutes', 'Apply ice wrapped in a thin cloth to the shoulder. Morning icing reduces overnight inflammation before it builds through the day. 15 min maximum — more is not better and can cause tissue damage.'],
-      m3: ['Doorway Chest Stretch', 'Stand in a doorway, arm at 90°, gently step forward until you feel a stretch across the chest and front shoulder. Hold 30 sec each side. Tight pec minor is one of the most overlooked causes of rotator cuff pain — this stretch addresses it directly.'],
+      m3: ['Doorway Chest Stretch', 'Stand in a doorway facing through it. Place your forearm flat against the door frame with your elbow bent at 90° — upper arm parallel to the floor, palm facing forward. Keep your feet hip-width apart and take one small step forward through the doorway until you feel a gentle stretch across the front of your chest and shoulder. Hold 30 sec, switch sides. Tight pec minor is one of the most overlooked causes of rotator cuff pain — this stretch addresses it directly.'],
       m4: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Take together with breakfast. Collagen is the primary structural protein in rotator cuff tendons. Vitamin C is required by your body to assemble collagen into usable tissue — without it, the collagen you consume cannot be built into new tendon. Morning is ideal because tendon repair is most active in the first half of the day.'],
       m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food (eggs, avocado, olive oil). Both are fat-soluble and absorb best with a meal. Curcumin blocks inflammatory pathways without gut damage or interference with healing — consistent use reduces joint pain within 4–6 weeks. Vitamin D3 is best taken in the morning: research shows evening D3 can interfere with melatonin and disrupt sleep in some people. D3 is essential for tendon and muscle repair, bone health, and immune function. Most adults over 50 are deficient.'],
-      d1: ['Resistance Band External Rotation', 'Elbow tucked at your side, rotate forearm outward against band resistance — slow and controlled, 3 sets of 15. This directly targets the infraspinatus and teres minor — the two rotator cuff muscles most responsible for shoulder stability. Weak external rotators are the root cause of most rotator cuff injuries.'],
-      d2: ['Shoulder Blade Squeeze', 'Sit or stand tall, pull shoulder blades together and down — hold 5 sec, release, repeat 10 times. Retrains the lower trapezius, which stabilizes the entire shoulder girdle. Most people with shoulder injuries have a weak lower trap — fixing this prevents re-injury.'],
+      d1: ['Resistance Band External Rotation', 'Anchor a resistance band at elbow height to a door or fixed point beside you. Stand facing the anchor, feet hip-width apart. Bend your elbow at 90° and pin it firmly against your side — keep it there throughout. Hold the band with your injured hand, palm facing inward. Slowly rotate your forearm outward away from your body, keeping your elbow glued to your side — then slowly return. 3 sets of 15, slow and controlled. This directly targets the infraspinatus and teres minor — the two muscles most responsible for shoulder stability.'],
+      d2: ['Shoulder Blade Squeeze', 'Sit in a firm chair with feet flat on the floor, or stand with feet hip-width apart. Let your arms hang relaxed at your sides. Without shrugging your shoulders upward, squeeze your shoulder blades toward each other, then slide them gently downward — think of tucking them into your back pockets. Hold 5 sec, fully release. Repeat 10 times. This retrains the lower trapezius, which stabilizes the entire shoulder girdle and prevents re-injury.'],
       d3: ['Drink 20 oz Water Now', 'Tendons and connective tissue are largely water. Dehydration slows tissue repair significantly. If you have had coffee or been active, you are likely already behind. Drink 20 oz now and aim for 8+ glasses total today.'],
       d4: ['💊 Fish Oil / Omega-3 (2g EPA+DHA)', 'Take with lunch. EPA and DHA directly reduce the inflammatory compounds that cause joint swelling and pain. For shoulder recovery, consistent fish oil use over 6+ weeks has been shown to reduce rotator cuff pain and improve range of motion. Take with food to prevent any aftertaste.'],
       d5: ['🥗 Lunch Nutrition Focus', 'Eat: wild salmon, sardines, walnuts, leafy greens, olive oil, berries, eggs. These foods actively reduce joint inflammation. Avoid: canola oil, soybean oil, corn oil — high in omega-6 and directly increase inflammation. Avoid sugar and white bread. Think of food as either adding to or subtracting from your healing today.'],
-      e1: ['Cross-Body Stretch + Sleeper Stretch', 'Cross-body: gently pull arm across chest, hold 30 sec each side. Sleeper stretch: lie on your healing shoulder, use your other arm to gently press your forearm toward the bed — hold 20 sec. The sleeper stretch targets posterior shoulder tightness, present in nearly all rotator cuff cases, that limits recovery if left unaddressed.'],
+      e1: ['Cross-Body Stretch + Sleeper Stretch', 'Cross-body: Stand or sit upright. Use your non-injured arm to gently pull the injured arm across your chest at shoulder height — hold 30 sec, switch sides. Sleeper stretch: Lie on your side on a firm surface, resting on your healing shoulder. Bend that arm at 90° so your upper arm lies flat and your forearm points toward the ceiling. Use your other hand to gently press your forearm down toward the mattress until you feel a stretch in the back of the shoulder — hold 20 sec. Never force this one. The sleeper stretch targets posterior shoulder tightness present in nearly all rotator cuff cases.'],
       e2: ['Moist Heat — 15 Minutes', 'Moist heat (damp warm towel or heating pad with damp cloth) penetrates deeper than dry heat. Apply to shoulder 15 min before bed. Relaxes the muscle guarding that builds through the day and improves circulation to the tendon overnight when repair is most active.'],
       e3: ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate is the most absorbable form of magnesium. It relaxes the muscles that tighten and guard the injured shoulder, reduces nighttime cramps, and most importantly improves deep sleep quality. Deep sleep is when your body releases the growth hormone that drives tissue repair. Most adults over 50 are deficient without knowing it.'],
       e4: ['💊 Omega-3 / Fish Oil — Evening Dose Check', 'If you missed the midday fish oil, take 2g EPA+DHA now with dinner. Consistent daily omega-3 is more important than perfect timing. Reducing joint inflammation is cumulative — missing doses slows your progress. If you did take it at lunch, simply check this off and move on.'],
       e5: ['Recovery Journal', 'Rate shoulder pain 1–10. Rate range of motion 1–10 — how high can you raise your arm? Note one movement that felt better than yesterday. Bring this journal to every PT visit. Patterns in your notes reveal what is helping or hurting faster than any test.']
     },
     knee: {
-      m1: ['Ankle Pumps & Quad Sets — Before Getting Up', 'While still in bed: pump both ankles up and down 20 times — pushes blood toward the knee and reduces overnight stiffness. Then tighten your quad as hard as you can, hold 5 sec, release — 10 reps. Starting these before standing prevents that first painful morning step.'],
+      m1: ['Ankle Pumps & Quad Sets — Before Getting Up', 'While still lying flat in bed with legs straight: flex both feet up toward your shins, then point them away from you — that is one pump. Do 20 slow pumps. Then, keeping your healing leg straight on the bed, tighten the muscle on top of your thigh (quad) as firmly as you can and press the back of your knee gently into the mattress. Hold 5 sec, fully release — 10 reps. Do all of these before you stand up.'],
       m2: ['Ice Pack — 15 Minutes', 'Ice on the knee 15 min while sitting with leg slightly elevated. Morning icing is especially important because the knee tends to swell overnight from the previous day. Keeping swelling controlled is the #1 factor in how fast your range of motion returns.'],
-      m3: ['Heel Slides', 'Lying on your back, slowly slide your heel toward you, bending the knee as far as comfortable — hold 5 sec, slowly return. 10 reps. The single most prescribed early knee mobility exercise. It rebuilds range of motion without loading the joint. Pain-free range only — never push through sharp pain.'],
+      m3: ['Heel Slides', 'Lie flat on your back on a firm surface — bed or floor — with both legs straight. Keep your heel in contact with the surface throughout — do not lift it. Slowly slide your heel toward your body by bending your knee, going only as far as comfortable without pain. Hold at the top for 5 sec, then slowly slide back to start. 10 reps. Pain-free range only — never push through sharp pain.'],
       m4: ['💊 Glucosamine Sulfate (1500mg) + Chondroitin (1200mg)', 'Take together with breakfast. Glucosamine provides the raw building blocks your body uses to repair cartilage. Chondroitin helps cartilage retain water — cartilage is 65–80% water — and resists compression. Multiple large clinical trials show this combination reduces knee pain and slows cartilage breakdown. Takes 6–8 weeks of consistent daily use to show full effect. Do not stop early.'],
       m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food. Both are fat-soluble — they absorb significantly better with a meal. A 2014 study found curcumin as effective as ibuprofen for knee osteoarthritis pain without gut damage or cartilage repair interference. Vitamin D3 is best taken in the morning: research suggests evening D3 can interfere with melatonin production and disrupt sleep. D3 supports calcium absorption for bone health, muscle strength around the joint, and immune regulation. Look for curcumin with black pepper (piperine) — increases absorption by 2000%.'],
-      d1: ['Straight Leg Raises + Short Arc Quads', 'Straight leg raise: tighten quad fully, raise leg 12 inches, hold 3 sec — 3 sets of 10. Short arc quad: roll a towel under your knee to prop it at 45 degrees, then straighten leg fully — 3 sets of 15. These rebuild quad strength — the most critical muscle for knee stability — without putting any stress on the healing joint. A strong quad reduces knee pain more than almost any other single intervention.'],
-      d2: ['Standing Balance + Anti-Inflammatory Lunch', 'Balance: hold a countertop, stand on your healing leg for 20–30 sec. This rebuilds proprioception — the joint ability to sense its own position — which is lost during injury and is a major cause of re-injury. Lunch: salmon, leafy greens, walnuts, berries, olive oil. Avoid: sugar, fried foods, nightshade vegetables (tomatoes, peppers, eggplant, potatoes) — many knee patients notice nightshades significantly increase their swelling.'],
+      d1: ['Straight Leg Raises + Short Arc Quads', 'Straight leg raise: Lie flat on your back with your non-injured knee bent and foot flat on the floor. Keep your healing leg completely straight. Tighten the quad on that straight leg as hard as you can, then raise the entire leg until the heel is about 12 inches off the floor — hold 3 sec, lower slowly. 3 sets of 10. Short arc quad: Remain lying down, roll a firm towel under the healing knee so it rests at about 45°. Keeping your thigh still on the towel, slowly straighten your lower leg until fully extended — hold 2 sec, lower slowly. 3 sets of 15.'],
+      d2: ['Standing Balance + Anti-Inflammatory Lunch', 'Stand in front of a kitchen counter or sturdy chair back. Lightly rest your fingertips on the surface for safety — use as little support as possible. Slowly lift your non-injured foot just off the floor and balance on your healing leg with the knee slightly soft — never lock it straight. Hold 20–30 sec. As you improve, try using just one fingertip, then try no hands. This rebuilds proprioception — the joint ability to sense its own position — which is lost during injury and is a major cause of re-injury. Lunch: salmon, leafy greens, walnuts, berries, olive oil. Avoid: sugar, fried foods, nightshade vegetables (tomatoes, peppers, eggplant, potatoes) — many knee patients notice nightshades significantly increase their swelling.'],
       d3: ['Drink 20 oz Water Now', 'Knee cartilage has no blood supply — it gets ALL of its nutrients through movement and hydration. When you move and compress cartilage, it absorbs nutrients from joint fluid like a sponge. That joint fluid is almost entirely water. Staying hydrated is not optional for knee recovery — it is how the cartilage feeds itself.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids directly reduce the inflammatory compounds that cause knee swelling and pain. Research shows consistent use over 6+ weeks measurably reduces joint stiffness and pain scores. Also supports cardiovascular health, which keeps blood flowing to your healing tissues. Take with food.'],
       d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen powder into a midday drink or smoothie, with Vitamin C. Collagen is the structural matrix of cartilage, tendons, and ligaments — all involved in knee recovery. Vitamin C is the essential co-factor your body needs to synthesize collagen. Without it, collagen peptides cannot be assembled into new tissue. Taken consistently, this combination supports cartilage repair and reduces joint pain.'],
-      e1: ['Hamstring & Calf Stretch', 'Hamstring: seated, straighten leg on a chair, lean forward until you feel a pull behind the knee — hold 30 sec each side. Calf stretch: stand at wall, back leg straight, press heel firmly into floor — hold 30 sec. Tight hamstrings and calves pull directly on the knee joint and increase pain and stiffness. Releasing them nightly is one of the most underrated parts of knee recovery.'],
+      e1: ['Hamstring & Calf Stretch', 'Hamstring: Sit on the edge of a firm chair. Extend your healing leg straight in front of you with your heel resting on the floor or a low stool, toes pointing up. Sit tall with your back straight, then slowly lean your chest forward from the hips — do not round your back — until you feel a gentle pull along the back of your thigh. Hold 30 sec, switch sides. Calf stretch: Stand facing a wall, hands on the wall for support. Step your healing leg straight back, press that heel firmly into the floor and bend your front knee slightly — hold 30 sec. Tight calves and hamstrings pull directly on the knee joint and slow recovery.'],
       e2: ['Ice — 15 Minutes', 'Ice the knee 15 min after the day activities. This is the single most important evening habit for knee recovery. Icing reduces the cumulative inflammation from walking, standing, and exercising throughout the day. Even on low-activity days, icing keeps baseline swelling down — which is what allows range of motion to return.'],
       e3: ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate relaxes the muscles around the knee that tighten and guard the joint, reduces nighttime leg cramps that often accompany knee recovery, and significantly improves deep sleep quality. Your body does the majority of its tissue repair during deep sleep. Most adults over 50 are deficient.'],
       e4: ['💊 Omega-3 / Fish Oil — Evening Dose Check', 'If you missed the midday fish oil, take 2g EPA+DHA now with dinner. Consistent daily intake matters more than perfect timing. Reducing knee inflammation is a cumulative process — missing doses slows your progress. If you already took it at lunch, check this off and note it in your journal.'],
       e5: ['Recovery Journal', 'Rate knee pain 1–10. Rate swelling: none, mild, moderate, or significant. Note steps or stairs completed today. Note activities that made it better or worse. Tracking swelling patterns over time is the clearest signal of what is working — and it gives your PT the real picture of your day between appointments.']
     },
     hip: {
-      m1: ['Hip Circles', 'Holding a countertop for support, make slow circles with your hip — 10 each direction. This warms up the hip joint and increases synovial fluid circulation before you start moving through the day.'],
+      m1: ['Hip Circles', 'Stand sideways next to a kitchen counter or sturdy chair, both hands resting lightly on the surface for balance. Stand on your non-injured leg with a soft, slightly bent knee. Lift your injured leg slightly off the floor and slowly draw large, smooth circles in the air with your knee — leading the movement from your hip. 10 slow circles forward, 10 backward. Keep your upper body upright and still throughout.'],
       m2: ['Moist Heat — 15 Minutes', 'Apply moist heat to the hip 15 min before moving. The hip joint sits deep in the body — moist heat penetrates more effectively than dry heat and loosens the joint capsule and surrounding muscles before you load the joint with walking.'],
-      m3: ['Hip Flexor Stretch', 'In a lunge position, lower your back knee to the floor, gently press your hip forward and down until you feel a stretch at the front of the hip — hold 30 sec each side. A tight hip flexor (psoas) is the most common source of chronic hip pain and instability after replacement or injury.'],
+      m3: ['Hip Flexor Stretch', 'Kneel on a padded surface — use a folded towel under your back knee if needed. Place your injured-side knee on the floor behind you, and step your other foot flat on the floor in front, that knee at 90°. Rest both hands on your front thigh for balance. Keep your torso upright — do not lean forward. Gently tuck your tailbone under and shift your hips forward until you feel a stretch deep at the front of your back hip and upper thigh. Hold 30 sec, switch sides.'],
       m4: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Take together with breakfast. The hip joint capsule, labrum, and surrounding tendons and ligaments are all collagen-based structures. Vitamin C is required to synthesize new collagen — without it, the collagen you consume cannot be assembled into usable tissue. Morning timing is ideal because connective tissue repair is most active in the first half of the day.'],
       m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food — both are fat-soluble and absorb best with a meal. Curcumin reduces hip joint inflammation without gut damage or interference with healing. Especially valuable for bursitis and post-replacement inflammation — consistent use over 4–6 weeks shows significant reduction in pain and swelling. Vitamin D3 is best taken in the morning: evening D3 can interfere with melatonin and disrupt sleep in some people. D3 is essential for bone density after hip replacement, muscle strength in the stabilizers, and immune regulation around the joint.'],
-      d1: ['Clamshells', 'Lie on your side with knees bent, feet together. Lift your top knee as high as comfortable without rolling your hips back — hold 2 sec, lower slowly. 3 sets of 15. Clamshells activate the gluteus medius — the hip stabilizer muscle that is almost always weak after hip injury or replacement. A weak glute medius causes the entire pelvis to tilt with every step, increasing pain and slowing recovery.'],
+      d1: ['Clamshells', 'Lie on your non-injured side on a firm surface. Stack your hips directly on top of each other and bend both knees to about 45°, keeping your feet stacked together. Rest your head on your lower arm and place your top hand on your hip to make sure it does not roll back. Without letting your hips rotate backward, slowly lift your top knee toward the ceiling as high as you can — like a clamshell opening. Hold 2 sec at the top, lower slowly. 3 sets of 15.'],
       d2: ['Posture Walk + Anti-Inflammatory Lunch', 'Walk 5–10 min focusing on an even stride and upright posture. Uneven gait patterns are the biggest cause of re-injury after hip recovery — training your walk is as important as the exercises. Lunch: fatty fish, leafy greens, olive oil, avocado, berries. Avoid: processed seed oils, sugar, fried foods, and alcohol — all increase hip joint inflammation.'],
       d3: ['Drink 20 oz Water + Protein Check', 'Drink 20 oz water now. The hip joint capsule and surrounding tissues need consistent hydration to maintain lubrication and support repair. Also check your protein intake — aim for at least 25–30g per meal. Protein is the raw material for all tissue repair. Most people over 50 are significantly under-eating protein, which directly slows recovery.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids reduce the inflammatory cytokines that cause hip joint swelling, pain, and stiffness. For bursitis and post-surgical inflammation, fish oil is one of the most effective natural interventions available. Consistent use over 6+ weeks shows measurable reduction in joint pain and improved range of motion.'],
       d5: ['🥗 Nutrition Reminder', 'Eat to heal: salmon, sardines, walnuts, spinach, kale, olive oil, eggs, berries, sweet potato. Avoid: vegetable oils (canola, soybean, corn), sugar, alcohol, ultra-processed foods. Every meal is either increasing or decreasing the inflammation in your hip. Make it count.'],
-      e1: ['Piriformis Stretch', 'Lie on your back. Cross your healing leg so the ankle rests on the opposite knee in a figure-4 shape. Gently press the top knee away from you, or pull the bottom leg toward your chest, until you feel a deep stretch in the hip and glute — hold 30 sec each side. The piriformis muscle directly overlies the sciatic nerve and the hip joint. Releasing it nightly is one of the highest-value stretches in hip recovery.'],
+      e1: ['Piriformis Stretch', 'Lie flat on your back on a bed or mat with both knees bent, feet flat. Cross your healing leg so that ankle rests on top of your opposite thigh, just above the knee — your legs form a figure-4 shape. Gently flex the foot of your crossed leg to protect the knee. For a gentle stretch: simply press the crossed knee away from you. For deeper: interlace your hands behind the lower thigh and slowly draw that leg toward your chest. Hold 30 sec, switch sides. You should feel this deep in the back of the hip and glute.'],
       e2: ['Ice or Heat — 15 Minutes', 'Ice if swollen or after active exercise. Heat if stiff without significant swelling. 15 min on the hip. As a general rule: ice after activity, heat before movement. Evening icing after a full day on your feet controls the cumulative inflammation that builds up and limits your progress.'],
       e3: ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate relaxes the deep muscles that surround and guard the hip joint, reduces the hip and leg cramps that often accompany hip recovery, and improves deep sleep quality — when the majority of tissue repair occurs. Most adults over 50 are magnesium deficient, and the hip muscles are among the first to show it.'],
       e4: ['💊 Omega-3 / Fish Oil — Evening Dose Check', 'If you missed the midday fish oil, take 2–3g EPA+DHA now with dinner. Hip recovery depends on consistent inflammation control — omega-3s are most effective when taken daily without gaps. If you took it at lunch, simply check this off.'],
       e5: ['Recovery Journal', 'Rate hip pain 1–10. Rate mobility 1–10 — how far can you walk or move without discomfort? Note one thing that felt better today. Note any activity that caused a flare. Identifying your personal patterns is the fastest way to optimize your recovery and give your care team the real information they need.']
     },
     back: {
-      m1: ['Cat-Cow + Pelvic Tilts — Before Standing', 'Before getting out of bed: pelvic tilt — flatten your lower back into the mattress, hold 5 sec, release — 10 reps. Then get to hands and knees: arch and round your back slowly — 10 full cycles. Never force. A stiff back that gets moving gently heals faster than one that stays still. These two moves prepare your spine for the load of standing.'],
+      m1: ['Cat-Cow + Pelvic Tilts — Before Standing', 'Do this before getting up: Lie flat on your back with knees bent, feet flat on the mattress hip-width apart. Gently tighten your abs and press the small of your back down into the mattress — flattening the natural curve. Hold 5 sec, release fully. 10 reps. Then carefully move to hands and knees on a firm surface — wrists under shoulders, knees under hips, back flat. Cat: slowly round your entire spine toward the ceiling, tucking your chin and tailbone under. Cow: slowly let your belly drop toward the floor, gently lifting your head and tailbone. 10 slow cycles — never force either end.'],
       m2: ['Moist Heat — 15 Minutes', 'Moist heat on lower back 15–20 min before getting moving. The paraspinal muscles contract overnight and are most guarded in the morning. Moist heat penetrates deeper than dry heat and releases this tension before you start loading the spine with movement and activity.'],
-      m3: ['Knee-to-Chest + Piriformis Stretch', 'Knee to chest: lying on back, pull one knee gently to chest, hold 30 sec, switch sides. Piriformis (figure-4): cross one ankle over the opposite knee, gently press the top knee away, hold 30 sec each side. A tight piriformis compresses the sciatic nerve and is one of the most overlooked causes of lower back and leg pain. Releasing it every morning is essential.'],
+      m3: ['Knee-to-Chest + Piriformis Stretch', 'Knee to chest: Lie flat on your back with both legs straight. Slowly bend one knee and bring it toward your chest, clasping both hands just below the kneecap — never pull on the knee joint itself. Keep your head and opposite leg relaxed on the surface. Hold 30 sec, lower slowly, switch. Piriformis figure-4: Remain on your back with both knees bent, feet flat. Cross one ankle over the opposite thigh just above the knee and flex that foot. Press the crossed knee gently away from you until you feel a stretch deep in the hip and glute — hold 30 sec each side.'],
       m4: ['💊 Magnesium Glycinate (300–400mg)', 'Take with breakfast. The lower back muscles — the paraspinals, quadratus lumborum, and psoas — are among the first muscles to seize and spasm when magnesium is low. Most adults over 50 are deficient. Magnesium glycinate relaxes these muscles, reduces pain sensitivity in the nervous system, and supports the energy production needed for tissue repair. Morning dosing helps with daytime muscle relaxation.'],
       m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food (eggs, avocado, olive oil). Curcumin blocks spinal inflammation and nerve irritation — add black pepper (piperine) for 2000% better absorption. Vitamin D3 is best taken in the morning with food: research suggests evening D3 can interfere with melatonin production and disrupt sleep in some people. D3 deficiency is directly linked to chronic lower back pain, disc degeneration, and slow healing. Morning is the ideal time for both.'],
-      d1: ['Bird Dog + Glute Bridges', 'Bird dog: on hands and knees, slowly extend opposite arm and leg — hold 5 sec, 10 reps each side. This builds the deep spinal stabilizers (multifidus, transverse abdominis) that protect your spine with every movement. Glute bridge: lying on back, feet flat, lift hips off floor — hold 3 sec, 10 reps. Weak glutes force the lower back to compensate and are a primary driver of chronic back pain. These are the two most important back exercises you can do.'],
+      d1: ['Bird Dog + Glute Bridges', 'Bird dog: Start on hands and knees — wrists under shoulders, knees under hips, back flat like a table. Tighten your core gently. Slowly extend your right arm straight forward at shoulder height while simultaneously extending your left leg straight back at hip height — both parallel to the floor. Do not rotate your hips or shift your weight sideways. Hold 5 sec, return slowly. 10 reps each side. Glute bridge: Lie flat on your back with knees bent at 90°, feet flat on the floor hip-width apart, arms at your sides palms down. Press through your heels, squeeze your glutes, and lift your hips until your body forms a straight line from shoulders to knees. Hold 3 sec, lower slowly. 10 reps.'],
       d2: ['Posture Reset + Anti-Inflammatory Lunch', 'Posture wall reset: stand with back against wall, heels 2 inches out, flatten lower back against the wall — hold 30 sec. Do this 3 times today. Prolonged sitting compresses spinal discs and weakens the muscles that hold you upright — this resets both. Lunch: leafy greens, fatty fish, olive oil, avocado, berries. Avoid: sugar, alcohol, white bread, processed food — all directly increase spinal inflammation and slow disc repair.'],
       d3: ['Drink 20+ oz Water — Disc Health', 'Spinal discs are 80% water. When you are dehydrated, the discs compress more under load, which means more pain and slower healing. This is not optional — your discs literally feed themselves through hydration and movement. Drink 20+ oz now and aim for 8–10 glasses throughout the day. This is one of the lowest-effort, highest-impact things you can do for back recovery.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3s reduce the inflammatory compounds that irritate spinal nerves, compress discs, and cause the radiating pain of sciatica. Research shows consistent fish oil use reduces both disc inflammation and nerve pain. Also supports cardiovascular health, which keeps blood flowing to the muscles and structures supporting your spine. Take with food.'],
       d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen into a midday drink with Vitamin C. Spinal discs, ligaments, and the connective tissue supporting the spine are all largely collagen. Vitamin C is the essential co-factor required to synthesize new collagen — without it, collagen peptides cannot be assembled into usable tissue. Consistent daily use supports disc repair and spinal ligament integrity. Important: avoid NSAIDs (ibuprofen, naproxen) long term — they block the prostaglandins your body needs for disc repair.'],
-      e1: ["Child's Pose + Supine Twist", "Child's pose: arms extended forward, forehead on floor or pillow — hold 60 sec, breathe deeply into your back. Feel your lower back expand with each inhale. Supine twist: lying on back, drop both knees together to one side — hold 30 sec, switch. These two moves decompress the spine after a full day of compression from sitting, standing, and gravity. Do them every single evening."],
+      e1: ["Child's Pose + Supine Twist", "Child's pose: Kneel on a soft surface and sit your hips back toward your heels — place a folded pillow between your thighs and calves if this is uncomfortable. Reach both arms straight out in front of you, palms flat on the floor, and rest your forehead on the surface or a pillow. Let your entire back relax with each breath — breathe slowly and deeply into your lower back and ribs. Hold 60 sec. Supine twist: Lie flat on your back with both knees bent, feet flat. Extend both arms out to your sides in a T shape, palms down. Keeping your knees pressed together, slowly let them fall to one side toward the floor — your opposite shoulder stays flat on the surface. Hold 30 sec, bring knees back to center, then lower to the other side."],
       e2: ['Moist Heat — 15 Minutes Before Bed', 'Moist heat on lower back 15–20 min before sleeping. This relaxes the paraspinal muscles that tighten all day and improves circulation to the discs overnight when repair is most active. Do not fall asleep with a heating pad — 15 min is enough. Also: avoid screens for 30 min before bed — blue light suppresses melatonin, which coordinates the overnight repair cycle.'],
       e3: ['💊 Magnesium Glycinate (300–400mg) — Before Bed', 'Take 30–60 min before sleep. Evening magnesium glycinate is one of the most impactful things you can do for back recovery. It relaxes the deep back muscles that stay contracted even during rest, reduces nighttime muscle spasms that disrupt sleep, and dramatically improves deep sleep quality — when your body does its most intensive tissue repair. If you took a morning dose, this evening dose is still recommended and safe.'],
       e4: ['💊 Omega-3 / Fish Oil (if not taken at lunch)', 'If you missed the midday dose, take 2g EPA+DHA now with dinner. Consistent daily omega-3 is more important than timing. Reducing spinal inflammation is a cumulative process — missing doses slows your progress. If you did take it at lunch, skip this and just note it in your journal.'],
@@ -864,6 +1168,19 @@
     });
     document.getElementById('app-name').textContent = userName;
     document.getElementById('about-btn').style.display = 'flex';
+    // Set injury label on morning section
+    const injuryLabels = {
+      shoulder: 'Shoulder / Rotator Cuff',
+      knee: 'Knee',
+      hip: 'Hip',
+      back: 'Lower Back',
+      surgery: 'Post-Surgery'
+    };
+    const injuryLabel = injuryLabels[selectedInjury] || '';
+    const morningTitle = document.getElementById('morning-section-title');
+    if (morningTitle && injuryLabel) {
+      morningTitle.textContent = 'Morning Recovery — ' + injuryLabel;
+    }
     document.getElementById('enc-name').textContent = userName;
     document.getElementById('daily-quote').textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)];
     updateGreeting();
@@ -900,7 +1217,7 @@
     const pct = Math.round((doneTasks / totalTasks) * 100);
     document.getElementById('pct-text').textContent = pct + '%';
     document.getElementById('done-text').textContent = doneTasks + ' of ' + totalTasks;
-    const circumference = 314;
+    const circumference = 528;
     const offset = circumference - (circumference * pct / 100);
     document.getElementById('progress-ring').style.strokeDashoffset = offset;
     ['morning','midday','evening'].forEach(s => {
