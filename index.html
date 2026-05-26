@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Healing Momentum</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2e4a;
+    --navy-light: #243d5e;
+    --gold: #c9923a;
+    --gold-light: #e8b86d;
+    --gold-pale: #fdf6ec;
+    --cream: #faf8f5;
+    --white: #ffffff;
+    --text: #1a2e4a;
+    --text-mid: #4a5e72;
+    --text-light: #8a9aaa;
+    --border: #dde4ec;
+    --success: #2d7a4f;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(26,46,74,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); font-size: 18px; }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* GATE SCREEN */
+  #gate {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+    align-items: center; justify-content: center; padding: 2rem 1.5rem;
+  }
+  .gate-card {
+    background: var(--white); border-radius: 24px; padding: 1.5rem 1.2rem;
+    width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  }
+  .gate-logo {
+    text-align: center; margin-bottom: 2rem;
+  }
+  .gate-logo .pulse-ring {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--gold-pale); border: 3px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem; font-size: 32px;
+  }
+  .gate-logo h1 {
+    
+    font-size: 2rem; color: var(--navy); line-height: 1.2;
+  }
+  .gate-logo p {
+    font-size: 1rem; color: var(--text-mid); margin-top: 0.4rem;
+  }
+  .gate-tabs {
+    display: flex; background: var(--cream); border-radius: 10px;
+    padding: 4px; margin-bottom: 1.5rem; gap: 4px;
+  }
+  .gate-tab {
+    flex: 1; padding: 0.6rem; border: none; background: transparent;
+    border-radius: 8px; font-size: 1rem; color: var(--text-mid);
+    cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 500;
+    transition: all 0.2s;
+  }
+  .gate-tab.active { background: var(--white); color: var(--navy); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+  .gate-form { display: flex; flex-direction: column; gap: 1rem; }
+  .gate-form input, .gate-form select {
+    width: 100%; padding: 0.9rem 1rem; border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 1.1rem; font-family: 'Source Sans 3', sans-serif;
+    color: var(--text); background: var(--white); transition: border-color 0.2s;
+    appearance: none;
+  }
+  .gate-form input:focus, .gate-form select:focus {
+    outline: none; border-color: var(--gold);
+  }
+  .beta-row { display: flex; gap: 8px; }
+  .beta-row input { flex: 1; }
+  .beta-apply {
+    padding: 0.9rem 1rem; background: var(--cream); border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 1rem; color: var(--text-mid);
+    cursor: pointer; font-family: 'Source Sans 3', sans-serif; white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .beta-apply:hover { border-color: var(--gold); color: var(--gold); }
+  .code-msg { font-size: 0.95rem; min-height: 1.2rem; padding-left: 4px; }
+  .code-msg.valid { color: var(--success); }
+  .code-msg.invalid { color: #c0392b; }
+  .gate-btn {
+    width: 100%; padding: 1rem; background: var(--gold);
+    border: none; border-radius: 12px; color: var(--white);
+    font-size: 1.2rem; font-weight: 600; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+  .gate-btn:hover { background: var(--gold-light); }
+  .gate-note { text-align: center; font-size: 0.9rem; color: var(--text-light); margin-top: 1rem; }
+
+  /* INJURY SCREEN */
+  #injury-select {
+    background: var(--cream); align-items: center; justify-content: center; padding: 2rem 1.5rem;
+  }
+  .injury-card {
+    background: var(--white); border-radius: 24px; padding: 1.5rem 1.2rem;
+    width: 100%; max-width: 420px; box-shadow: var(--shadow);
+  }
+  .injury-card h2 {
+     font-size: 1.6rem;
+    color: var(--navy); margin-bottom: 0.4rem;
+  }
+  .injury-card p { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 1.5rem; }
+  .injury-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+  .injury-option {
+    display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+    border: 2px solid var(--border); border-radius: 12px; cursor: pointer;
+    transition: all 0.2s; background: var(--white);
+  }
+  .injury-option:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .injury-option.selected { border-color: var(--gold); background: var(--gold-pale); }
+  .injury-icon { font-size: 1.8rem; width: 40px; text-align: center; }
+  .injury-label { font-size: 1.1rem; font-weight: 500; color: var(--navy); }
+  .injury-sub { font-size: 0.95rem; color: var(--text-mid); }
+  .injury-btn {
+    width: 100%; padding: 1rem; background: var(--navy);
+    border: none; border-radius: 12px; color: var(--white);
+    font-size: 1.05rem; font-weight: 600; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; transition: background 0.2s;
+  }
+  .injury-btn:hover { background: var(--navy-light); }
+  .injury-btn:disabled { background: var(--border); cursor: not-allowed; }
+
+  /* APP SCREEN */
+  #app { background: var(--cream); flex-direction: column; }
+
+  .app-header {
+    background: var(--navy); padding: 1.5rem 1.5rem 1.2rem;
+    color: var(--white);
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+  .greeting { font-size: 1rem; color: rgba(255,255,255,0.65); }
+  .header-name { font-size: 1.8rem; margin-top: 2px; }
+  .streak-badge {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(201,146,58,0.25); border: 1px solid var(--gold);
+    border-radius: 20px; padding: 6px 12px;
+  }
+  .streak-num { font-size: 1.2rem; font-weight: 600; color: var(--gold-light); }
+  .streak-label { font-size: 0.85rem; color: var(--gold-light); }
+
+  .progress-ring-wrap {
+    display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem;
+  }
+  .ring-container { position: relative; width: 120px; height: 120px; }
+  .ring-svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 10; }
+  .ring-fill { fill: none; stroke: var(--gold); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
+  .ring-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .ring-pct { font-size: 1.8rem; font-weight: 600; color: var(--white); }
+  .ring-done { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+  .quote-wrap { padding: 0 1.5rem 1.5rem; }
+  .quote {
+    background: rgba(255,255,255,0.08); border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0; padding: 0.8rem 1rem;
+    font-size: 1rem; color: rgba(255,255,255,0.8); font-style: italic; line-height: 1.5;
+  }
+
+  .app-body { flex: 1; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+
+  .section-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
+    cursor: pointer; user-select: none;
+  }
+  .section-icon { font-size: 1.3rem; }
+  .section-title { font-size: 1.2rem; font-weight: 600; color: var(--navy); flex: 1; }
+  .section-progress { font-size: 0.9rem; color: var(--text-light); }
+  .section-arrow { font-size: 1rem; color: var(--text-light); transition: transform 0.2s; }
+  .section-arrow.open { transform: rotate(180deg); }
+  .section-items { display: none; }
+  .section-items.open { display: block; }
+
+  .task-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.15s;
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-item:hover { background: var(--cream); }
+  .task-item.done { background: #f0faf5; }
+  .task-check {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid var(--border); flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; background: var(--white);
+  }
+  .task-item.done .task-check { background: var(--success); border-color: var(--success); }
+  .task-check-inner { width: 10px; height: 10px; border-radius: 50%; background: var(--white); opacity: 0; transition: opacity 0.2s; }
+  .task-item.done .task-check-inner { opacity: 1; }
+  .task-info { flex: 1; }
+  .task-name { font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; transition: color 0.2s; }
+  .task-item.done .task-name { color: var(--text-light); text-decoration: line-through; }
+  .task-desc { font-size: 0.95rem; color: var(--text-mid); line-height: 1.5; }
+  .task-timer {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 0.9rem; color: var(--gold); font-weight: 500;
+    background: var(--gold-pale); padding: 3px 8px; border-radius: 20px;
+    flex-shrink: 0; cursor: pointer; border: none; font-family: 'Source Sans 3', sans-serif;
+    margin-top: 2px;
+  }
+  .task-timer.running { background: #fff3e0; color: #e65100; }
+  .task-timer.done-t { background: #f0faf5; color: var(--success); }
+
+  .encourage-bar {
+    background: var(--navy); border-radius: var(--radius);
+    padding: 1.2rem 1.5rem; text-align: center;
+  }
+  .encourage-bar p { color: rgba(255,255,255,0.9); font-size: 0.9rem; line-height: 1.5; }
+  .encourage-bar strong { color: var(--gold-light); }
+
+  /* TIMER MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    align-items: center; justify-content: center; z-index: 100; padding: 1.5rem;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 24px; padding: 2rem;
+    width: 100%; max-width: 320px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal h3 {  font-size: 1.3rem; color: var(--navy); margin-bottom: 0.3rem; }
+  .modal-sub { font-size: 0.85rem; color: var(--text-mid); margin-bottom: 1.5rem; }
+  .timer-display {
+    font-size: 3.5rem; font-weight: 600; color: var(--navy);
+    margin: 1rem 0; font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .timer-ring-wrap { display: flex; justify-content: center; margin: 0.5rem 0 1.5rem; }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-btn {
+    flex: 1; padding: 0.8rem; border-radius: 10px; border: none;
+    font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; transition: all 0.2s;
+  }
+  .modal-btn.primary { background: var(--gold); color: var(--white); }
+  .modal-btn.primary:hover { background: var(--gold-light); }
+  .modal-btn.secondary { background: var(--cream); color: var(--text-mid); }
+
+
+  /* DISCLAIMER SCREEN */
+  #disclaimer {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+    align-items: center; justify-content: center; padding: 2rem 1.5rem;
+  }
+  .disclaimer-card {
+    background: var(--white); border-radius: 24px; padding: 1.5rem 1.2rem;
+    width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    max-height: 92vh; display: flex; flex-direction: column;
+  }
+  .disclaimer-header { text-align: center; margin-bottom: 1.2rem; }
+  .disclaimer-header .d-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .disclaimer-header h2 { font-size: 1.3rem; font-weight: 700; color: var(--navy); }
+  .disclaimer-header p { font-size: 0.8rem; color: var(--text-mid); margin-top: 0.3rem; }
+  .disclaimer-scroll {
+    flex: 1; overflow-y: auto; border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 1rem; margin-bottom: 1rem;
+    font-size: 1rem; line-height: 1.7; color: var(--text-mid);
+    max-height: 340px;
+  }
+  .disclaimer-scroll h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 0.8rem 0 0.3rem; }
+  .disclaimer-scroll h3:first-child { margin-top: 0; }
+  .disclaimer-scroll p { margin-bottom: 0.6rem; }
+  .disclaimer-check {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 1rem; cursor: pointer;
+  }
+  .disclaimer-check input[type=checkbox] { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: var(--gold); cursor: pointer; }
+  .disclaimer-check label { font-size: 1rem; color: var(--text); line-height: 1.5; cursor: pointer; }
+  .disclaimer-btn {
+    width: 100%; padding: 1rem; background: var(--border); border: none;
+    border-radius: 12px; color: var(--text-light); font-size: 1.15rem; font-weight: 600;
+    cursor: not-allowed; font-family: 'Source Sans 3', sans-serif; transition: all 0.3s;
+  }
+  .disclaimer-btn.enabled { background: var(--gold); color: var(--white); cursor: pointer; }
+  .disclaimer-btn.enabled:hover { background: var(--gold-light); }
+  .scroll-hint { text-align: center; font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.5rem; }
+
+  /* ABOUT MODAL */
+  .about-btn {
+    position: fixed; bottom: 1.2rem; right: 1.2rem;
+    background: var(--navy); color: var(--white); border: none;
+    border-radius: 50%; width: 44px; height: 44px; font-size: 1.1rem;
+    cursor: pointer; box-shadow: var(--shadow); z-index: 50;
+    display: none; align-items: center; justify-content: center;
+  }
+  .about-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    align-items: flex-end; justify-content: center; z-index: 200; padding: 0;
+  }
+  .about-overlay.active { display: flex; }
+  .about-modal {
+    background: var(--white); border-radius: 24px 24px 0 0; padding: 2rem 1.5rem;
+    width: 100%; max-width: 520px; max-height: 80vh; overflow-y: auto;
+  }
+  .about-modal h2 { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+  .about-modal .about-sub { font-size: 1rem; color: var(--text-light); margin-bottom: 1.2rem; }
+  .about-section { margin-bottom: 1.2rem; }
+  .about-section h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+  .about-section p { font-size: 1rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 0.5rem; }
+  .about-close { width: 100%; padding: 0.8rem; background: var(--navy); color: var(--white); border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: 'Source Sans 3', sans-serif; margin-top: 0.5rem; }
+
+  @media (max-width: 480px) {
+    .gate-card, .injury-card, .disclaimer-card { padding: 1.2rem 1rem; }
+    .header-name { font-size: 1.6rem; }
+    .task-name { font-size: 1.05rem; }
+    .task-desc { font-size: 0.92rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SCREEN 0: DISCLAIMER -->
+<div id="disclaimer" class="screen active">
+  <div class="disclaimer-card">
+    <div class="disclaimer-header">
+      <div class="d-icon">⚠️</div>
+      <h2>Before You Begin</h2>
+      <p>Please read and agree to continue</p>
+    </div>
+    <div class="disclaimer-scroll" id="disclaimer-scroll">
+      <h3>Not Medical Advice</h3>
+      <p>Healing Momentum is a wellness support tool designed to help you track and build healthy recovery habits. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult your physician, physical therapist, or qualified healthcare provider before starting any new exercise or supplement program.</p>
+
+      <h3>Supplement Safety & Allergy Responsibility</h3>
+      <p>The supplement suggestions in this app are based on published nutritional and sports medicine research. However, every person is different. You may have allergies, sensitivities, or medical conditions that make certain supplements inappropriate or unsafe for you. It is YOUR responsibility to check with your healthcare provider before taking any supplement. Healing Momentum and its creators are not responsible for any adverse reactions, allergic responses, or health outcomes resulting from supplement use.</p>
+
+      <h3>Drug Interactions</h3>
+      <p>Some supplements (including fish oil, turmeric, and magnesium) may interact with prescription medications, blood thinners, or other supplements. If you are taking any prescription medication, consult your doctor before adding supplements to your routine.</p>
+
+      <h3>Exercise Safety</h3>
+      <p>All exercises should be performed within a pain-free range of motion. If any exercise causes sharp pain, numbness, tingling, or increased swelling, stop immediately and consult your healthcare provider. Do not use this app as a replacement for your prescribed physical therapy program.</p>
+
+      <h3>Research Sources</h3>
+      <p>The protocols in this app are based on published research in physical therapy, sports medicine, and nutritional science, including peer-reviewed journals, PT clinical guidelines, and nutritional research databases. Content was developed with AI research assistance. This app does not represent the views of any medical institution. Individual results will vary.</p>
+
+      <h3>Use at Your Own Risk</h3>
+      <p>By using Healing Momentum, you acknowledge that you are using this app voluntarily and entirely at your own risk. The creators, developers, and contributors of Healing Momentum assume no liability for any injury, adverse health effect, allergic reaction, or other harm that may result from following the suggestions in this app.</p>
+
+      <h3>When to See a Doctor</h3>
+      <p>If you experience increased pain, significant swelling, fever, redness, or any new or worsening symptoms, stop using this app immediately and contact your healthcare provider.</p>
+    </div>
+    <div class="scroll-hint" id="scroll-hint">↓ Scroll to read full agreement</div>
+    <div class="disclaimer-check">
+      <input type="checkbox" id="agree-check" onchange="toggleAgree()">
+      <label for="agree-check">I have read and understood this disclaimer. I agree to use Healing Momentum at my own risk and accept full responsibility for my health decisions.</label>
+    </div>
+    <button class="disclaimer-btn" id="disclaimer-btn" onclick="acceptDisclaimer()" disabled>I Agree — Continue</button>
+  </div>
+</div>
+
+<!-- SCREEN 1: GATE -->
+<div id="gate" class="screen">
+  <div class="gate-card">
+    <div class="gate-logo">
+      <div class="pulse-ring">💙</div>
+      <h1>Healing Momentum</h1>
+      <p>Daily recovery for adults 50+</p>
+    </div>
+    <div class="gate-tabs">
+      <button class="gate-tab active" onclick="showTab('access')">Free Beta Access</button>
+      <button class="gate-tab" onclick="showTab('returning')">I Have a Code</button>
+    </div>
+    <div id="tab-access" class="gate-form">
+      <input type="text" id="g-name" placeholder="Your first name" autocomplete="given-name">
+      <input type="email" id="g-email" placeholder="Your email address" autocomplete="email">
+      <select id="g-injury">
+        <option value="">Select your injury or condition</option>
+        <option value="shoulder">Shoulder / Rotator Cuff</option>
+        <option value="knee">Knee</option>
+        <option value="hip">Hip</option>
+        <option value="back">Lower Back</option>
+        <option value="surgery">Post-Surgery Recovery</option>
+      </select>
+      <div class="beta-row">
+        <input type="text" id="g-code" placeholder="Beta access code" style="text-transform:uppercase">
+        <button class="beta-apply" onclick="checkCode()">Apply</button>
+      </div>
+      <div class="code-msg" id="code-msg"></div>
+      <button class="gate-btn" onclick="submitGate()">Start Healing →</button>
+      <p class="gate-note">🔒 Your info is private. We never share or sell your data.</p>
+    </div>
+    <div id="tab-returning" class="gate-form" style="display:none">
+      <input type="text" id="r-name" placeholder="Your first name">
+      <input type="text" id="r-code" placeholder="Your access code" style="text-transform:uppercase">
+      <button class="gate-btn" onclick="returningAccess()">Enter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: INJURY SELECT (if not chosen at gate) -->
+<div id="injury-select" class="screen">
+  <div class="injury-card">
+    <h2>What are you healing?</h2>
+    <p>We'll build your personal protocol around your specific recovery.</p>
+    <div class="injury-grid">
+      <div class="injury-option" onclick="selectInjury('shoulder',this)">
+        <div class="injury-icon">💪</div>
+        <div><div class="injury-label">Shoulder / Rotator Cuff</div><div class="injury-sub">Impingement, tear, post-surgery</div></div>
+      </div>
+      <div class="injury-option" onclick="selectInjury('knee',this)">
+        <div class="injury-icon">🦵</div>
+        <div><div class="injury-label">Knee</div><div class="injury-sub">Replacement, ACL, arthritis</div></div>
+      </div>
+      <div class="injury-option" onclick="selectInjury('hip',this)">
+        <div class="injury-icon">🦴</div>
+        <div><div class="injury-label">Hip</div><div class="injury-sub">Replacement, bursitis, pain</div></div>
+      </div>
+      <div class="injury-option" onclick="selectInjury('back',this)">
+        <div class="injury-icon">🔙</div>
+        <div><div class="injury-label">Lower Back</div><div class="injury-sub">Disc, sciatica, muscle strain</div></div>
+      </div>
+      <div class="injury-option" onclick="selectInjury('surgery',this)">
+        <div class="injury-icon">🏥</div>
+        <div><div class="injury-label">Post-Surgery Recovery</div><div class="injury-sub">General surgical recovery</div></div>
+      </div>
+    </div>
+    <button class="injury-btn" id="injury-btn" disabled onclick="goToApp()">Start My Protocol →</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: APP -->
+<div id="app" class="screen">
+  <div class="app-header">
+    <div class="header-top">
+      <div>
+        <div class="greeting">Good morning,</div>
+        <div class="header-name" id="app-name">Mark</div>
+      </div>
+      <div class="streak-badge">
+        <div>🔥</div>
+        <div>
+          <div class="streak-num" id="streak-count">1</div>
+          <div class="streak-label">day streak</div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-ring-wrap">
+      <div class="ring-container">
+        <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" id="progress-ring" cx="60" cy="60" r="50"
+            stroke-dasharray="314" stroke-dashoffset="314"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-pct" id="pct-text">0%</div>
+          <div class="ring-done" id="done-text">0 of 15</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-wrap">
+      <div class="quote" id="daily-quote">"Healing is not a race. Every rep, every stretch, every moment of care moves you forward."</div>
+    </div>
+  </div>
+
+  <div class="app-body">
+
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection('morning')">
+        <div class="section-icon">🌅</div>
+        <div class="section-title">Morning Recovery</div>
+        <div class="section-progress" id="morning-prog">0 / 5</div>
+        <div class="section-arrow" id="morning-arrow">▼</div>
+      </div>
+      <div class="section-items open" id="morning-items">
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="m1-name">Gentle Warm-Up Movement</div>
+            <div class="task-desc" id="m1-desc">Easy range-of-motion to wake up the joint and increase circulation</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Warm-Up',300)">⏱ 5 min</button>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="m2-name">Ice or Heat Therapy</div>
+            <div class="task-desc" id="m2-desc">Apply as directed by your PT — 15 min max per session</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Ice / Heat',900)">⏱ 15 min</button>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="m3-name">Morning Stretch Routine</div>
+            <div class="task-desc" id="m3-desc">3 targeted stretches for your recovery area — hold each 30 seconds</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Stretching',180)">⏱ 3 min</button>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="m4-name">💊 Morning Supplement #1</div>
+            <div class="task-desc" id="m4-desc">Take with breakfast</div>
+          </div>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="m5-name">💊 Morning Supplement #2</div>
+            <div class="task-desc" id="m5-desc">Take with breakfast</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection('midday')">
+        <div class="section-icon">☀️</div>
+        <div class="section-title">Midday Reset</div>
+        <div class="section-progress" id="midday-prog">0 / 5</div>
+        <div class="section-arrow" id="midday-arrow">▼</div>
+      </div>
+      <div class="section-items open" id="midday-items">
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="d1-name">Strengthening Exercises</div>
+            <div class="task-desc" id="d1-desc">Your prescribed PT exercises — focus on controlled movement</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Exercises',600)">⏱ 10 min</button>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="d2-name">Posture & Alignment Check</div>
+            <div class="task-desc" id="d2-desc">Stand tall, check your posture, do 5 deep breaths</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Posture Check',60)">⏱ 1 min</button>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="d3-name">Hydration & Nutrition</div>
+            <div class="task-desc" id="d3-desc">Drink 16 oz water. Have a protein-rich snack to support tissue repair</div>
+          </div>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="d4-name">💊 Midday Supplement</div>
+            <div class="task-desc" id="d4-desc">Take with lunch</div>
+          </div>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="d5-name">🥗 Nutrition Reminder</div>
+            <div class="task-desc" id="d5-desc">What to eat and avoid today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection('evening')">
+        <div class="section-icon">🌙</div>
+        <div class="section-title">Evening Recovery</div>
+        <div class="section-progress" id="evening-prog">0 / 5</div>
+        <div class="section-arrow" id="evening-arrow">▼</div>
+      </div>
+      <div class="section-items open" id="evening-items">
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="e1-name">Evening Stretch & Cooldown</div>
+            <div class="task-desc" id="e1-desc">Gentle end-of-day stretches to release tension from the day</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Evening Stretch',300)">⏱ 5 min</button>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="e2-name">Final Ice or Heat</div>
+            <div class="task-desc" id="e2-desc">End the day with targeted therapy on the recovery area</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Ice / Heat',900)">⏱ 15 min</button>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="e3-name">💊 Evening Supplement #1</div>
+            <div class="task-desc" id="e3-desc">Take with or after dinner</div>
+          </div>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="e4-name">💊 Evening Supplement #2</div>
+            <div class="task-desc" id="e4-desc">Take before bed</div>
+          </div>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"><div class="task-check-inner"></div></div>
+          <div class="task-info">
+            <div class="task-name" id="e5-name">Recovery Journal</div>
+            <div class="task-desc" id="e5-desc">Rate your pain 1–10. Note one win from today. Takes 2 minutes.</div>
+          </div>
+          <button class="task-timer" onclick="openTimer(event,'Journaling',120)">⏱ 2 min</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="encourage-bar" id="encourage-bar">
+      <p>You've got this, <strong id="enc-name">friend</strong>. Every day you show up is a day your body heals a little more. <strong>Keep your momentum going.</strong></p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ABOUT BUTTON (visible in app) -->
+<button class="about-btn" id="about-btn" onclick="openAbout()">ℹ️</button>
+
+<!-- ABOUT MODAL -->
+<div class="about-overlay" id="about-overlay">
+  <div class="about-modal">
+    <h2>About This Protocol</h2>
+    <div class="about-sub">Research sources &amp; important information</div>
+
+    <div class="about-section">
+      <h3>How These Protocols Were Developed</h3>
+      <p>The exercise protocols, supplement recommendations, and nutrition guidance in this app are based on published research in physical therapy, sports medicine, orthopedic rehabilitation, and nutritional science.</p>
+      <p>Key sources include peer-reviewed studies from journals including the Journal of Bone and Joint Surgery, the American Journal of Sports Medicine, Arthritis &amp; Rheumatology, and the Journal of Nutritional Biochemistry. Supplement recommendations are informed by clinical trials and systematic reviews available through the National Library of Medicine (PubMed).</p>
+      <p>Content was developed and organized with AI research assistance (Claude by Anthropic). This app is not affiliated with or endorsed by any medical institution or university.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Notable Research Referenced</h3>
+      <p>Glucosamine + Chondroitin for knee cartilage: GAIT Trial (NIH-funded, New England Journal of Medicine, 2006) and multiple follow-up studies.</p>
+      <p>Curcumin vs. ibuprofen for knee pain: Randomized controlled trial, Journal of Alternative and Complementary Medicine, 2014.</p>
+      <p>Magnesium and sleep quality: Multiple studies including Abbasi et al., Journal of Research in Medical Sciences, 2012.</p>
+      <p>Fish oil and joint inflammation: Systematic reviews in Rheumatology (Oxford) and the British Journal of Nutrition.</p>
+      <p>Vitamin D3 and musculoskeletal health: Holick MF, New England Journal of Medicine, 2007; and multiple subsequent rehabilitation studies.</p>
+      <p>Collagen peptides and connective tissue repair: Shaw et al., American Journal of Clinical Nutrition, 2017.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Important Disclaimer</h3>
+      <p>This app is a wellness support tool, not a medical device or clinical treatment. Always consult your physician, physical therapist, or licensed healthcare provider before starting any new exercise or supplement program. Supplement suggestions may not be appropriate for everyone. Individual results will vary.</p>
+      <p>Healing Momentum and its creators assume no liability for any health outcomes resulting from use of this app. Use at your own risk.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Questions or Concerns</h3>
+      <p>If you experience increased pain, new symptoms, or have questions about your specific situation, please consult your healthcare provider before continuing.</p>
+    </div>
+
+    <button class="about-close" onclick="closeAbout()">Close</button>
+  </div>
+</div>
+
+<!-- TIMER MODAL -->
+<div class="modal-overlay" id="timer-modal">
+  <div class="modal">
+    <h3 id="timer-title">Timer</h3>
+    <div class="modal-sub" id="timer-sub">Focus and breathe</div>
+    <div class="timer-display" id="timer-display">5:00</div>
+    <div class="modal-btns">
+      <button class="modal-btn primary" id="timer-start-btn" onclick="toggleTimer()">Start</button>
+      <button class="modal-btn secondary" onclick="closeTimer()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // ── DISCLAIMER ──────────────────────────────────────────────────────────
+  function toggleAgree() {
+    const checked = document.getElementById('agree-check').checked;
+    const btn = document.getElementById('disclaimer-btn');
+    btn.disabled = !checked;
+    btn.classList.toggle('enabled', checked);
+  }
+
+  function acceptDisclaimer() {
+    if (!document.getElementById('agree-check').checked) return;
+    showScreen('gate');
+  }
+
+  // Scroll hint disappears after user scrolls
+  document.getElementById('disclaimer-scroll').addEventListener('scroll', function() {
+    const el = this;
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) {
+      document.getElementById('scroll-hint').style.opacity = '0';
+    }
+  });
+
+  // ── ABOUT MODAL ──────────────────────────────────────────────────────────
+  function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
+  function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
+
+  const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50'];
+
+  const QUOTES = [
+    '"Healing is not a race. Every rep, every stretch, every moment of care moves you forward."',
+    '"Your body knows how to heal. Your job is to show up and give it the chance."',
+    '"Progress isn\'t always visible. But every day you do the work, something is changing."',
+    '"The comeback is always stronger than the setback."',
+    '"Small steps every day add up to miles of healing."'
+  ];
+
+  const PROTOCOLS = {
+    shoulder: {
+      m1: ['Pendulum Swings', 'Lean forward, let your arm hang completely loose, make slow circles — 10x forward, 10x backward. Let gravity do the work. This decompresses the joint without engaging the injured muscles — the #1 first exercise PTs prescribe.'],
+      m2: ['Ice Pack — 15 Minutes', 'Apply ice wrapped in a thin cloth to the shoulder. Morning icing reduces overnight inflammation before it builds through the day. 15 min maximum — more is not better and can cause tissue damage.'],
+      m3: ['Doorway Chest Stretch', 'Stand in a doorway, arm at 90°, gently step forward until you feel a stretch across the chest and front shoulder. Hold 30 sec each side. Tight pec minor is one of the most overlooked causes of rotator cuff pain — this stretch addresses it directly.'],
+      m4: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Take together with breakfast. Collagen is the primary structural protein in rotator cuff tendons. Vitamin C is required by your body to assemble collagen into usable tissue — without it, the collagen you consume cannot be built into new tendon. Morning is ideal because tendon repair is most active in the first half of the day.'],
+      m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food (eggs, avocado, olive oil). Both are fat-soluble and absorb best with a meal. Curcumin blocks inflammatory pathways without gut damage or interference with healing — consistent use reduces joint pain within 4–6 weeks. Vitamin D3 is best taken in the morning: research shows evening D3 can interfere with melatonin and disrupt sleep in some people. D3 is essential for tendon and muscle repair, bone health, and immune function. Most adults over 50 are deficient.'],
+      d1: ['Resistance Band External Rotation', 'Elbow tucked at your side, rotate forearm outward against band resistance — slow and controlled, 3 sets of 15. This directly targets the infraspinatus and teres minor — the two rotator cuff muscles most responsible for shoulder stability. Weak external rotators are the root cause of most rotator cuff injuries.'],
+      d2: ['Shoulder Blade Squeeze', 'Sit or stand tall, pull shoulder blades together and down — hold 5 sec, release, repeat 10 times. Retrains the lower trapezius, which stabilizes the entire shoulder girdle. Most people with shoulder injuries have a weak lower trap — fixing this prevents re-injury.'],
+      d3: ['Drink 20 oz Water Now', 'Tendons and connective tissue are largely water. Dehydration slows tissue repair significantly. If you have had coffee or been active, you are likely already behind. Drink 20 oz now and aim for 8+ glasses total today.'],
+      d4: ['💊 Fish Oil / Omega-3 (2g EPA+DHA)', 'Take with lunch. EPA and DHA directly reduce the inflammatory compounds that cause joint swelling and pain. For shoulder recovery, consistent fish oil use over 6+ weeks has been shown to reduce rotator cuff pain and improve range of motion. Take with food to prevent any aftertaste.'],
+      d5: ['🥗 Lunch Nutrition Focus', 'Eat: wild salmon, sardines, walnuts, leafy greens, olive oil, berries, eggs. These foods actively reduce joint inflammation. Avoid: canola oil, soybean oil, corn oil — high in omega-6 and directly increase inflammation. Avoid sugar and white bread. Think of food as either adding to or subtracting from your healing today.'],
+      e1: ['Cross-Body Stretch + Sleeper Stretch', 'Cross-body: gently pull arm across chest, hold 30 sec each side. Sleeper stretch: lie on your healing shoulder, use your other arm to gently press your forearm toward the bed — hold 20 sec. The sleeper stretch targets posterior shoulder tightness, present in nearly all rotator cuff cases, that limits recovery if left unaddressed.'],
+      e2: ['Moist Heat — 15 Minutes', 'Moist heat (damp warm towel or heating pad with damp cloth) penetrates deeper than dry heat. Apply to shoulder 15 min before bed. Relaxes the muscle guarding that builds through the day and improves circulation to the tendon overnight when repair is most active.'],
+      e3: ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate is the most absorbable form of magnesium. It relaxes the muscles that tighten and guard the injured shoulder, reduces nighttime cramps, and most importantly improves deep sleep quality. Deep sleep is when your body releases the growth hormone that drives tissue repair. Most adults over 50 are deficient without knowing it.'],
+      e4: ['💊 Omega-3 / Fish Oil — Evening Dose Check', 'If you missed the midday fish oil, take 2g EPA+DHA now with dinner. Consistent daily omega-3 is more important than perfect timing. Reducing joint inflammation is cumulative — missing doses slows your progress. If you did take it at lunch, simply check this off and move on.'],
+      e5: ['Recovery Journal', 'Rate shoulder pain 1–10. Rate range of motion 1–10 — how high can you raise your arm? Note one movement that felt better than yesterday. Bring this journal to every PT visit. Patterns in your notes reveal what is helping or hurting faster than any test.']
+    },
+    knee: {
+      m1: ['Ankle Pumps & Quad Sets — Before Getting Up', 'While still in bed: pump both ankles up and down 20 times — pushes blood toward the knee and reduces overnight stiffness. Then tighten your quad as hard as you can, hold 5 sec, release — 10 reps. Starting these before standing prevents that first painful morning step.'],
+      m2: ['Ice Pack — 15 Minutes', 'Ice on the knee 15 min while sitting with leg slightly elevated. Morning icing is especially important because the knee tends to swell overnight from the previous day. Keeping swelling controlled is the #1 factor in how fast your range of motion returns.'],
+      m3: ['Heel Slides', 'Lying on your back, slowly slide your heel toward you, bending the knee as far as comfortable — hold 5 sec, slowly return. 10 reps. The single most prescribed early knee mobility exercise. It rebuilds range of motion without loading the joint. Pain-free range only — never push through sharp pain.'],
+      m4: ['💊 Glucosamine Sulfate (1500mg) + Chondroitin (1200mg)', 'Take together with breakfast. Glucosamine provides the raw building blocks your body uses to repair cartilage. Chondroitin helps cartilage retain water — cartilage is 65–80% water — and resists compression. Multiple large clinical trials show this combination reduces knee pain and slows cartilage breakdown. Takes 6–8 weeks of consistent daily use to show full effect. Do not stop early.'],
+      m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food. Both are fat-soluble — they absorb significantly better with a meal. A 2014 study found curcumin as effective as ibuprofen for knee osteoarthritis pain without gut damage or cartilage repair interference. Vitamin D3 is best taken in the morning: research suggests evening D3 can interfere with melatonin production and disrupt sleep. D3 supports calcium absorption for bone health, muscle strength around the joint, and immune regulation. Look for curcumin with black pepper (piperine) — increases absorption by 2000%.'],
+      d1: ['Straight Leg Raises + Short Arc Quads', 'Straight leg raise: tighten quad fully, raise leg 12 inches, hold 3 sec — 3 sets of 10. Short arc quad: roll a towel under your knee to prop it at 45 degrees, then straighten leg fully — 3 sets of 15. These rebuild quad strength — the most critical muscle for knee stability — without putting any stress on the healing joint. A strong quad reduces knee pain more than almost any other single intervention.'],
+      d2: ['Standing Balance + Anti-Inflammatory Lunch', 'Balance: hold a countertop, stand on your healing leg for 20–30 sec. This rebuilds proprioception — the joint ability to sense its own position — which is lost during injury and is a major cause of re-injury. Lunch: salmon, leafy greens, walnuts, berries, olive oil. Avoid: sugar, fried foods, nightshade vegetables (tomatoes, peppers, eggplant, potatoes) — many knee patients notice nightshades significantly increase their swelling.'],
+      d3: ['Drink 20 oz Water Now', 'Knee cartilage has no blood supply — it gets ALL of its nutrients through movement and hydration. When you move and compress cartilage, it absorbs nutrients from joint fluid like a sponge. That joint fluid is almost entirely water. Staying hydrated is not optional for knee recovery — it is how the cartilage feeds itself.'],
+      d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids directly reduce the inflammatory compounds that cause knee swelling and pain. Research shows consistent use over 6+ weeks measurably reduces joint stiffness and pain scores. Also supports cardiovascular health, which keeps blood flowing to your healing tissues. Take with food.'],
+      d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen powder into a midday drink or smoothie, with Vitamin C. Collagen is the structural matrix of cartilage, tendons, and ligaments — all involved in knee recovery. Vitamin C is the essential co-factor your body needs to synthesize collagen. Without it, collagen peptides cannot be assembled into new tissue. Taken consistently, this combination supports cartilage repair and reduces joint pain.'],
+      e1: ['Hamstring & Calf Stretch', 'Hamstring: seated, straighten leg on a chair, lean forward until you feel a pull behind the knee — hold 30 sec each side. Calf stretch: stand at wall, back leg straight, press heel firmly into floor — hold 30 sec. Tight hamstrings and calves pull directly on the knee joint and increase pain and stiffness. Releasing them nightly is one of the most underrated parts of knee recovery.'],
+      e2: ['Ice — 15 Minutes', 'Ice the knee 15 min after the day activities. This is the single most important evening habit for knee recovery. Icing reduces the cumulative inflammation from walking, standing, and exercising throughout the day. Even on low-activity days, icing keeps baseline swelling down — which is what allows range of motion to return.'],
+      e3: ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate relaxes the muscles around the knee that tighten and guard the joint, reduces nighttime leg cramps that often accompany knee recovery, and significantly improves deep sleep quality. Your body does the majority of its tissue repair during deep sleep. Most adults over 50 are deficient.'],
+      e4: ['💊 Omega-3 / Fish Oil — Evening Dose Check', 'If you missed the midday fish oil, take 2g EPA+DHA now with dinner. Consistent daily intake matters more than perfect timing. Reducing knee inflammation is a cumulative process — missing doses slows your progress. If you already took it at lunch, check this off and note it in your journal.'],
+      e5: ['Recovery Journal', 'Rate knee pain 1–10. Rate swelling: none, mild, moderate, or significant. Note steps or stairs completed today. Note activities that made it better or worse. Tracking swelling patterns over time is the clearest signal of what is working — and it gives your PT the real picture of your day between appointments.']
+    },
+    hip: {
+      m1: ['Hip Circles', 'Holding a countertop for support, make slow circles with your hip — 10 each direction. This warms up the hip joint and increases synovial fluid circulation before you start moving through the day.'],
+      m2: ['Moist Heat — 15 Minutes', 'Apply moist heat to the hip 15 min before moving. The hip joint sits deep in the body — moist heat penetrates more effectively than dry heat and loosens the joint capsule and surrounding muscles before you load the joint with walking.'],
+      m3: ['Hip Flexor Stretch', 'In a lunge position, lower your back knee to the floor, gently press your hip forward and down until you feel a stretch at the front of the hip — hold 30 sec each side. A tight hip flexor (psoas) is the most common source of chronic hip pain and instability after replacement or injury.'],
+      m4: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Take together with breakfast. The hip joint capsule, labrum, and surrounding tendons and ligaments are all collagen-based structures. Vitamin C is required to synthesize new collagen — without it, the collagen you consume cannot be assembled into usable tissue. Morning timing is ideal because connective tissue repair is most active in the first half of the day.'],
+      m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food — both are fat-soluble and absorb best with a meal. Curcumin reduces hip joint inflammation without gut damage or interference with healing. Especially valuable for bursitis and post-replacement inflammation — consistent use over 4–6 weeks shows significant reduction in pain and swelling. Vitamin D3 is best taken in the morning: evening D3 can interfere with melatonin and disrupt sleep in some people. D3 is essential for bone density after hip replacement, muscle strength in the stabilizers, and immune regulation around the joint.'],
+      d1: ['Clamshells', 'Lie on your side with knees bent, feet together. Lift your top knee as high as comfortable without rolling your hips back — hold 2 sec, lower slowly. 3 sets of 15. Clamshells activate the gluteus medius — the hip stabilizer muscle that is almost always weak after hip injury or replacement. A weak glute medius causes the entire pelvis to tilt with every step, increasing pain and slowing recovery.'],
+      d2: ['Posture Walk + Anti-Inflammatory Lunch', 'Walk 5–10 min focusing on an even stride and upright posture. Uneven gait patterns are the biggest cause of re-injury after hip recovery — training your walk is as important as the exercises. Lunch: fatty fish, leafy greens, olive oil, avocado, berries. Avoid: processed seed oils, sugar, fried foods, and alcohol — all increase hip joint inflammation.'],
+      d3: ['Drink 20 oz Water + Protein Check', 'Drink 20 oz water now. The hip joint capsule and surrounding tissues need consistent hydration to maintain lubrication and support repair. Also check your protein intake — aim for at least 25–30g per meal. Protein is the raw material for all tissue repair. Most people over 50 are significantly under-eating protein, which directly slows recovery.'],
+      d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids reduce the inflammatory cytokines that cause hip joint swelling, pain, and stiffness. For bursitis and post-surgical inflammation, fish oil is one of the most effective natural interventions available. Consistent use over 6+ weeks shows measurable reduction in joint pain and improved range of motion.'],
+      d5: ['🥗 Nutrition Reminder', 'Eat to heal: salmon, sardines, walnuts, spinach, kale, olive oil, eggs, berries, sweet potato. Avoid: vegetable oils (canola, soybean, corn), sugar, alcohol, ultra-processed foods. Every meal is either increasing or decreasing the inflammation in your hip. Make it count.'],
+      e1: ['Piriformis Stretch', 'Lie on your back. Cross your healing leg so the ankle rests on the opposite knee in a figure-4 shape. Gently press the top knee away from you, or pull the bottom leg toward your chest, until you feel a deep stretch in the hip and glute — hold 30 sec each side. The piriformis muscle directly overlies the sciatic nerve and the hip joint. Releasing it nightly is one of the highest-value stretches in hip recovery.'],
+      e2: ['Ice or Heat — 15 Minutes', 'Ice if swollen or after active exercise. Heat if stiff without significant swelling. 15 min on the hip. As a general rule: ice after activity, heat before movement. Evening icing after a full day on your feet controls the cumulative inflammation that builds up and limits your progress.'],
+      e3: ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate relaxes the deep muscles that surround and guard the hip joint, reduces the hip and leg cramps that often accompany hip recovery, and improves deep sleep quality — when the majority of tissue repair occurs. Most adults over 50 are magnesium deficient, and the hip muscles are among the first to show it.'],
+      e4: ['💊 Omega-3 / Fish Oil — Evening Dose Check', 'If you missed the midday fish oil, take 2–3g EPA+DHA now with dinner. Hip recovery depends on consistent inflammation control — omega-3s are most effective when taken daily without gaps. If you took it at lunch, simply check this off.'],
+      e5: ['Recovery Journal', 'Rate hip pain 1–10. Rate mobility 1–10 — how far can you walk or move without discomfort? Note one thing that felt better today. Note any activity that caused a flare. Identifying your personal patterns is the fastest way to optimize your recovery and give your care team the real information they need.']
+    },
+    back: {
+      m1: ['Cat-Cow + Pelvic Tilts — Before Standing', 'Before getting out of bed: pelvic tilt — flatten your lower back into the mattress, hold 5 sec, release — 10 reps. Then get to hands and knees: arch and round your back slowly — 10 full cycles. Never force. A stiff back that gets moving gently heals faster than one that stays still. These two moves prepare your spine for the load of standing.'],
+      m2: ['Moist Heat — 15 Minutes', 'Moist heat on lower back 15–20 min before getting moving. The paraspinal muscles contract overnight and are most guarded in the morning. Moist heat penetrates deeper than dry heat and releases this tension before you start loading the spine with movement and activity.'],
+      m3: ['Knee-to-Chest + Piriformis Stretch', 'Knee to chest: lying on back, pull one knee gently to chest, hold 30 sec, switch sides. Piriformis (figure-4): cross one ankle over the opposite knee, gently press the top knee away, hold 30 sec each side. A tight piriformis compresses the sciatic nerve and is one of the most overlooked causes of lower back and leg pain. Releasing it every morning is essential.'],
+      m4: ['💊 Magnesium Glycinate (300–400mg)', 'Take with breakfast. The lower back muscles — the paraspinals, quadratus lumborum, and psoas — are among the first muscles to seize and spasm when magnesium is low. Most adults over 50 are deficient. Magnesium glycinate relaxes these muscles, reduces pain sensitivity in the nervous system, and supports the energy production needed for tissue repair. Morning dosing helps with daytime muscle relaxation.'],
+      m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and a fat-containing food (eggs, avocado, olive oil). Curcumin blocks spinal inflammation and nerve irritation — add black pepper (piperine) for 2000% better absorption. Vitamin D3 is best taken in the morning with food: research suggests evening D3 can interfere with melatonin production and disrupt sleep in some people. D3 deficiency is directly linked to chronic lower back pain, disc degeneration, and slow healing. Morning is the ideal time for both.'],
+      d1: ['Bird Dog + Glute Bridges', 'Bird dog: on hands and knees, slowly extend opposite arm and leg — hold 5 sec, 10 reps each side. This builds the deep spinal stabilizers (multifidus, transverse abdominis) that protect your spine with every movement. Glute bridge: lying on back, feet flat, lift hips off floor — hold 3 sec, 10 reps. Weak glutes force the lower back to compensate and are a primary driver of chronic back pain. These are the two most important back exercises you can do.'],
+      d2: ['Posture Reset + Anti-Inflammatory Lunch', 'Posture wall reset: stand with back against wall, heels 2 inches out, flatten lower back against the wall — hold 30 sec. Do this 3 times today. Prolonged sitting compresses spinal discs and weakens the muscles that hold you upright — this resets both. Lunch: leafy greens, fatty fish, olive oil, avocado, berries. Avoid: sugar, alcohol, white bread, processed food — all directly increase spinal inflammation and slow disc repair.'],
+      d3: ['Drink 20+ oz Water — Disc Health', 'Spinal discs are 80% water. When you are dehydrated, the discs compress more under load, which means more pain and slower healing. This is not optional — your discs literally feed themselves through hydration and movement. Drink 20+ oz now and aim for 8–10 glasses throughout the day. This is one of the lowest-effort, highest-impact things you can do for back recovery.'],
+      d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3s reduce the inflammatory compounds that irritate spinal nerves, compress discs, and cause the radiating pain of sciatica. Research shows consistent fish oil use reduces both disc inflammation and nerve pain. Also supports cardiovascular health, which keeps blood flowing to the muscles and structures supporting your spine. Take with food.'],
+      d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen into a midday drink with Vitamin C. Spinal discs, ligaments, and the connective tissue supporting the spine are all largely collagen. Vitamin C is the essential co-factor required to synthesize new collagen — without it, collagen peptides cannot be assembled into usable tissue. Consistent daily use supports disc repair and spinal ligament integrity. Important: avoid NSAIDs (ibuprofen, naproxen) long term — they block the prostaglandins your body needs for disc repair.'],
+      e1: ["Child's Pose + Supine Twist", "Child's pose: arms extended forward, forehead on floor or pillow — hold 60 sec, breathe deeply into your back. Feel your lower back expand with each inhale. Supine twist: lying on back, drop both knees together to one side — hold 30 sec, switch. These two moves decompress the spine after a full day of compression from sitting, standing, and gravity. Do them every single evening."],
+      e2: ['Moist Heat — 15 Minutes Before Bed', 'Moist heat on lower back 15–20 min before sleeping. This relaxes the paraspinal muscles that tighten all day and improves circulation to the discs overnight when repair is most active. Do not fall asleep with a heating pad — 15 min is enough. Also: avoid screens for 30 min before bed — blue light suppresses melatonin, which coordinates the overnight repair cycle.'],
+      e3: ['💊 Magnesium Glycinate (300–400mg) — Before Bed', 'Take 30–60 min before sleep. Evening magnesium glycinate is one of the most impactful things you can do for back recovery. It relaxes the deep back muscles that stay contracted even during rest, reduces nighttime muscle spasms that disrupt sleep, and dramatically improves deep sleep quality — when your body does its most intensive tissue repair. If you took a morning dose, this evening dose is still recommended and safe.'],
+      e4: ['💊 Omega-3 / Fish Oil (if not taken at lunch)', 'If you missed the midday dose, take 2g EPA+DHA now with dinner. Consistent daily omega-3 is more important than timing. Reducing spinal inflammation is a cumulative process — missing doses slows your progress. If you did take it at lunch, skip this and just note it in your journal.'],
+      e5: ['Recovery Journal', 'Rate pain 1–10. Rate stiffness 1–10. What position made it worse today? What helped? What time of day was the pain highest? Identifying your personal triggers — specific chairs, activities, sleeping positions — is how you break the cycle of chronic back pain. These patterns are invisible without tracking. Bring this journal to every appointment.']
+    },
+    surgery: {
+      m1: ['Gentle Range of Motion', 'Slow, easy movements in your surgical area — follow PT instructions'],
+      m2: ['Ice Pack', 'Ice on surgical site 15 min to manage swelling'],
+      m3: ['Breathing Exercises', 'Deep belly breaths — 5 slow breaths to support circulation and healing'],
+      d1: ['PT Prescribed Exercises', 'Complete your prescribed exercises — controlled and pain-free only'],
+      d2: ['Walk Break', 'Short 5-10 min walk — movement promotes healing and prevents stiffness'],
+      d3: ['Nutrition & Meds', 'Take medications on schedule. Eat protein to support tissue repair.'],
+      e1: ['Evening Stretch', 'Gentle stretches recommended by your PT — hold each 30 sec'],
+      e2: ['Final Ice', 'Ice on surgical site 15 min before bed'],
+      e3: ['Recovery Journal', 'Rate pain and swelling 1–10. Note any concerns for your next PT visit.']
+    }
+  };
+
+  let userName = 'friend';
+  let selectedInjury = '';
+  let codeValid = false;
+  let timerInterval = null;
+  let timerSeconds = 0;
+  let timerRunning = false;
+  let totalTasks = 15;
+  let doneTasks = 0;
+
+  function showTab(tab) {
+    document.querySelectorAll('.gate-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='access')||(i===1&&tab==='returning')));
+    document.getElementById('tab-access').style.display = tab==='access' ? 'flex' : 'none';
+    document.getElementById('tab-returning').style.display = tab==='returning' ? 'flex' : 'none';
+  }
+
+  function checkCode() {
+    const code = document.getElementById('g-code').value.trim().toUpperCase();
+    const msg = document.getElementById('code-msg');
+    if (BETA_CODES.includes(code)) {
+      msg.textContent = '✓ Beta access code accepted!';
+      msg.className = 'code-msg valid';
+      codeValid = true;
+    } else {
+      msg.textContent = '✗ Code not recognized. Try again.';
+      msg.className = 'code-msg invalid';
+      codeValid = false;
+    }
+  }
+
+  function submitGate() {
+    const name = document.getElementById('g-name').value.trim();
+    const email = document.getElementById('g-email').value.trim();
+    const injury = document.getElementById('g-injury').value;
+    const code = document.getElementById('g-code').value.trim().toUpperCase();
+    if (!name) { alert('Please enter your first name.'); return; }
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (!BETA_CODES.includes(code)) { alert('Please enter a valid beta access code.'); return; }
+    userName = name;
+    selectedInjury = injury;
+    if (injury) { launchApp(); } else { showScreen('injury-select'); }
+  }
+
+  function returningAccess() {
+    const name = document.getElementById('r-name').value.trim();
+    const code = document.getElementById('r-code').value.trim().toUpperCase();
+    if (!name) { alert('Please enter your name.'); return; }
+    if (!BETA_CODES.includes(code)) { alert('Access code not recognized.'); return; }
+    userName = name;
+    if (selectedInjury) { launchApp(); } else { showScreen('injury-select'); }
+  }
+
+  function selectInjury(injury, el) {
+    selectedInjury = injury;
+    document.querySelectorAll('.injury-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('injury-btn').disabled = false;
+  }
+
+  function goToApp() { launchApp(); }
+
+  function launchApp() {
+    const p = PROTOCOLS[selectedInjury] || PROTOCOLS['surgery'];
+    ['m1','m2','m3','m4','m5','d1','d2','d3','d4','d5','e1','e2','e3','e4','e5'].forEach(k => {
+      const n = document.getElementById(k+'-name');
+      const d = document.getElementById(k+'-desc');
+      if(n && p[k]) { n.textContent = p[k][0]; d.textContent = p[k][1]; }
+    });
+    document.getElementById('app-name').textContent = userName;
+    document.getElementById('about-btn').style.display = 'flex';
+    document.getElementById('enc-name').textContent = userName;
+    document.getElementById('daily-quote').textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+    updateGreeting();
+    showScreen('app');
+  }
+
+  function updateGreeting() {
+    const h = new Date().getHours();
+    const g = h < 12 ? 'Good morning,' : h < 17 ? 'Good afternoon,' : 'Good evening,';
+    document.querySelector('.greeting').textContent = g;
+  }
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function toggleSection(id) {
+    const items = document.getElementById(id+'-items');
+    const arrow = document.getElementById(id+'-arrow');
+    items.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  function toggleTask(el) {
+    if (el.tagName === 'BUTTON') return;
+    const wasDone = el.classList.contains('done');
+    el.classList.toggle('done');
+    doneTasks = wasDone ? doneTasks - 1 : doneTasks + 1;
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.round((doneTasks / totalTasks) * 100);
+    document.getElementById('pct-text').textContent = pct + '%';
+    document.getElementById('done-text').textContent = doneTasks + ' of ' + totalTasks;
+    const circumference = 314;
+    const offset = circumference - (circumference * pct / 100);
+    document.getElementById('progress-ring').style.strokeDashoffset = offset;
+    ['morning','midday','evening'].forEach(s => {
+      const items = document.getElementById(s+'-items');
+      const done = items.querySelectorAll('.task-item.done').length;
+      const total = items.querySelectorAll('.task-item').length;
+      document.getElementById(s+'-prog').textContent = done + ' / ' + total;
+    });
+    if (pct === 100) {
+      setTimeout(() => {
+        document.getElementById('daily-quote').textContent = '🎉 Amazing! You completed today\'s full protocol. Your healing momentum is building!';
+      }, 300);
+    }
+  }
+
+  let timerDuration = 0;
+  let timerLabel = '';
+
+  function openTimer(e, label, seconds) {
+    e.stopPropagation();
+    timerLabel = label;
+    timerDuration = seconds;
+    timerSeconds = seconds;
+    timerRunning = false;
+    clearInterval(timerInterval);
+    document.getElementById('timer-title').textContent = label;
+    document.getElementById('timer-sub').textContent = formatTime(seconds) + ' — tap Start when ready';
+    document.getElementById('timer-display').textContent = formatTime(seconds);
+    document.getElementById('timer-start-btn').textContent = 'Start';
+    document.getElementById('timer-modal').classList.add('active');
+  }
+
+  function toggleTimer() {
+    if (timerRunning) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('timer-start-btn').textContent = 'Resume';
+    } else {
+      timerRunning = true;
+      document.getElementById('timer-start-btn').textContent = 'Pause';
+      timerInterval = setInterval(() => {
+        timerSeconds--;
+        document.getElementById('timer-display').textContent = formatTime(timerSeconds);
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          document.getElementById('timer-display').textContent = '✓ Done!';
+          document.getElementById('timer-start-btn').textContent = 'Done';
+          try {
+            const ctx = new AudioContext();
+            const tones = [523, 659, 784, 1047];
+            tones.forEach((freq, i) => {
+              const o = ctx.createOscillator();
+              const g = ctx.createGain();
+              o.connect(g); g.connect(ctx.destination);
+              o.frequency.value = freq;
+              o.type = 'sine';
+              const t = ctx.currentTime + i * 0.18;
+              g.gain.setValueAtTime(0, t);
+              g.gain.linearRampToValueAtTime(0.8, t + 0.05);
+              g.gain.exponentialRampToValueAtTime(0.001, t + 1.8);
+              o.start(t); o.stop(t + 1.8);
+            });
+          } catch(e){}
+        }
+      }, 1000);
+    }
+  }
+
+  function closeTimer() {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-modal').classList.remove('active');
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+</script>
+</body>
+</html>
