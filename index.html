@@ -257,20 +257,20 @@
     align-items: center; justify-content: center; padding: 2rem 1.5rem;
   }
   .disclaimer-card {
-    background: var(--white); border-radius: 24px; padding: 1.5rem 1.2rem;
+    background: var(--white); border-radius: 24px; padding: 1rem 1.2rem;
     width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    max-height: 92vh; display: flex; flex-direction: column;
+    max-height: 96vh; display: flex; flex-direction: column;
   }
-  .disclaimer-header { text-align: center; margin-bottom: 1.2rem; }
-  .disclaimer-header .d-icon { font-size: 3.5rem; margin-bottom: 0.6rem; }
-  .disclaimer-header h2 { font-size: 2rem; font-weight: 800; color: var(--navy); }
-  .disclaimer-header p { font-size: 1.1rem; color: var(--text-mid); margin-top: 0.4rem; font-weight: 500; }
+  .disclaimer-header { text-align: center; margin-bottom: 0.6rem; }
+  .disclaimer-header .d-icon { font-size: 3rem; margin-bottom: 0.2rem; display: block; }
+  .disclaimer-header h2 { font-size: 2rem; font-weight: 800; color: var(--navy); margin-top: 0; }
+  .disclaimer-header p { font-size: 1.1rem; color: var(--text-mid); margin-top: 0.2rem; font-weight: 500; }
   .disclaimer-scroll {
     flex: 1; overflow-y: auto;
-    border: 6px solid #2d7a4f;
+    border: 3px solid #2d7a4f;
     border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem;
     font-size: 1rem; line-height: 1.7; color: #1a2e4a;
-    max-height: 340px;
+    max-height: 45vh;
     background: #eaf7ef;
   }
   .disclaimer-scroll h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 0.8rem 0 0.3rem; }
@@ -286,7 +286,14 @@
     width: 100%; padding: 1rem; background: var(--border); border: none;
     border-radius: 12px; color: var(--text-light); font-size: 1.15rem; font-weight: 600;
     cursor: not-allowed; font-family: 'Source Sans 3', sans-serif; transition: all 0.3s;
-    opacity: 0.5;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .disclaimer-btn.enabled {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    background: #c9923a !important;
+    color: #ffffff !important;
   }
   .disclaimer-btn.enabled { background: var(--gold); color: var(--white); cursor: pointer; }
   .disclaimer-btn.enabled:hover { background: var(--gold-light); }
