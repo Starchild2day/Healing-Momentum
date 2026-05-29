@@ -164,7 +164,7 @@
   .ring-fill { fill: none; stroke: var(--gold); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
   .ring-center {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center;
+    text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
   .ring-pct { font-size: 1.8rem; font-weight: 600; color: var(--white); }
   .ring-done { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
@@ -394,15 +394,15 @@
   body.dark .timer-display { color: #e8b86d !important; }
 
   .dark-toggle {
-    position: fixed; top: 1rem; right: 1rem; z-index: 200;
-    width: 44px; height: 44px; border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
-    background: rgba(0,0,0,0.3); backdrop-filter: blur(10px);
-    font-size: 1.3rem; cursor: pointer; display: flex;
+    position: fixed; top: 1rem; right: 1rem; z-index: 9999;
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    background: #1a4028;
+    font-size: 1.4rem; cursor: pointer; display: flex;
     align-items: center; justify-content: center;
-    transition: all 0.3s; box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    transition: all 0.3s; box-shadow: 0 2px 16px rgba(0,0,0,0.4);
   }
-  .dark-toggle:hover { transform: scale(1.1); }
+  .dark-toggle:hover { transform: scale(1.1); background: #245534; }
 
 
   #disclaimer {
@@ -537,7 +537,7 @@
       <p>Your Daily Get Better Guide</p>
     </div>
     <div class="gate-tabs">
-      <button class="gate-tab active" onclick="showTab('access')">Free Beta Access</button>
+      <button class="gate-tab active" onclick="showTab('access'); applyFreeCode()">Free Beta Access</button>
       <button class="gate-tab" onclick="showTab('returning')">I Have a Code</button>
     </div>
     <div id="tab-access" class="gate-form">
@@ -941,8 +941,8 @@
     }
   }
 
-  // ── AUTO LOGIN ────────────────────────────────────────────────────────
-  (function checkSession() {
+  // ── AUTO LOGIN — runs after DOM ready ────────────────────────────────
+  function checkSession() {
     try {
       const saved = localStorage.getItem('hm_user');
       if (saved) {
@@ -955,7 +955,7 @@
         }
       }
     } catch(e) {}
-  })();
+  }
 
   const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50'];
 
@@ -1250,6 +1250,22 @@
     const sec = s % 60;
     return m + ':' + (sec < 10 ? '0' : '') + sec;
   }
+
+  // ── ADD FREE CODE HELPER ───────────────────────────────────────────────
+  function applyFreeCode() {
+    const codeField = document.getElementById('g-code');
+    if (codeField && !codeField.value) {
+      codeField.value = 'HEALFREE';
+      const msg = document.getElementById('code-msg');
+      if (msg) { msg.textContent = '✓ Free beta access applied!'; msg.className = 'code-msg valid'; }
+    }
+  }
+
+  // ── RUN SESSION CHECK AFTER PAGE LOADS ────────────────────────────────
+  window.addEventListener('load', function() {
+    checkSession();
+  });
+
 </script>
 </body>
 </html>
