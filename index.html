@@ -158,8 +158,8 @@
   .progress-ring-wrap {
     display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem;
   }
-  .ring-container { position: relative; width: 120px; height: 120px; }
-  .ring-svg { transform: rotate(-90deg); }
+  .ring-container { position: relative; width: 200px; height: 200px; }
+  .ring-svg { transform: rotate(-90deg); width: 200px; height: 200px; }
   .ring-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 10; }
   .ring-fill { fill: none; stroke: var(--gold); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
   .ring-center {
@@ -340,8 +340,8 @@
   .header-name { font-size: 2rem !important; font-weight: 700 !important; }
   .greeting { font-size: 1.1rem !important; }
   .section-title { font-size: 1.2rem !important; font-weight: 700 !important; }
-  .ring-container { width: 160px !important; height: 160px !important; }
-  .ring-svg { width: 160px !important; height: 160px !important; }
+  .ring-container { width: 200px !important; height: 200px !important; }
+  .ring-svg { width: 200px !important; height: 200px !important; }
   .ring-bg { cx: 80 !important; cy: 80 !important; r: 66 !important; }
   .ring-fill { cx: 80 !important; cy: 80 !important; r: 66 !important; }
   .ring-pct { font-size: 2rem !important; font-weight: 800 !important; }
@@ -493,7 +493,7 @@
 <div id="disclaimer" class="screen active">
   <div class="disclaimer-card">
     <div class="disclaimer-header">
-      <div class="d-icon">⚠️</div>
+      <div class="d-icon">💗</div>
       <h2>Before You Begin</h2>
       <p>Please read and agree to continue</p>
     </div>
@@ -616,10 +616,10 @@
     </div>
     <div class="progress-ring-wrap">
       <div class="ring-container">
-        <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
-          <circle class="ring-bg" cx="60" cy="60" r="50"/>
-          <circle class="ring-fill" id="progress-ring" cx="60" cy="60" r="50"
-            stroke-dasharray="314" stroke-dashoffset="314"/>
+        <svg class="ring-svg" width="200" height="200" viewBox="0 0 200 200">
+          <circle class="ring-bg" cx="100" cy="100" r="84"/>
+          <circle class="ring-fill" id="progress-ring" cx="100" cy="100" r="84"
+            stroke-dasharray="528" stroke-dashoffset="528"/>
         </svg>
         <div class="ring-center">
           <div class="ring-pct" id="pct-text">0%</div>
@@ -1166,7 +1166,7 @@
     const pct = Math.round((doneTasks / totalTasks) * 100);
     document.getElementById('pct-text').textContent = pct + '%';
     document.getElementById('done-text').textContent = doneTasks + ' of ' + totalTasks;
-    const circumference = 314;
+    const circumference = 528;
     const offset = circumference - (circumference * pct / 100);
     const ring = document.getElementById('progress-ring');
     ring.style.strokeDashoffset = offset;
