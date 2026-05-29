@@ -489,6 +489,64 @@
   .modal-btn.primary { background: #c9923a; color: #ffffff; }
   .modal-btn.secondary { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); }
 
+
+  /* CELEBRATION ANIMATIONS */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    25% { transform: translateY(-8px); }
+    50% { transform: translateY(-4px); }
+    75% { transform: translateY(-6px); }
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+  @keyframes glow {
+    0%,100% { box-shadow: 0 0 0 0 rgba(201,146,58,0); }
+    50% { box-shadow: 0 0 20px 6px rgba(201,146,58,0.4); }
+  }
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(-10px) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(60px) rotate(360deg); }
+  }
+  @keyframes starBurst {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    60% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0.8) rotate(360deg); }
+  }
+  @keyframes slideLeft {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeZoom {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .celebrate-confetti {
+    position: absolute; top: 0; left: 0; right: 0; height: 100%;
+    pointer-events: none; overflow: hidden;
+  }
+  .confetti-piece {
+    position: absolute; width: 8px; height: 8px; border-radius: 2px;
+    animation: confettiFall 1.2s ease-out forwards;
+  }
+  .star-piece {
+    position: absolute; font-size: 1.2rem;
+    animation: starBurst 1s ease-out forwards;
+  }
+  .badge-content { position: relative; }
+
 </style>
 </head>
 <body>
@@ -979,6 +1037,111 @@
     } catch(e) {}
   }
 
+
+  // ── CELEBRATION SYSTEM ────────────────────────────────────────────────
+  const morningMsgs = [('🌅 Look at you. Not even lunchtime and you already won something today.', "Your body noticed. It just can't talk yet."), ('🌅 Morning protocol: done. Coffee: optional. Healing: underway.', 'You showed up for yourself before most people showed up at all.'), ("🌅 Three sections checked. Zero excuses made. That's a good morning.", 'The version of you from six weeks from now is already grateful.'), ('🌅 You did the hard part. The easy part is just letting your body do its job now.', "And your body? It's been waiting for exactly this."), ("🌅 Morning complete. Your shoulder didn't want to cooperate at first either. Now look.", 'Consistency is just showing up enough times that it stops being hard.'), ("🌅 That's morning in the books. Nobody's grading you. But if they were — A.", 'Carry that into your day. You earned it.'), ('🌅 Done before breakfast gets cold. Respect.', "Your healing doesn't take days off. Good thing you don't either."), ('🌅 Morning section: finished. Inflammation: increasingly nervous.', 'You are literally changing your body at the cellular level right now. Wild.'), ('🌅 Some people hit snooze. You hit every checkbox. Different energy entirely.', 'That difference compounds. Every single day.'), ('🌅 Your future self just fist-bumped your current self through time.', "Keep going. They're counting on you."), ("🌅 Morning done. The sun came up, you showed up. That's the whole formula.", 'Simple. Not easy. But you did it.'), ('🌅 Three for three this morning. Your joints are quietly cheering.', "They express love through reduced inflammation. It's their love language."), ("🌅 You know what's better than morning coffee? Morning momentum.", "One section down. Two to go. You've already proven you can do this."), ("🌅 That's a morning well spent. Your body got what it needed.", "Now go do the rest of your day knowing you've already won something."), ('🌅 Check, check, check. Morning protocol complete.', 'The path to full recovery is paved with exactly these moments.'), ('🌅 Not bad for someone who was horizontal twenty minutes ago.', "Your healing doesn't care what time you started. Just that you did."), ("🌅 Morning: handled. That's how comebacks start.", 'Not with one dramatic moment — with a hundred quiet ones like this.'), ('🌅 All morning tasks done. Your body is already saying thank you.', 'It just says it in the language of less pain and more range of motion.'), ("🌅 Morning section complete. You didn't skip a single one.", 'That matters more than you know. Seriously.'), ('🌅 Look at that. Every morning item checked off before the day even gets started.', 'You are building something here. One checkbox at a time.'), ('🌅 Morning done. You chose healing over skipping. Again.', 'That choice is who you are becoming. Keep going.')];
+  const middayMsgs = [('☀️ Midday done. Most people quit before lunch.', 'You are not most people. One section left and tonight you sleep like someone who earned it.'), ('☀️ Halfway through the day. Halfway through your protocol. Fully committed.', 'The afternoon version of you is already proud of the morning version. Keep it going.'), ('☀️ Midday complete. Your inflammation just had a very bad day.', "That's exactly the kind of bad day we want it to have."), ("☀️ Two sections down. One to go. You're in the home stretch.", "Evening is the easiest one to skip. It's also the one that locks in everything you did today."), ('☀️ Midday checked off. Your body is in full repair mode right now.', "It's doing its job. You're doing yours. Great partnership."), ("☀️ That's the midday section in the books. Well done.", "The people who heal fastest aren't the youngest or the healthiest. They're the most consistent. That's you."), ('☀️ Midday: complete. The second section is always the hardest to remember.', "You remembered. That's not nothing."), ("☀️ Full midday protocol done. Your joints are having the best Tuesday they've had in months.", 'Or Wednesday. Or whenever. You know what we mean.'), ('☀️ Nice work getting through the midday section.', "The hardest part of recovery isn't the exercises. It's remembering to do them. You're solving that problem."), ("☀️ Midday done. Three sections in the day, and you're two for two.", "Finish strong tonight and you'll have a perfect day on the books. Those add up."), ('☀️ Section two: handled. Your healing momentum is building.', 'Momentum is a real thing. You can feel it starting to take over.'), ('☀️ Midday complete. The afternoon is yours.', "Just don't forget about evening. Your future self will thank you. Repeatedly."), ("☀️ Two down. One to go. You're basically at the finish line.", "Basically. Don't stop now."), ('☀️ Midday protocol: done. You showed up in the middle of a busy day.', "That's actually the hardest one to do. And you did it."), ('☀️ Lunchtime win secured. Afternoon: open for business.', 'Come back tonight. The evening section is short and the payoff is long.'), ('☀️ Midday done. Your consistency is quietly doing something remarkable.', 'Tissue repairs itself in small increments. So does confidence. Both are happening right now.'), ("☀️ Section two complete. You're on a roll.", "Rolls are hard to stop once they get going. That's the whole idea."), ('☀️ Midday: checked. Your body is working overtime to heal right now.', 'You just gave it everything it needed to keep going.'), ("☀️ Two sections done. Still going. That's the story of your recovery right there.", 'Show up. Do the thing. Show up again.'), ("☀️ Midday protocol complete. You didn't give up after morning.", "A lot of people do. You're not a lot of people."), ('☀️ Midday done. Halfway there with full momentum.', "The finish line is one evening section away. You've got this.")];
+  const eveningMsgs = [("🌙 That's a full day. Every single item.", "You showed up three times today. That's three times your body got exactly what it needed. Same time tomorrow?"), ('🌙 Full protocol complete. You did every single thing on the list.', 'On days like this your body repairs faster, sleeps deeper, and wakes up closer to whole. You earned all of that.'), ('🌙 Three sections. Fifteen items. Zero skipped.', "Most people are hoping to get better. You're doing the work to make it happen. Different category entirely."), ('🌙 Complete day. Full protocol. Nothing left on the table.', "Tomorrow morning you'll wake up and it'll be a little easier to move. That's not an accident. That's today."), ('🌙 Evening done. That means the whole day is done.', "Write that down in your journal. A perfect day. They don't come around as often as we'd like. This one counts."), ('🌙 You finished the whole thing today. All of it.', 'Your body is about to do the most intensive repair work of the entire day while you sleep. You gave it everything it needs. Sleep well.'), ('🌙 Full day complete. Morning, midday, evening — all of it.', "The people who fully recover from injuries like yours aren't special. They're just consistent. Welcome to the club."), ("🌙 That's the whole protocol. Done.", 'Somewhere between the first checkbox and this one, today became a win. You might not feel it yet. Your body does.'), ('🌙 All fifteen items checked. Every section complete.', "Recovery is not one big moment. It's fifteen small ones, repeated daily, until one day you realize you're not in pain anymore. You're building that day right now."), ('🌙 Full day. Full protocol. Full commitment.', 'That last one is the rarest ingredient. And you brought it today.'), ('🌙 Evening complete. Day complete. You complete.', 'Get some sleep. Your healing crew works the night shift.'), ('🌙 Three sections. Done, done, and done.', "You know what's wild? You're going to wake up tomorrow and do it again. And it's going to be slightly easier. That's how this works."), ('🌙 Full protocol in the books.', "Every time you finish a full day you're sending your body a message: I'm not giving up on you. Your body heard it. It's responding."), ("🌙 That's it. That's the whole day.", "No heroics. No shortcuts. Just the work, done right. That's the whole secret."), ('🌙 All done. Every item. No excuses, no skipping.', "There's a version of you that's fully healed and back to everything you love doing. Today was a step toward that person."), ('🌙 Evening protocol complete. Full day in the books.', "Your future self is doing something right now that your current self can't do yet. You're making that possible. One day at a time."), ("🌙 That's a perfect day on the recovery calendar.", 'Not because everything went right. Because you did the work anyway.'), ('🌙 Three for three. Morning, midday, evening — all complete.', "That consistency is worth more than any single supplement or exercise. It's the whole game."), ("🌙 Full protocol done. Your healing momentum is real and it's building.", "Go to sleep knowing you did everything right today. That's a good feeling. You earned it."), ('🌙 All fifteen done. Every single one.', 'The path from where you started to full recovery is made of days exactly like this one. Keep walking.'), ('🌙 Complete. All of it. Tonight you sleep like someone who took care of themselves.', 'Because you did. Tomorrow, same time, same place. Your body will be ready.')];
+
+  // Morning animations
+  const morningAnims = ['slideUp', 'bounce', 'pulse', 'fadeZoom', 'slideLeft', 'shake', 'bounce'];
+  // Midday animations
+  const middayAnims = ['slideLeft', 'fadeZoom', 'pulse', 'bounce', 'slideUp', 'glow', 'slideLeft'];
+  // Evening animations — more dramatic
+  const eveningAnims = ['bounce', 'glow', 'pulse', 'bounce', 'fadeZoom', 'shake', 'bounce'];
+
+  // Evening confetti types
+  const confettiSets = [
+    ['#c9923a','#4a9e5c','#ffffff','#e8b86d','#1a4028'],
+    ['#e8b86d','#4a9e5c','#c9923a','#ffffff','#2d7a4f'],
+    ['#ffffff','#c9923a','#4a9e5c','#e8b86d','#1a4028'],
+  ];
+  const emojiSets = [
+    ['⭐','✨','🌟','💫','⚡'],
+    ['🎉','🎊','✨','🌟','💥'],
+    ['💛','💚','✨','⭐','🎊'],
+  ];
+
+  function getDayIndex(total) {
+    const day = Math.floor(Date.now() / 86400000);
+    return day % total;
+  }
+
+  function launchConfetti(container, confettiColors, emojis) {
+    for (let i = 0; i < 12; i++) {
+      const el = document.createElement('div');
+      el.className = i < 6 ? 'confetti-piece' : 'star-piece';
+      if (i < 6) {
+        el.style.background = confettiColors[i % confettiColors.length];
+        el.style.left = (10 + Math.random() * 80) + '%';
+        el.style.animationDelay = (Math.random() * 0.4) + 's';
+        el.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+      } else {
+        el.textContent = emojis[(i-6) % emojis.length];
+        el.style.left = (5 + Math.random() * 90) + '%';
+        el.style.top = (Math.random() * 30) + '%';
+        el.style.animationDelay = (Math.random() * 0.3) + 's';
+      }
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 2000);
+    }
+  }
+
+  function showCelebration(section) {
+    const badge = document.getElementById(section + '-done-badge');
+    if (!badge || badge.style.display !== 'none') return;
+
+    const dayIdx = getDayIndex(21);
+    const animIdx = getDayIndex(7);
+    let msgs, anims, colors, emojis;
+
+    if (section === 'morning') {
+      msgs = morningMsgs; anims = morningAnims;
+    } else if (section === 'midday') {
+      msgs = middayMsgs; anims = middayAnims;
+    } else {
+      msgs = eveningMsgs; anims = eveningAnims;
+      colors = confettiSets[animIdx % confettiSets.length];
+      emojis = emojiSets[animIdx % emojiSets.length];
+    }
+
+    const [title, subtitle] = msgs[dayIdx];
+    const anim = anims[animIdx];
+
+    badge.innerHTML = '<div class="badge-content"><div class="celebrate-confetti" id="' + section + '-confetti"></div><div style="font-size:1.2rem;margin-bottom:6px;">' + title + '</div><div style="font-size:0.88rem;opacity:0.92;">' + subtitle + '</div></div>';
+    badge.style.display = 'block';
+    badge.style.animation = anim + ' 0.6s ease-out';
+
+    if (section === 'evening') {
+      setTimeout(() => {
+        const c = document.getElementById('evening-confetti');
+        if (c) launchConfetti(c, colors, emojis);
+      }, 300);
+    } else if (section === 'midday') {
+      setTimeout(() => {
+        const c = document.getElementById('midday-confetti');
+        if (c) launchConfetti(c, ['#c9923a','#e8b86d','#ffffff'], ['⭐','✨','☀️']);
+      }, 200);
+    }
+
+    // Auto-open next section
+    if (section === 'morning') {
+      const next = document.getElementById('midday-items');
+      const arrow = document.getElementById('midday-arrow');
+      if (next && !next.classList.contains('open')) {
+        next.classList.add('open');
+        if (arrow) arrow.classList.add('open');
+      }
+    } else if (section === 'midday') {
+      const next = document.getElementById('evening-items');
+      const arrow = document.getElementById('evening-arrow');
+      if (next && !next.classList.contains('open')) {
+        next.classList.add('open');
+        if (arrow) arrow.classList.add('open');
+      }
+    }
+  }
+
   const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50'];
 
   const QUOTES = [
@@ -1201,8 +1364,12 @@
       const done = items.querySelectorAll('.task-item.done').length;
       const total = items.querySelectorAll('.task-item').length;
       document.getElementById(s+'-prog').textContent = done + ' / ' + total;
-      const badge = document.getElementById(s+'-done-badge');
-      if (badge) badge.style.display = done === total ? 'block' : 'none';
+      if (done === total) {
+        showCelebration(s);
+      } else {
+        const badge = document.getElementById(s+'-done-badge');
+        if (badge) badge.style.display = 'none';
+      }
     });
 
     // ── 100% celebration ───────────────────────────────────────────────
