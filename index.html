@@ -158,13 +158,20 @@
   .progress-ring-wrap {
     display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem;
   }
-  .ring-container { position: relative; width: 200px; height: 200px; }
-  .ring-svg { transform: rotate(-90deg); width: 200px; height: 200px; }
+  .ring-container {
+    position: relative; width: 200px; height: 200px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ring-svg {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    transform: rotate(-90deg);
+  }
   .ring-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 14; }
   .ring-fill { fill: none; stroke: var(--gold); stroke-width: 14; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
   .ring-center {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center; pointer-events: none;
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; line-height: 1.2;
   }
   .ring-pct { font-size: 2rem; font-weight: 800; color: var(--white); line-height: 1.2; }
   .ring-done { font-size: 0.95rem; color: rgba(255,255,255,0.7); }
