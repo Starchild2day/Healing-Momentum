@@ -163,8 +163,9 @@
   .ring-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 10; }
   .ring-fill { fill: none; stroke: var(--gold); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
   .ring-center {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
   }
   .ring-pct { font-size: 1.8rem; font-weight: 600; color: var(--white); }
   .ring-done { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
