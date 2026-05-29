@@ -158,23 +158,16 @@
   .progress-ring-wrap {
     display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem;
   }
-  .ring-container {
-    position: relative; width: 200px; height: 200px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .ring-svg {
-    position: absolute; top: 0; left: 0;
-    transform: rotate(-90deg); width: 200px; height: 200px;
-  }
-  .ring-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 10; }
-  .ring-fill { fill: none; stroke: var(--gold); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
+  .ring-container { position: relative; width: 200px; height: 200px; }
+  .ring-svg { transform: rotate(-90deg); width: 200px; height: 200px; }
+  .ring-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 14; }
+  .ring-fill { fill: none; stroke: var(--gold); stroke-width: 14; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
   .ring-center {
-    position: relative; z-index: 1;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; pointer-events: none;
   }
-  .ring-pct { font-size: 1.8rem; font-weight: 600; color: var(--white); }
-  .ring-done { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+  .ring-pct { font-size: 2rem; font-weight: 800; color: var(--white); line-height: 1.2; }
+  .ring-done { font-size: 0.95rem; color: rgba(255,255,255,0.7); }
   .quote-wrap { padding: 0 1.5rem 1.5rem; }
   .quote {
     background: rgba(255,255,255,0.08); border-left: 3px solid var(--gold);
@@ -633,8 +626,7 @@
           <div class="ring-done" id="done-text">0 of 15</div>
         </div>
       </div>
-    </div>
-    <div class="quote-wrap">
+    </div>    <div class="quote-wrap">
       <div class="quote" id="daily-quote">"Healing is not a race. Every rep, every stretch, every moment of care moves you forward."</div>
     </div>
   </div>
