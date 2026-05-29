@@ -347,11 +347,8 @@
   .header-name { font-size: 2rem !important; font-weight: 700 !important; }
   .greeting { font-size: 1.1rem !important; }
   .section-title { font-size: 1.2rem !important; font-weight: 700 !important; }
-  .ring-container { width: 200px !important; height: 200px !important; }
-  .ring-svg { width: 200px !important; height: 200px !important; }
   .ring-bg { cx: 80 !important; cy: 80 !important; r: 66 !important; }
   .ring-fill { cx: 80 !important; cy: 80 !important; r: 66 !important; }
-  .ring-pct { font-size: 2rem !important; font-weight: 800 !important; }
   .quote { font-size: 1rem !important; color: rgba(255,255,255,0.95) !important; }
 
 
@@ -621,22 +618,29 @@
         </div>
       </div>
     </div>
-    <div class="progress-ring-wrap">
-      <div class="ring-container">
-        <svg class="ring-svg" width="200" height="200" viewBox="0 0 200 200">
-          <circle class="ring-bg" cx="100" cy="100" r="84"/>
-          <circle class="ring-fill" id="progress-ring" cx="100" cy="100" r="84"
-            stroke-dasharray="528" stroke-dashoffset="528"/>
-        </svg>
-        <div class="ring-center">
-          <div class="ring-pct" id="pct-text">0%</div>
-          <div class="ring-done" id="done-text">0 of 15</div>
-        </div>
-      </div>
-    </div>    <div class="quote-wrap">
+    <div class="quote-wrap">
       <div class="quote" id="daily-quote">"Healing is not a race. Every rep, every stretch, every moment of care moves you forward."</div>
     </div>
   </div>
+
+  <!-- STICKY PROGRESS BAR -->
+  <div id="sticky-bar" style="
+    position: sticky; top: 0; z-index: 40;
+    background: #1a4028; padding: 0.6rem 1.2rem;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  ">
+    <div style="flex:1; height: 10px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden;">
+      <div id="progress-bar-fill" style="
+        height: 100%; width: 0%; border-radius: 10px;
+        background: linear-gradient(90deg, #c9923a, #4a9e5c);
+        transition: width 0.4s ease;
+      "></div>
+    </div>
+    <div style="color: #e8b86d; font-size: 0.9rem; font-weight: 700; min-width: 40px; text-align: right;" id="bar-pct">0%</div>
+    <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; min-width: 50px;" id="bar-count">0 of 15</div>
+  </div>
+
 
   <div class="app-body">
 
@@ -646,6 +650,7 @@
         <div class="section-title" id="morning-section-title">Morning Recovery</div>
         <div class="section-progress" id="morning-prog">0 / 5</div>
         <div class="section-arrow" id="morning-arrow">▼</div>
+        <div id="morning-done-badge" style="display:none; background:#2d7a4f; color:#fff; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:20px; margin-left:4px;">✓ Done!</div>
       </div>
       <div class="section-items open" id="morning-items">
         <div class="task-item" onclick="toggleTask(this)">
@@ -695,6 +700,7 @@
         <div class="section-title">Midday Reset</div>
         <div class="section-progress" id="midday-prog">0 / 5</div>
         <div class="section-arrow" id="midday-arrow">▼</div>
+        <div id="midday-done-badge" style="display:none; background:#2d7a4f; color:#fff; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:20px; margin-left:4px;">✓ Done!</div>
       </div>
       <div class="section-items open" id="midday-items">
         <div class="task-item" onclick="toggleTask(this)">
@@ -743,6 +749,7 @@
         <div class="section-title">Evening Recovery</div>
         <div class="section-progress" id="evening-prog">0 / 5</div>
         <div class="section-arrow" id="evening-arrow">▼</div>
+        <div id="evening-done-badge" style="display:none; background:#2d7a4f; color:#fff; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:20px; margin-left:4px;">✓ Done!</div>
       </div>
       <div class="section-items open" id="evening-items">
         <div class="task-item" onclick="toggleTask(this)">
@@ -1170,23 +1177,30 @@
 
   function updateProgress() {
     const pct = Math.round((doneTasks / totalTasks) * 100);
-    document.getElementById('pct-text').textContent = pct + '%';
-    document.getElementById('done-text').textContent = doneTasks + ' of ' + totalTasks;
-    const circumference = 528;
-    const offset = circumference - (circumference * pct / 100);
-    const ring = document.getElementById('progress-ring');
-    ring.style.strokeDashoffset = offset;
-    ring.style.strokeDasharray = circumference;
-    ring.style.stroke = pct < 34 ? '#c9923a' : pct < 67 ? '#8ab84a' : pct < 100 ? '#4a9e5c' : '#2d7a4f';
+
+    // ── Sticky progress bar ────────────────────────────────────────────
+    const fill = document.getElementById('progress-bar-fill');
+    const barPct = document.getElementById('bar-pct');
+    const barCount = document.getElementById('bar-count');
+    if (fill) fill.style.width = pct + '%';
+    if (barPct) barPct.textContent = pct + '%';
+    if (barCount) barCount.textContent = doneTasks + ' of ' + totalTasks;
+
+    // ── Section progress counts + done badges ─────────────────────────
     ['morning','midday','evening'].forEach(s => {
       const items = document.getElementById(s+'-items');
       const done = items.querySelectorAll('.task-item.done').length;
       const total = items.querySelectorAll('.task-item').length;
       document.getElementById(s+'-prog').textContent = done + ' / ' + total;
+      const badge = document.getElementById(s+'-done-badge');
+      if (badge) badge.style.display = done === total ? 'block' : 'none';
     });
+
+    // ── 100% celebration ───────────────────────────────────────────────
     if (pct === 100) {
       setTimeout(() => {
         document.getElementById('daily-quote').textContent = '🎉 You did it! Every single item. Your body felt that. Your healing momentum is REAL and it is building. See you tomorrow.';
+        if (fill) fill.style.background = '#2d7a4f';
       }, 300);
     }
   }
