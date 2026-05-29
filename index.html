@@ -287,13 +287,7 @@
   }
   .disclaimer-check input[type=checkbox] { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: var(--gold); cursor: pointer; }
   .disclaimer-check label { font-size: 1rem; color: var(--text); line-height: 1.5; cursor: pointer; }
-  .disclaimer-btn {
-    width: 100%; padding: 1rem; background: var(--border); border: none;
-    border-radius: 12px; color: var(--text-light); font-size: 1.15rem; font-weight: 600;
-    cursor: not-allowed; font-family: 'Source Sans 3', sans-serif; transition: all 0.3s;
-  }
-  .disclaimer-btn.enabled { background: var(--gold); color: var(--white); cursor: pointer; }
-  .disclaimer-btn.enabled:hover { background: var(--gold-light); }
+  /* disclaimer button styled via JS */
   .scroll-hint { text-align: center; font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.5rem; }
 
   /* ABOUT MODAL */
@@ -530,7 +524,7 @@
       <input type="checkbox" id="agree-check" onchange="toggleAgree()">
       <label for="agree-check">I have read and understood this disclaimer. I agree to use Healing Momentum at my own risk and accept full responsibility for my health decisions.</label>
     </div>
-    <button class="disclaimer-btn" id="disclaimer-btn" onclick="acceptDisclaimer()" disabled>I Agree — Continue</button>
+    <button id="disclaimer-btn" onclick="acceptDisclaimer()" style="width:100%;padding:1rem;border:none;border-radius:12px;font-size:1.15rem;font-weight:700;font-family:'Source Sans 3',sans-serif;background:#dde4ec;color:#8a9aaa;cursor:not-allowed;opacity:0.5;pointer-events:none;">I Agree — Continue</button>
   </div>
 </div>
 
@@ -879,17 +873,7 @@
 <script>
 
   // ── DISCLAIMER ──────────────────────────────────────────────────────────
-  function toggleAgree() {
-    const checked = document.getElementById('agree-check').checked;
-    const btn = document.getElementById('disclaimer-btn');
-    btn.disabled = !checked;
-    btn.classList.toggle('enabled', checked);
-  }
-
-  function acceptDisclaimer() {
-    if (!document.getElementById('agree-check').checked) return;
-    showScreen('gate');
-  }
+  // disclaimer handled below
 
   // Scroll hint disappears after user scrolls
   document.getElementById('disclaimer-scroll').addEventListener('scroll', function() {
