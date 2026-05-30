@@ -713,7 +713,7 @@
         <div class="section-arrow" id="morning-arrow">▼</div>
       </div>
       <div class="section-items open" id="morning-items">
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="m1" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="m1-name">Gentle Warm-Up Movement</div>
@@ -721,7 +721,7 @@
           </div>
           <button class="task-timer" onclick="openTimer(event,'Warm-Up',300)">⏱ 5 min</button>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="m2" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="m2-name">Ice or Heat Therapy</div>
@@ -729,7 +729,7 @@
           </div>
           <button class="task-timer" onclick="openTimer(event,'Ice / Heat',900)">⏱ 15 min</button>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="m3" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="m3-name">Morning Stretch Routine</div>
@@ -737,14 +737,14 @@
           </div>
           <button class="task-timer" onclick="openTimer(event,'Stretching',180)">⏱ 3 min</button>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="m4" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="m4-name">💊 Morning Supplement #1</div>
             <div class="task-desc" id="m4-desc">Take with breakfast</div>
           </div>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="m5" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="m5-name">💊 Morning Supplement #2</div>
@@ -766,7 +766,7 @@
         <div class="section-arrow" id="midday-arrow">▼</div>
       </div>
       <div class="section-items open" id="midday-items">
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="d1" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="d1-name">Strengthening Exercises</div>
@@ -774,7 +774,7 @@
           </div>
           <button class="task-timer" onclick="openTimer(event,'Exercises',600)">⏱ 10 min</button>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="d2" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="d2-name">Posture & Alignment Check</div>
@@ -782,21 +782,21 @@
           </div>
           <button class="task-timer" onclick="openTimer(event,'Posture Check',60)">⏱ 1 min</button>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="d3" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="d3-name">Hydration & Nutrition</div>
             <div class="task-desc" id="d3-desc">Drink 16 oz water. Have a protein-rich snack to support tissue repair</div>
           </div>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="d4" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="d4-name">💊 Midday Supplement</div>
             <div class="task-desc" id="d4-desc">Take with lunch</div>
           </div>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="d5" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="d5-name">🥗 Nutrition Reminder</div>
@@ -818,7 +818,7 @@
         <div class="section-arrow" id="evening-arrow">▼</div>
       </div>
       <div class="section-items open" id="evening-items">
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="e1" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="e1-name">Evening Stretch & Cooldown</div>
@@ -826,7 +826,7 @@
           </div>
           <button class="task-timer" onclick="openTimer(event,'Evening Stretch',300)">⏱ 5 min</button>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="e2" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="e2-name">Final Ice or Heat</div>
@@ -834,21 +834,21 @@
           </div>
           <button class="task-timer" onclick="openTimer(event,'Ice / Heat',900)">⏱ 15 min</button>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="e3" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="e3-name">💊 Evening Supplement #1</div>
             <div class="task-desc" id="e3-desc">Take with or after dinner</div>
           </div>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="e4" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="e4-name">💊 Evening Supplement #2</div>
             <div class="task-desc" id="e4-desc">Take before bed</div>
           </div>
         </div>
-        <div class="task-item" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="e5" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="e5-name">Recovery Journal</div>
@@ -1033,6 +1033,17 @@
         if (session.agreed && session.name && session.injury) {
           userName = session.name;
           selectedInjury = session.injury;
+          // Check if it's a new day and increment counter
+          const taskData = localStorage.getItem('hm_tasks');
+          if (taskData) {
+            const { date } = JSON.parse(taskData);
+            const today = new Date().toDateString();
+            if (date !== today) {
+              session.day = (session.day || 1) + 1;
+              localStorage.setItem('hm_user', JSON.stringify(session));
+              localStorage.removeItem('hm_tasks');
+            }
+          }
           launchApp();
           return;
         }
@@ -1234,11 +1245,11 @@
     shoulder: {
       m1: ['Pendulum Swings — Yes, You Will Look Silly. Do It Anyway.', 'Stand next to a table or chair. Lean forward from your hips and rest your good arm on the surface. Let your injured arm hang straight down — completely relaxed. Like a wet noodle. Like you forgot it was attached to you. Make slow small circles: 10 clockwise, 10 counterclockwise. Let gravity do the work. Your PT gave you this first because it decompresses the joint without engaging the injured muscles. Think of it as a spa day for your rotator cuff. You earned it.'],
       m2: ['Ice Pack — 15 Minutes (Your Shoulder Called. It Wants This.)', 'Wrap some ice in a thin cloth and put it on your shoulder. Set a timer. Now sit down and do absolutely nothing productive for 15 minutes. You are not being lazy. You are being medically compliant. There is a difference and it is important. Morning icing intercepts the inflammation that built up overnight before it has a chance to ruin your day. 15 minutes exactly — not more, which can actually damage tissue. This is one of those rare moments in life where doing less is literally the right answer. Enjoy it. There are not many of them.'],
-      m3: ['Doorway Stretch + Wall Slides — Your House Is Now a Gym', 'Two moves, three minutes, zero equipment. First: pick a doorway. Place your forearm flat against the frame, elbow at 90°, upper arm parallel to the floor. Step forward until you feel a gentle stretch across your chest and shoulder — not pain, stretch. Hold 30 sec each side. This releases the pec minor, which is tight in almost every shoulder patient and almost nobody talks about it. Second: wall slides. Stand with your back flat against a wall, elbows bent at 90° and pressed against the wall like a goalpost. Slowly slide both arms up the wall as high as you can while keeping your elbows and wrists in contact with the wall. Slide back down. 10 slow reps. This trains your shoulder blade to move properly, which is what it has probably forgotten how to do. Both moves together take 3 minutes and address two of the most common mechanical problems in rotator cuff recovery.'],
-      m4: ['💊 Collagen (10g) + Vitamin C + Creatine (3–5g)', 'Take all three with breakfast. Collagen is the raw lumber your body uses to rebuild your rotator cuff tendons. Vitamin C is the carpenter. Creatine is the energy supply for the whole operation — it accelerates tissue repair, reduces inflammation, and helps rebuild the muscles supporting your shoulder. Most people think creatine is just for lifting heavy things. It is also for healing. Take all three every morning without fail.'],
+      m3: ['Doorway Stretch + Wall Slides — Your House Is Now a Gym', 'Two moves. Three minutes. Zero equipment. Your house just became a physical therapy clinic and it did not even charge a copay. First: doorway stretch. Place your forearm flat against the frame, elbow at 90°, upper arm parallel to the floor. Step forward until you feel a gentle stretch across your chest and the front of your shoulder — not pain, stretch. Hold 30 sec each side. The muscle you are releasing is called the pec minor. It is tight in almost every single shoulder patient and almost nobody talks about it until it causes problems. Now you know. Second: wall slides. Stand with your back flat against a wall, elbows bent at 90° pressed against the wall like you are being held up in a Western. Slowly slide both arms up the wall as high as you can while keeping your elbows and wrists touching the wall the entire time. Slide back down. 10 slow reps. This retrains your shoulder blade to move the way it was designed to move — which it has probably forgotten how to do. Both moves together take three minutes and fix two of the most common mechanical problems driving your shoulder pain. The wall has been there the whole time. You just found a new use for it.'],
+      m4: ['💊 Collagen (10g) + Vitamin C + Creatine (3–5g)', 'Take all three with breakfast. Collagen is the raw lumber your body uses to rebuild your rotator cuff tendons. Vitamin C is the carpenter who shows up and actually assembles it into new tissue — without Vitamin C the lumber just sits in the yard. Creatine is the one that surprises people. Most people think creatine is just for people who want bigger biceps. It is not. Creatine is cellular energy currency — it fuels the repair process itself, accelerates tissue healing, reduces inflammation, and helps rebuild the supporting muscles around your shoulder that have been losing strength since the injury. Think of it as powering the whole construction crew. Lumber, carpenter, power supply. Take all three every morning and do not skip any of them.'],
       m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat — eggs, avocado, olive oil. Both are fat-soluble and absorb best with a meal. Curcumin works as a natural anti-inflammatory by blocking the same pathways as ibuprofen, but without the gut damage or interference with healing. Consistent daily use reduces joint pain within 4–6 weeks. Your shoulder will not send you a thank you note. But it will stop waking you up at 3am, which is basically the same thing. Vitamin D3 in the morning only — evening D3 disrupts the sleep where your shoulder does its best repair work.'],
       d1: ['Resistance Band External Rotation — The Exercise That Actually Fixes the Problem', 'Anchor a resistance band at elbow height. Stand facing it. Bend your elbow at 90° and pin it firmly against your side — keep it there throughout. Hold the band with your injured hand. Slowly rotate your forearm outward, keeping your elbow glued to your side — then slowly return. 3 sets of 15, slow and controlled. This targets the infraspinatus and teres minor — the exact muscles most responsible for shoulder stability and most likely the reason you got hurt. You are fixing the original problem instead of just managing the symptoms. That is the difference between healing and hoping.'],
-      d2: ['Shoulder Blade Squeeze + Face Pulls — Posture Is Secretly Half Your Problem', 'Three moves, all targeting the muscles that hold your shoulder in its right place. Shoulder blade squeeze: sit or stand tall, arms relaxed. Without shrugging, squeeze your shoulder blades toward each other then slide them gently downward — like tucking them into your back pockets. Hold 5 sec, release. 10 reps. Face pulls: with a resistance band anchored at face height, grip with both hands and pull toward your face, elbows flaring out to the sides, hands finishing beside your ears. Pause 1 sec, return slowly. 3 sets of 15. This targets the rear deltoid and external rotators — the exact muscles that keep your shoulder blade from winging and your arm from impinging. Rows: same band, lower anchor, pull your elbow straight back keeping it close to your body. 3 sets of 15. Most shoulder pain comes from weak muscles in the back — not the front. These three moves fix that. Good posture is not vanity. It is structural engineering.'],
+      d2: ['Shoulder Blade Squeeze + Face Pulls — Posture Is Secretly Half Your Problem', 'Three moves. All of them targeting the muscles in the back of your shoulder that nobody ever trains until something goes wrong. Shoulder blade squeeze: sit or stand tall, arms hanging relaxed. Without shrugging — and that part matters — squeeze your shoulder blades toward each other, then slide them gently downward like you are tucking them into your back pockets. Hold 5 seconds, fully release. 10 reps. Feels like nothing. Does a lot. Face pulls: resistance band anchored at face height. Grip with both hands and pull toward your face with your elbows flaring out to the sides, hands finishing beside your ears like you are showing off a bicep pose to nobody in particular. Pause 1 sec, return slowly. 3 sets of 15. This targets the rear deltoid and external rotators — the exact muscles responsible for keeping your shoulder blade from winging out and your arm from impinging every time you reach overhead. Rows: same band, lower anchor, pull your elbow straight back close to your body. 3 sets of 15. Here is the thing most people never figure out: shoulder pain almost always comes from weakness in the back of the shoulder, not the front. Every gym in America trains the front. These three moves train what actually matters. Good posture is not vanity. It is structural engineering. And now you have the tools.'],
       d3: ['Drink 20 oz of Water — Yes, Right Now, Seriously', 'Your tendons are largely water. Your joint fluid is largely water. You have been caffeinated, possibly active, and probably nowhere near hydrated enough. Drink 20 oz right now. Then aim for 8 or more glasses total today. Dehydration slows every aspect of healing in ways that are measurable and well documented. Your shoulder is thirsty and it has no way to ask. You are the only one who can help. Drink the water.'],
       d4: ['💊 Fish Oil / Omega-3 (2g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids directly reduce the compounds that cause your shoulder to swell and hurt. For shoulder recovery, consistent daily use over 6+ weeks has been shown to reduce rotator cuff pain and improve range of motion. Take with food. This is not a maybe. This is a yes.'],
       d5: ['🥗 Lunch — Food Is Either Your PT or Your Problem', 'On your team: wild salmon, sardines, walnuts, leafy greens, olive oil, berries, eggs. These reduce inflammation and give your body what it needs to repair. On the other team: canola oil, soybean oil, corn oil, sugar, white bread, processed anything. These quietly increase inflammation every time you eat them. You do not have to be perfect. Just be aware. Every meal is a vote for or against your recovery.'],
@@ -1252,11 +1263,11 @@
       m1: ['Ankle Pumps & Quad Sets — Do These Before Your Feet Touch the Floor', 'Your knee is at its most swollen and stiff first thing in the morning. The worst thing you can do is stand up cold. So do not. While still lying flat on your back with legs straight, pump both feet up and down like pressing a gas pedal — 20 slow pumps. This moves blood back toward the knee before you load the joint. Then keeping your healing leg straight, tighten the quad as hard as you can and press the back of your knee into the mattress. Hold 5 sec, release. 10 reps. That muscle you just activated is the most important muscle for your knee. Everything else you do today builds on this.'],
       m2: ['Ice — Your Knee Called. It Wants 15 Minutes.', 'Ice wrapped in a thin cloth on your knee, leg slightly elevated. Set a timer. Fifteen minutes. Do not skip this because you feel okay — your knee swelled overnight from yesterday whether you felt it or not. Keeping swelling controlled is the single most important factor in how fast your range of motion returns. Not the exercises. Not the supplements. The ice. Morning icing is your first and best move of the day. Before coffee even. Yes, really.'],
       m3: ['Heel Slides — The Simplest Exercise That Does the Most', 'Lie flat on your back. Both legs straight. Keep your heel in contact with the surface the entire time — do not lift it. Slowly slide that heel toward you, bending the knee as far as comfortable without pain. Hold 5 sec. Slide back. 10 reps. Physical therapists prescribe this first because it rebuilds range of motion without loading the joint. Your knee gets to practice bending without being asked to hold up your whole body while it does it. Pain-free range only. The moment it hurts, you have gone too far.'],
-      m4: ['💊 Glucosamine (1500mg) + Chondroitin (1200mg) + Creatine (3–5g)', 'Take all three with breakfast. Glucosamine gives your body the raw material to repair cartilage. Chondroitin helps that cartilage hold water — cartilage is 65–80% water. Creatine is the surprise addition most knee patients never hear about: it accelerates tissue repair, supports the quad muscle rebuilding that is critical for knee stability, and reduces overall inflammation. Takes 6–8 weeks of daily use for full effect. Do not stop early.'],
+      m4: ['💊 Glucosamine (1500mg) + Chondroitin (1200mg) + Creatine (3–5g)', 'Take all three with breakfast. Glucosamine gives your body the raw material it needs to repair cartilage — the stuff your knee actually slides on. Chondroitin helps that cartilage hold water, which matters more than it sounds because cartilage is 65 to 80 percent water. No water in the cartilage means no cushion between the bones. Multiple large clinical trials support this combination for reducing knee pain and slowing cartilage breakdown. Now for the one most knee patients never hear about: creatine. Most people associate it with gym bags and protein shakes. What they do not know is that creatine accelerates tissue repair at the cellular level, directly supports the quad muscle rebuilding that is the most critical factor in long-term knee stability, and measurably reduces systemic inflammation. This is not a bodybuilding supplement. This is a healing supplement that bodybuilders also use. Takes 6 to 8 weeks of daily consistent use for full effect. Do not stop after two weeks because you do not notice anything yet. That is exactly when it is working.'],
       m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. A 2014 study found curcumin as effective as ibuprofen for knee osteoarthritis pain — without the gut damage and without blocking the cartilage repair process that ibuprofen quietly interferes with. Look for a formula with black pepper (piperine) — increases absorption by 2000%. Vitamin D3 in the morning only — evening D3 can disrupt melatonin and the sleep where your knee does its best repair work.'],
       d1: ['Two Exercises That Build the Muscle Your Knee Needs Most', 'The quad is the primary protector of your knee joint. When it is weak the joint takes the punishment. Straight leg raise: lie on your back, non-injured knee bent, foot flat. Keep healing leg straight. Tighten quad as hard as you can, raise leg 12 inches, hold 3 sec, lower slowly. 3 sets of 10. Short arc quad: roll a towel under your healing knee at about 45°. Keeping your thigh still, slowly straighten lower leg to full extension. Hold 2 sec, lower slowly. 3 sets of 15. These two moves together are worth more than almost anything else you can do for a healing knee.'],
       d2: ['The One-Leg Stand — Your Knee Forgot How to Trust Itself', 'Stand at your kitchen counter. Rest your fingertips on the edge — just enough to catch yourself. Lift your non-injured foot just off the floor and balance on your healing leg with the knee slightly bent. Hold 20–30 sec. Here is something nobody tells you when you hurt your knee: it forgot how to trust itself. Every injury disrupts the nerve signals that tell the knee where it is in space. This exercise rebuilds that conversation. You are teaching your knee it is safe to be in charge again. Lunch: salmon, leafy greens, walnuts, berries, olive oil. Pass on nightshades — tomatoes, peppers, eggplant, potatoes — many knee patients notice they increase swelling.'],
-      d3: ['Your Cartilage Is Thirsty AND Hungry', 'Drink 20 oz of water now — knee cartilage has no blood supply and feeds itself entirely through hydration and movement. When you are dehydrated there is nothing for the sponge to absorb. Also check your protein: aim for 130–160g today with 30–40g at this meal. Your quad muscle — the primary protector of your knee — is being rebuilt from protein right now. A light lunch means a slower rebuild. Your cartilage needs the water. Your quad needs the protein. Give them both.'],
+      d3: ['Your Cartilage Is Thirsty AND Hungry', 'Drink 20 oz of water right now. Here is the thing about knee cartilage that should make you put down whatever you are doing and pick up a glass: it has no blood supply. Zero. Not a little. None at all. It feeds itself entirely by absorbing fluid from the joint space around it — like a sponge being squeezed and released with every bend of your knee. That fluid is almost entirely water. When you are dehydrated the sponge has nothing to absorb. You could do every exercise perfectly and take every supplement on time and your cartilage would still be running on fumes without adequate hydration. Also check your protein today: aim for 130 to 160 grams total, with 30 to 40 at this meal. Your quad — the primary stabilizer and protector of your knee joint — is being rebuilt from protein right now. A lunch without protein is like sending the construction crew to work with no materials. Your cartilage needs the water. Your quad needs the protein. Today they are both your job.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. EPA and DHA directly reduce the specific inflammatory compounds that cause knee swelling, stiffness, and pain. Research shows consistent daily use over 6+ weeks measurably reduces joint stiffness and pain scores. The keyword is consistent. One dose does nothing. Thirty doses builds a measurable anti-inflammatory effect in your tissue. Today is one of those thirty. Take it with food and feel good about being a person who does the thing.'],
       d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen into a midday drink with Vitamin C. Your knee is held together by cartilage, tendons, and ligaments — all primarily made of collagen. Vitamin C is required to assemble collagen into usable tissue — without it the collagen you take just passes through. The two must go together. Taken daily and consistently this combination is one of the most research-supported nutritional tools for joint recovery.'],
       e1: ['Two Stretches Your Knee Has Been Waiting For All Day', 'Hamstring: sit on edge of firm chair, healing leg straight out, heel on floor, toes up. Sit tall, lean chest forward from hips — do not round your back — until you feel a pull along the back of your thigh. Hold 30 sec, switch. Calf stretch: stand at wall, healing leg straight back, press heel firmly into floor, front knee slightly bent. Hold 30 sec. Tight hamstrings and calves pull directly on the knee from above and below. Every step today tugged on both. Releasing them tonight is the difference between waking up stiff and waking up like a person who took care of themselves yesterday. Which you did.'],
@@ -1269,11 +1280,11 @@
       m1: ['Hip Circles — Waking Up the Joint Before You Ask Anything of It', 'Stand sideways next to your kitchen counter. Rest both hands lightly on the surface. Shift weight to your non-injured leg, knee slightly soft. Lift your healing leg just off the floor and slowly draw large smooth circles in the air with your knee, leading from deep in your hip socket. 10 slow circles forward, 10 backward. Keep your upper body still and upright. Think of these circles as a morning conversation with your hip. You are saying — I know you are stiff. I am not going to push you. Let us just move a little and see how you feel. Your hip almost always responds well to that kind of respect.'],
       m2: ['Moist Heat — 15 Minutes of Deep Persuasion', 'Apply a moist warm towel or heating pad to the hip for 15 minutes before moving. The hip joint is the deepest joint in your body. Dry heat stays on the surface. Moist heat penetrates through the tissue layers and reaches the joint capsule and surrounding muscles that have been contracting all night. Your hip has been through a lot. It remembers everything. And like anyone who has been through something hard, it responds a lot better to a little warmth and patience than to being pushed around first thing in the morning.'],
       m3: ['Hip Flexor Stretch — The Muscle Nobody Talks About Until It Causes Problems', 'Kneel on a padded surface — folded towel under back knee if needed. Healing-side knee on the floor behind you, other foot flat in front at 90°. Both hands on front thigh for balance. Keep torso completely upright — do not lean forward. Gently tuck tailbone under and shift hips forward until you feel a deep stretch at the front of your back hip and upper thigh. Hold 30 sec, switch sides. The psoas runs from your lower spine through your pelvis to your thigh bone. When it is tight — and it is almost always tight in hip patients — it creates a constant forward pull on the joint that increases pain and limits every movement. Releasing it every morning changes the whole day.'],
-      m4: ['💊 Collagen (10g) + Vitamin C + Creatine (3–5g)', 'Take all three with breakfast. Every structural element of your hip being repaired — the joint capsule, the labrum, the tendons, the ligaments — is made primarily of collagen. Vitamin C assembles it into usable tissue. Creatine is the energy currency for the entire repair process — it supports the gluteus medius and hip stabilizer rebuilding that is essential for long-term hip health, and reduces systemic inflammation. Morning is ideal because connective tissue repair runs hottest in the first half of the day.'],
+      m4: ['💊 Collagen (10g) + Vitamin C + Creatine (3–5g)', 'Take all three with breakfast. Every structural element of your hip that is being repaired right now — the joint capsule, the labrum, the tendons, the ligaments — is made primarily of collagen. Think of it as the fabric your hip is literally sewn together with. Vitamin C is the needle and thread — without it your body cannot assemble the collagen into usable tissue no matter how much you take. And creatine — which most people still associate exclusively with weight rooms and protein shakes — is actually the energy currency that powers the entire cellular repair process. It supports the gluteus medius and hip stabilizer rebuilding that is the single most important factor in long-term hip health, and it measurably reduces systemic inflammation. Together these three create the conditions your hip needs to actually heal instead of just getting by. Morning timing is ideal — connective tissue repair runs hottest in the first half of the day and you want your raw materials on site before the crew starts.'],
       m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat — eggs, avocado, olive oil. Both are fat-soluble and absorb poorly without fat in the same meal. Curcumin reduces hip joint inflammation without gut damage or interference with healing. Especially valuable for bursitis and post-replacement inflammation. Add black pepper or a formula with piperine — increases absorption by 2000%. Vitamin D3 in the morning only — evening D3 can interfere with melatonin and disrupt the sleep your hip needs for repair.'],
       d1: ['Clamshells — The Exercise That Looks Easy and Is Not', 'Lie on your non-injured side. Stack your hips directly on top of each other — this is the key and most people get it wrong. Bend both knees to about 45° with feet stacked together. Place your top hand on your hip to feel whether it rolls back. It will want to. Do not let it. Without rolling your top hip backward at all, slowly lift your top knee toward the ceiling as high as you can. Hold 2 sec at the top. Lower slowly. 3 sets of 15. There is a muscle on the side of your hip that has been quietly failing you — possibly for years. It is called the gluteus medius. It is small. It looks unimpressive. And it is the reason your hip hurts every time you walk, because when it is weak your entire pelvis tilts with every step. These sets of 15 are the two of you getting formally introduced. Give it two weeks.'],
       d2: ['The Healing Walk — Same Distance, Completely Different Purpose', 'Walk 5–10 minutes with intention. Focus on striking the floor evenly with both feet. Upright posture — head up, shoulders relaxed. A stride length that feels symmetrical. Most people recovering from hip injuries unconsciously develop a compensating gait — they shift weight away from the healing side, shorten their stride, hitch the hip with every step. These patterns feel protective and become structural problems over time. You are training your hip to move normally again. Every intentional step counts. Lunch: fatty fish, leafy greens, olive oil, avocado, berries. You get to vote on your recovery three times a day. Make it count.'],
-      d3: ['Hydration + Protein — The Two Things Most People Over 50 Are Getting Wrong', 'Drink 20 oz of water now and check where your protein is today. Most people over 50 are significantly under-eating protein without realizing it. The hip joint capsule, surrounding muscles, tendons — all being rebuilt from protein. Aim for at least 25–30g per meal. Eggs, chicken, fish, Greek yogurt, cottage cheese. If lunch is mostly carbs, your repair crew just showed up to a job site with no materials. Your body has been doing its best with what it had. Now you are giving it more to work with. That changes things.'],
+      d3: ['Water + Protein — Your Hip Is Thirsty AND Hungry', 'Drink 20 oz of water right now. Your hip joint capsule needs hydration to stay lubricated and every healing tissue around it needs water to function at all. Also check your protein: aim for 130 to 160 grams total today with 30 to 40 at this meal. Most people over 50 are significantly under-eating protein — not a little under, significantly. And the hip joint capsule, the gluteus medius you are rebuilding with those clamshells, the tendons and surrounding muscles — all of it is being reconstructed from protein right now. A carb-heavy lunch is like hiring a construction crew and forgetting to order the building materials. The crew shows up, looks around, shrugs, and goes home. Also confirm creatine is in today — it directly powers the cellular energy needed for the muscle tissue repair your hip stabilizers depend on. Your body has been doing its best with whatever you give it. Today you are giving it what it actually needs. That changes things.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. EPA and DHA directly reduce the inflammatory cytokines causing hip joint swelling, pain, and stiffness. For bursitis and post-surgical hip inflammation, fish oil is one of the most evidence-supported natural interventions available. The effect builds like interest in a savings account — slowly, invisibly, and then all at once. One dose per day. That is the whole investment.'],
       d5: ['🥗 What You Eat Today Is Either Helping or Hurting — Pick a Side', 'Your team: salmon, sardines, walnuts, spinach, kale, olive oil, eggs, berries, sweet potato, avocado. The other team: canola oil, soybean oil, corn oil, sugar, alcohol, anything in a package with more than five ingredients. You do not have to be perfect. But you do get to choose — three times a day — which side your meal is playing for. That is more power over your recovery than most people realize they have.'],
       e1: ['Piriformis Stretch — The One That Goes Straight to the Source', 'Lie flat on your back, both knees bent, feet flat. Cross your healing leg so the ankle rests on top of your opposite thigh just above the knee — your legs form a figure-4 shape. Flex the foot of your crossed leg to protect your knee. For gentle: press the crossed knee away from you. For deeper: interlace your hands behind the lower thigh and slowly draw that leg toward your chest until you feel a deep stretch in the back of the hip and glute. Hold 30 sec, switch sides. The piriformis sits directly over the sciatic nerve. When it is tight — and after a full day on your feet it almost always is — it compresses the nerve and creates that deep aching glute pain. Releasing it every evening is one of the highest-return things you can do for this injury.'],
@@ -1286,11 +1297,11 @@
       m1: ['Cat-Cow + Pelvic Tilts — Do This Before Your Feet Hit the Floor', 'Your back is most vulnerable in the first few minutes after you wake up. The discs have been soaking up fluid all night and the muscles are stiff and suspicious. Do not ambush your spine by just standing up. Lie flat on your back, knees bent, feet flat on the mattress. Gently tighten your abs and press the small of your back down into the mattress like you are trying to flatten it. Hold 5 sec, release. 10 slow reps. Then carefully move to hands and knees: Cat — slowly round your entire spine toward the ceiling like a Halloween cat, chin tucked, tailbone under. Cow — let your belly drop toward the floor, head and tailbone lifting gently. 10 slow cycles. Never force either end. Your back will thank you every single morning for the rest of your life.'],
       m2: ['Moist Heat — 15 Minutes of Permission to Do Nothing', 'Here is your medical excuse to sit still for 15 minutes before the day starts. Moist heat on your lower back — not dry heat, which barely scratches the surface. You are releasing the overnight muscle guarding that has been quietly tightening your back since 3am. The paraspinal muscles contract during sleep and are at their stiffest first thing in the morning. Fifteen minutes. Moist. Every morning. This one habit alone will change your mornings.'],
       m3: ['Knee-to-Chest + The Piriformis Stretch Nobody Talks About', 'Knee to chest: lie flat on your back. Slowly bend one knee and bring it toward your chest, hands clasped just below the kneecap — never pull on the knee joint itself. Keep your head and the other leg relaxed. Hold 30 sec, lower slowly, switch sides. Feel that? That is your lower back saying thank you. Now the one that changes everything: piriformis stretch. Stay on your back, both knees bent, feet flat. Cross one ankle over the opposite thigh just above the knee — figure-4 shape. Flex that top foot. Gently press the crossed knee away until you feel a deep stretch in your hip and glute. Hold 30 sec each side. The piriformis compresses the sciatic nerve when tight — and it is almost always tight in back pain patients. Now you know what to do about it.'],
-      m4: ['💊 Magnesium Glycinate (300mg) + Creatine (3–5g)', 'Take both with breakfast. Magnesium glycinate relaxes the paraspinals, quadratus lumborum, and psoas — the exact muscles that seize and spasm when magnesium is low. Most adults over 50 are significantly deficient. Creatine is the addition most back patients never hear about: it supports the energy production needed for disc and connective tissue repair, helps rebuild the core and glute muscles that protect your spine, and reduces systemic inflammation. Morning is when you need both most — one for muscle relaxation through the day, one to fuel the repair work.'],
+      m4: ['💊 Magnesium Glycinate (300mg) + Creatine (3–5g)', 'Take both with breakfast. Magnesium glycinate first: the muscles most likely to seize and spasm when magnesium is low are exactly the ones wrapped around your lower back — the paraspinals, the quadratus lumborum, the psoas. Most adults over 50 are significantly deficient in magnesium without knowing it. And their backs are paying for it every single morning when they try to get out of bed and feel like the Tin Man before the oil can. Magnesium glycinate relaxes these muscles, dials down nerve pain sensitivity, and keeps the whole area from spending the day in a defensive crouch. Now for creatine — which almost nobody mentions to back pain patients and really should: it supports the energy production required for disc and connective tissue repair, directly fuels the rebuilding of the core and glute muscles that are supposed to be protecting your spine, and reduces the systemic inflammation that is quietly making everything worse. One relaxes the muscles. One powers the rebuild. Take them both and give your back the morning it deserves.'],
       m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. Both are fat-soluble — without fat in the same meal they absorb poorly. Curcumin blocks the inflammatory signals that irritate spinal nerves and compress discs. Add black pepper (piperine) for 2000% better absorption. That is not a typo. Two thousand percent. Vitamin D3 in the morning only — evening D3 can interfere with melatonin and disrupt the sleep where your spine does its repair work. Low D3 is directly linked to chronic lower back pain, disc degeneration, and the kind of stiffness that never fully goes away.'],
       d1: ['Bird Dog + Glute Bridges — The Two Exercises That Actually Fix Back Pain', 'Most people treat back pain by resting the back. The research says the opposite. Bird dog: hands and knees, wrists under shoulders, knees under hips, back flat like a table. Tighten your core gently — not a crunch, just a brace. Slowly extend your right arm forward while simultaneously extending your left leg straight back, both parallel to the floor. Do not rotate your hips. Hold 5 sec, return slowly. 10 reps each side. This builds the deep stabilizers that protect your spine with every movement you make. Glute bridge: on your back, knees bent at 90°, feet flat. Press through your heels, squeeze your glutes — really squeeze — and lift your hips until your body forms a straight line from shoulders to knees. Hold 3 sec, lower slowly. 10 reps. Weak glutes are behind more back pain than almost any other single factor. Nobody tells you that either.'],
       d2: ['The Wall Test — and What It Reveals About Your Back', 'Find a wall. Stand with your back against it, heels about 2 inches out. Try to flatten your lower back against the wall. Can you do it easily? With effort? Not at all? Whatever you find is important information about the tension patterns driving your pain. Hold the flattened position for 30 sec. Do this 3 times today. Prolonged sitting compresses your spinal discs by up to 40% more than standing and weakens the muscles that hold you upright at the same time. Every time you do this wall reset you are undoing a little of that damage. Lunch: leafy greens, fatty fish, olive oil, avocado, berries. Skip sugar, alcohol, white bread, and processed foods — all directly increase spinal inflammation.'],
-      d3: ['Disc Hydration + Protein — Both Required', 'Drink 20+ oz of water now — spinal discs have no blood supply and feed themselves entirely through hydration and movement. Dehydrated discs compress more under load, meaning more pain and slower healing. Also check your protein: aim for 130–160g today with 30–40g at this meal. The bird dog and glute bridge you did this morning are rebuilding the muscles that protect your spine — and muscles are made of protein. No protein means no rebuild. Aim for 2–3 liters of water total today. Your discs are counting on the water. Your spine muscles are counting on the protein. Be the exception who gives them both.'],
+      d3: ['Your Discs Are Thirsty And Your Spine Muscles Are Hungry', 'Drink 20 or more ounces of water right now. Spinal discs have no blood supply of their own — they feed themselves by absorbing fluid from surrounding tissue through the compression and release of movement. When you are dehydrated those discs compress more under the load of your own body weight and the result is more pain, more stiffness, and slower healing. Every single time without exception. Aim for 2 to 3 liters total today. This is one of the highest-return, lowest-cost things you can do for your back and almost nobody does it consistently. Be the exception. Also check your protein: aim for 130 to 160 grams today with 30 to 40 at this meal. The bird dog and glute bridge you did this morning are actively rebuilding the core and glute muscles that protect your spine — and those muscles are made entirely of protein. A carb-heavy lunch is the nutritional equivalent of trying to build a house with no lumber. Your discs need the water. Your spine muscles need the protein. Give them both.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids have a specific and well-documented effect on spinal inflammation — they reduce the compounds that irritate nerve roots, squeeze discs, and create the kind of radiating pain that travels down your leg. Multiple studies show consistent fish oil use reduces both disc inflammation and nerve pain over 6+ weeks of daily use. The word there is consistent. One dose does nothing. Thirty doses builds a measurable anti-inflammatory effect in your tissues. Today is one of those thirty.'],
       d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen into a midday drink with Vitamin C. Spinal discs, the ligaments holding your vertebrae together, and the connective tissue supporting your entire spine are all largely made of collagen. Vitamin C is the co-factor your body requires to assemble collagen into new tissue — without it the collagen passes through. One important note: avoid long-term ibuprofen and naproxen if you can. NSAIDs block the prostaglandins your body needs to repair disc tissue. They manage the pain while quietly slowing the healing. You have better tools now.'],
       e1: ["Child's Pose + Supine Twist — The Best Two Minutes of Your Day", "Child's pose: kneel on a soft surface and sit your hips back toward your heels. Reach both arms straight out in front of you, palms flat, forehead resting on the floor or a pillow. Breathe slowly and deeply into your lower back and ribs. Feel your entire back expand with each inhale. Hold 60 sec. This position decompresses every single lumbar vertebra simultaneously. No machine in any gym does what this does. Supine twist: lie on your back, both knees bent, arms out in a T shape, palms down. Keeping your knees together, let them fall slowly to one side. Your opposite shoulder stays flat. Hold 30 sec. Bring knees back to center. Other side. The day is almost done. You showed up. These two moves are how you close the loop."],
@@ -1303,7 +1314,7 @@
       m1: ['Gentle Range of Motion — Before Your Feet Touch the Floor', 'While still lying in bed, start with ankle pumps: flex both feet up toward your shins, then point them away — 20 slow pumps. This gets blood circulating to the surgical area before you load it with standing. Then do 5 slow deep belly breaths — place one hand on your stomach and breathe so deeply your hand rises. Deep breathing after surgery prevents fluid buildup in the lungs, one of the most common post-surgical complications. Do all of this before standing up.'],
       m2: ['Ice Pack — 15 Minutes', 'Apply ice wrapped in a thin cloth to the surgical site. Keep it on for exactly 15 minutes. Morning icing is the single most important habit for controlling post-surgical swelling. Swelling is the enemy of range of motion and the primary cause of post-surgical pain. The more consistently you ice, the faster the swelling comes down, and the faster you heal.'],
       m3: ['Diaphragmatic Breathing + Gentle Movement', 'Sit upright in a firm chair. Place both hands on your lower ribcage. Breathe in slowly through your nose for 4 counts, feeling your ribcage expand outward into your hands. Hold 1 count, breathe out slowly for 6 counts. Repeat 10 times. This breathing pattern directly supports the lymphatic system, which clears post-surgical waste products from the body. Follow with any gentle range of motion exercises your PT has prescribed — pain-free movement only.'],
-      m4: ['💊 Vitamin C (1000mg) + Zinc (15–30mg) + Creatine (3–5g)', 'Take all three with breakfast. Vitamin C is essential for collagen synthesis — your surgical incision and all internal repairs are collagen-based. Zinc is required for every stage of wound healing. Creatine is the addition most post-surgical patients never hear about: it accelerates cellular energy production needed for tissue repair, helps rebuild the muscle lost during surgery and recovery, and has been shown to reduce inflammation and improve outcomes after surgical procedures. All three work best taken consistently from day one.'],
+      m4: ['💊 Vitamin C (1000mg) + Zinc (15–30mg) + Creatine (3–5g)', 'Take all three with breakfast every single morning. Vitamin C is essential for collagen synthesis — your surgical incision and every internal tissue being repaired right now is collagen-based, and without Vitamin C your body cannot assemble collagen into usable repair material no matter how much it has to work with. Zinc is required at every stage of wound healing: the inflammatory phase, the rebuilding phase, and the remodeling phase. Studies consistently show that patients with adequate zinc heal faster and have lower infection rates. Period. Now for creatine — which almost no one mentions to post-surgical patients and absolutely should: creatine accelerates the cellular energy production that drives tissue repair, helps rebuild the muscle mass lost during surgery and the recovery period that follows, and has been shown in research to reduce inflammation and improve outcomes in post-surgical patients. You went through surgery. Your body is working around the clock to repair the damage. These three supplements are the supply chain for that operation. Keep the supply chain running every morning without fail.'],
       m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. Post-surgical inflammation is necessary for healing but often becomes excessive — curcumin modulates inflammation to the right level without shutting it down completely the way NSAIDs do. NSAIDs after surgery can actually impair bone and tissue healing. Vitamin D3 in the morning only — evening D3 can interfere with melatonin and disrupt the sleep where your body does its most intensive repair.'],
       d1: ['PT Prescribed Exercises — Every Single One, Every Single Day', 'Complete every exercise your physical therapist has assigned — exactly as prescribed, in the exact order, for the exact number of reps. Do not skip exercises that seem too easy. Do not add exercises that seem helpful. Your PT has sequenced your program deliberately. Pain-free movement only: a 2–3 out of 10 discomfort is acceptable, anything above a 4 means stop and call your PT. Controlled slow movement recruits more muscle fibers and builds more strength than fast sloppy reps. Slow is not weak. Slow is the whole point.'],
       d2: ['Recovery Walk + Posture Check', 'Walk 5–10 minutes at a comfortable unhurried pace. Walking is one of the most powerful post-surgical recovery tools available — it promotes circulation, prevents blood clots, reduces stiffness, and supports lymphatic drainage. Focus on your posture as you walk: head up, shoulders back and relaxed, core gently engaged. After surgery many people unconsciously guard the surgical area by hunching or limping — this creates secondary pain in the back, hips, and shoulders. Walk tall, even if slowly. You earned the right to take up space on this sidewalk.'],
@@ -1395,8 +1406,14 @@
     const injuryLabels = {shoulder:'Shoulder / Rotator Cuff',knee:'Knee',hip:'Hip',back:'Lower Back',surgery:'Post-Surgery'};
     const morningTitle = document.getElementById('morning-section-title');
     if (morningTitle && injuryLabels[selectedInjury]) morningTitle.textContent = 'Morning Recovery — ' + injuryLabels[selectedInjury];
-    try { localStorage.setItem('hm_user', JSON.stringify({name:userName,injury:selectedInjury,agreed:true})); } catch(e){}
+    try {
+      const session = {name:userName, injury:selectedInjury, agreed:true};
+      const existing = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      session.day = existing.day || 1;
+      localStorage.setItem('hm_user', JSON.stringify(session));
+    } catch(e){}
     showScreen('app');
+    setTimeout(() => restoreTaskState(), 100);
   }
 
   function updateGreeting() {
@@ -1423,6 +1440,44 @@
     el.classList.toggle('done');
     doneTasks = wasDone ? doneTasks - 1 : doneTasks + 1;
     updateProgress();
+    saveTaskState();
+  }
+
+  function saveTaskState() {
+    try {
+      const today = new Date().toDateString();
+      const checked = [];
+      document.querySelectorAll('.task-item.done').forEach(item => {
+        if (item.dataset.taskId) checked.push(item.dataset.taskId);
+      });
+      localStorage.setItem('hm_tasks', JSON.stringify({ date: today, checked }));
+    } catch(e) {}
+  }
+
+  function restoreTaskState() {
+    try {
+      const today = new Date().toDateString();
+      const saved = localStorage.getItem('hm_tasks');
+      if (!saved) return;
+      const { date, checked } = JSON.parse(saved);
+      if (date !== today) {
+        localStorage.removeItem('hm_tasks');
+        return;
+      }
+      checked.forEach(id => {
+        const item = document.querySelector('[data-task-id="' + id + '"]');
+        if (item) { item.classList.add('done'); doneTasks++; }
+      });
+      if (doneTasks > 0) {
+        updateProgress();
+        ['morning','midday','evening'].forEach(s => {
+          const items = document.getElementById(s+'-items');
+          const done = items.querySelectorAll('.task-item.done').length;
+          const total = items.querySelectorAll('.task-item').length;
+          if (done === total && total > 0) showCelebration(s);
+        });
+      }
+    } catch(e) {}
   }
 
   function updateProgress() {
