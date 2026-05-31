@@ -693,10 +693,19 @@
     </div>
     <div class="scroll-hint" id="scroll-hint">↓ Scroll to read full agreement</div>
     <div class="disclaimer-check">
-      <input type="checkbox" id="agree-check" onchange="toggleAgree()">
+      <input type="checkbox" id="agree-check" onchange="
+        var btn = document.getElementById('disclaimer-btn');
+        if(this.checked){
+          btn.style.cssText='width:100%;padding:1rem;border:none;border-radius:12px;font-size:1.15rem;font-weight:700;font-family:sans-serif;background:#c9923a;color:#ffffff;cursor:pointer;opacity:1;';
+        } else {
+          btn.style.cssText='width:100%;padding:1rem;border:none;border-radius:12px;font-size:1.15rem;font-weight:700;font-family:sans-serif;background:#dde4ec;color:#8a9aaa;cursor:not-allowed;opacity:0.5;';
+        }
+      ">
       <label for="agree-check">I have read and understood this disclaimer. I agree to use Healing Momentum at my own risk and accept full responsibility for my health decisions.</label>
     </div>
-    <button id="disclaimer-btn" onclick="acceptDisclaimer()">I Agree — Continue</button>
+    <button id="disclaimer-btn" 
+      style="width:100%;padding:1rem;border:none;border-radius:12px;font-size:1.15rem;font-weight:700;font-family:sans-serif;background:#dde4ec;color:#8a9aaa;cursor:not-allowed;opacity:0.5;"
+      onclick="if(document.getElementById('agree-check').checked){ showScreen('gate'); }">I Agree — Continue</button>
   </div>
 </div>
 
