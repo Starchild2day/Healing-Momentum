@@ -329,7 +329,7 @@
   /* ── MOBILE READABILITY ─────────────────────────────────────────────── */
   body:not(.dark) { background: #faf6ef !important; }
   body:not(.dark) .section-header { background: #f5f0e8 !important; }
-  body:not(.dark) .app-body { background: #f5efe4 !important; }
+  body:not(.dark) .app-body { background: #f0ebe0; }
   body:not(.dark) .task-name { color: #2c1810 !important; }
   body:not(.dark) .task-desc { color: #4a3428 !important; }
   body:not(.dark) .section-title { color: #1a4028 !important; }
@@ -588,7 +588,9 @@
     background: linear-gradient(135deg, #1a4028, #2d6b45);
     border-radius: var(--radius); padding: 1.2rem 1.5rem;
     margin-bottom: 1rem; position: relative; overflow: hidden;
+    display: none;
   }
+  .phase-banner[style*="block"] { display: block; }
   .phase-banner::before {
     content: ''; position: absolute; top: -20px; right: -20px;
     width: 120px; height: 120px; border-radius: 50%;
@@ -815,6 +817,27 @@
     <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; min-width: 50px;" id="bar-count">0 of 15</div>
   </div>
   <div class="app-body">
+
+    <!-- ONBOARDING BANNER — Day 1 only -->
+    <div id="onboarding-banner" style="display:none;" class="phase-banner">
+      <button class="phase-close" onclick="dismissOnboarding()">✕</button>
+      <h3>👋 Welcome to Healing Momentum</h3>
+      <p>Your recovery has 4 phases. Each one builds on the last. Here is the road ahead:</p>
+      <div class="phase-timeline">
+        <div class="phase-pill current">Phase 1 · Days 1–7 · Wake It Up</div>
+        <div class="phase-pill locked">Phase 2 · Days 8–21 · Start Building</div>
+        <div class="phase-pill locked">Phase 3 · Days 22–42 · Rebuild</div>
+        <div class="phase-pill locked">Phase 4 · Day 43+ · Maintain &amp; Protect</div>
+      </div>
+      <p style="margin-top:0.8rem;font-size:0.85rem;opacity:0.8;">What you see today is not what you will be doing in Week 2. The program evolves as you do. Tap ✕ to get started.</p>
+    </div>
+
+    <!-- PHASE UNLOCK BANNER -->
+    <div id="phase-unlock-banner" class="phase-unlock-banner" style="display:none;">
+      <h3>🎉 New Phase Unlocked!</h3>
+      <p>Your recovery just leveled up.</p>
+    </div>
+
     <div class="section-card">
       <div class="section-header" onclick="toggleSection('morning')">
         <div class="section-icon">🌅</div>
