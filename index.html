@@ -1806,8 +1806,9 @@
           item.dataset.taskId = task.id;
           item.onclick = function() { toggleTask(this); };
 
+          const safeName = task.name.replace(/'/g, '&#39;');
           const timerBtn = task.timer > 0
-            ? '<button class="task-timer" onclick="openTimer(event,'' + task.name.replace(/'/g,'\'') + '',' + task.timer + ')">⏱ ' + formatTime(task.timer) + '</button>'
+            ? '<button class="task-timer" onclick="openTimer(event,\'' + safeName + '\',' + task.timer + ')">⏱ ' + formatTime(task.timer) + '</button>'
             : '';
 
           item.innerHTML = '<div class="task-check"><div class="task-check-inner"></div></div>' +
