@@ -723,8 +723,8 @@
       <p>Your Daily Get Better Guide</p>
     </div>
     <div class="gate-tabs">
-      <button class="gate-tab active" onclick="showTab('access'); applyFreeCode()">Free Beta Access</button>
-      <button class="gate-tab" onclick="showTab('returning')">I Have a Code</button>
+      <button class="gate-tab active" onclick="showTab('access')">New User</button>
+      <button class="gate-tab" onclick="showTab('returning')">Returning User</button>
     </div>
     <div id="tab-access" class="gate-form">
       <input type="text" id="g-name" placeholder="Your first name" autocomplete="given-name">
@@ -2031,6 +2031,11 @@
     document.querySelectorAll('.gate-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='access')||(i===1&&tab==='returning')));
     document.getElementById('tab-access').style.display = tab==='access' ? 'flex' : 'none';
     document.getElementById('tab-returning').style.display = tab==='returning' ? 'flex' : 'none';
+    // Clear code fields on tab switch so no code persists
+    try {
+      document.getElementById('g-code').value = '';
+      document.getElementById('code-msg').textContent = '';
+    } catch(e) {}
   }
 
   function checkCode() {
