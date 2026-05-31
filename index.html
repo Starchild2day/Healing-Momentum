@@ -473,19 +473,31 @@
   }
   .modal-overlay.active { display: block; }
   .modal {
-    background: var(--navy); border-radius: 20px 20px 0 0; padding: 1rem 1.5rem;
+    background: var(--navy); border-radius: 20px 20px 0 0; padding: 0.8rem 1.2rem;
     width: 100%; box-shadow: 0 -4px 24px rgba(0,0,0,0.25);
-    display: flex; align-items: center; gap: 1rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    box-sizing: border-box; overflow: hidden;
   }
-  .modal-left { flex: 1; text-align: left; min-width: 0; }
-  .modal h3 { font-size: 1rem; font-weight: 700; color: #ffffff; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .modal-sub { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin: 0; }
-  .timer-display { font-size: 2.2rem; font-weight: 700; color: #e8b86d; letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0; }
+  .modal-left { flex: 1; text-align: left; min-width: 0; overflow: hidden; }
+  .modal h3 { font-size: 0.95rem; font-weight: 700; color: #ffffff; margin: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .modal-sub { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin: 0; }
+  .timer-display { font-size: 1.9rem; font-weight: 700; color: #e8b86d;
+    letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0; min-width: 70px; text-align: center; }
   .timer-ring-wrap { display: none; }
-  .modal-btns { display: flex; gap: 8px; flex-shrink: 0; }
-  .modal-btn { padding: 0.6rem 1rem; border-radius: 10px; border: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Source Sans 3', sans-serif; white-space: nowrap; }
+  .modal-btns { display: flex; gap: 6px; flex-shrink: 0; }
+  .modal-btn {
+    padding: 0.5rem 0.9rem; border-radius: 10px; border: none;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; white-space: nowrap;
+    flex-shrink: 0;
+  }
   .modal-btn.primary { background: #c9923a; color: #ffffff; }
-  .modal-btn.secondary { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); }
+  .modal-btn.secondary {
+    background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9);
+    padding: 0.5rem 0.7rem; font-size: 1rem;
+  }
+  .modal-btn.secondary:hover { background: rgba(255,255,255,0.25); }
 
 
   /* CELEBRATION ANIMATIONS */
@@ -2285,8 +2297,8 @@
         if (timerSeconds <= 0) {
           clearInterval(timerInterval);
           timerRunning = false;
-          document.getElementById('timer-display').textContent = '✓ Done!';
-          document.getElementById('timer-start-btn').textContent = 'Done';
+          document.getElementById('timer-display').textContent = '✓';
+          document.getElementById('timer-start-btn').textContent = 'Great!'; document.getElementById('timer-start-btn').style.background = '#2d7a4f';
           try {
             const ctx = new AudioContext();
             const tones = [523, 659, 784, 1047];
