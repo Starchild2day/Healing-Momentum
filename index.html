@@ -807,24 +807,24 @@
 
   </div>
 
-  <!-- STICKY PROGRESS BAR -->
-  <div id="sticky-bar" style="
-    position: sticky; top: 0; z-index: 40;
-    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 0.5rem 1.2rem 0.5rem;
-    display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 4px 0 0 #f0ebe0, 0 6px 8px rgba(0,0,0,0.1);
-  ">
-    <div style="flex:1; height: 10px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden;">
-      <div id="progress-bar-fill" style="
-        height: 100%; width: 0%; border-radius: 10px;
-        background: linear-gradient(90deg, #c9923a, #4a9e5c);
-        transition: width 0.4s ease;
-      "></div>
-    </div>
-    <div style="color: #e8b86d; font-size: 0.9rem; font-weight: 700; min-width: 40px; text-align: right;" id="bar-pct">0%</div>
-    <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; min-width: 50px;" id="bar-count">0 of 15</div>
-  </div>
   <div class="app-body">
+    <!-- STICKY PROGRESS BAR — inside scroller so sticky works -->
+    <div id="sticky-bar" style="
+      position: sticky; top: 0; z-index: 40; margin: 0 -0.8rem;
+      background: #1a4028; padding: 0.5rem 1.2rem;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    ">
+      <div style="flex:1; height: 10px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden;">
+        <div id="progress-bar-fill" style="
+          height: 100%; width: 0%; border-radius: 10px;
+          background: linear-gradient(90deg, #c9923a, #4a9e5c);
+          transition: width 0.4s ease;
+        "></div>
+      </div>
+      <div style="color: #e8b86d; font-size: 0.9rem; font-weight: 700; min-width: 40px; text-align: right;" id="bar-pct">0%</div>
+      <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; min-width: 50px;" id="bar-count">0 of 15</div>
+    </div>
 
     <!-- ONBOARDING BANNER — Day 1 only -->
     <div id="onboarding-banner" style="display:none;" class="phase-banner">
