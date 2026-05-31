@@ -141,7 +141,7 @@
   #app { background: var(--cream); flex-direction: column; }
 
   .app-header {
-    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 1.5rem 1.5rem 1.2rem;
+    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 1rem 1.5rem 0.8rem;
     color: var(--white);
   }
   .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
@@ -155,9 +155,7 @@
   .streak-num { font-size: 1.2rem; font-weight: 600; color: var(--gold-light); }
   .streak-label { font-size: 0.85rem; color: var(--gold-light); }
 
-  .progress-ring-wrap {
-    display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem;
-  }
+  .progress-ring-wrap { display: none; }
   .ring-container {
     position: relative; width: 200px; height: 200px;
     display: flex; align-items: center; justify-content: center;
@@ -175,7 +173,7 @@
   }
   .ring-pct { font-size: 2rem; font-weight: 800; color: var(--white); line-height: 1.2; }
   .ring-done { font-size: 0.95rem; color: rgba(255,255,255,0.7); }
-  .quote-wrap { padding: 0 1.5rem 1.5rem; }
+  .quote-wrap { padding: 0 1.5rem 0.8rem; }
   .quote {
     background: rgba(255,255,255,0.08); border-left: 3px solid var(--gold);
     border-radius: 0 8px 8px 0; padding: 0.8rem 1rem;
@@ -551,10 +549,8 @@
   .task-desc { font-size: 0.95rem; color: var(--text-mid); line-height: 1.65; }
   .task-desc .step {
     display: block;
-    padding: 0.4rem 0 0.4rem 0;
-    border-bottom: 1px solid rgba(212,196,168,0.3);
+    padding: 0.3rem 0 0.3rem 0;
   }
-  .task-desc .step:last-child { border-bottom: none; }
   .task-desc .step-label {
     font-weight: 700; color: var(--navy);
     font-size: 0.9rem; display: block;
@@ -771,6 +767,7 @@
         <div><div class="injury-label">Post-Surgery Recovery</div><div class="injury-sub">General surgical recovery</div></div>
       </div>
     </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:0.5rem 0 1rem;">
     <button class="injury-btn" id="injury-btn" disabled onclick="goToApp()">Start My Protocol →</button>
   </div>
 </div>
@@ -870,7 +867,7 @@
       </div>
       <div id="morning-done-badge" style="display:none; background:linear-gradient(135deg,#2d7a4f,#4a9e5c); color:#fff; padding:1rem 1.2rem; text-align:center; border-top: 1px solid rgba(255,255,255,0.1);">
         <div style="font-size:1.4rem; margin-bottom:4px;">🌅 Look at you. Not even lunchtime and you already won something today.</div>
-        <div style="font-size:0.9rem; opacity:0.9;">Your shoulder noticed. It just can't talk yet.</div>
+        <div style="font-size:0.9rem; opacity:0.9;">Your shoulder noticed. It just cannot talk yet.</div>
       </div>
     </div>
 
@@ -974,7 +971,7 @@
         </div>
       </div>
       <div id="evening-done-badge" style="display:none; background:linear-gradient(135deg,#1a4028,#2d6b45); color:#fff; padding:1rem 1.2rem; text-align:center; border-top: 1px solid rgba(255,255,255,0.1);">
-        <div style="font-size:1.4rem; margin-bottom:4px;">🌙 That's a full day. Every single item.</div>
+        <div style="font-size:1.4rem; margin-bottom:4px;">🌙 That is a full day. Every single item.</div>
         <div style="font-size:0.9rem; opacity:0.9;">Six months ago you were hoping it would just get better on its own. Look at you now. Same time tomorrow?</div>
       </div>
     </div>
@@ -1155,7 +1152,7 @@
         if (session.agreed && session.name && session.injury) {
           userName = session.name;
           selectedInjury = session.injury;
-          // Check if it's a new day and increment counter
+          // Check if it is a new day and increment counter
           const taskData = localStorage.getItem('hm_tasks');
           if (taskData) {
             const { date } = JSON.parse(taskData);
@@ -1468,7 +1465,9 @@
       if (isWhy) {
         return '<span class="why">' + chunk + '</span>';
       }
-      return '<span style="display:block;padding:4px 0;' + (i < chunks.length-1 ? 'border-bottom:1px solid rgba(212,196,168,0.25);margin-bottom:4px;' : '') + '">' + chunk + '</span>';
+      // Use bullet dot for all chunks except single chunk items
+      const bullet = chunks.length > 1 ? '<span style="color:var(--gold);margin-right:6px;">•</span>' : '';
+      return '<span style="display:block;padding:3px 0;">' + bullet + chunk + '</span>';
     }).join('');
   }
 
@@ -1494,7 +1493,7 @@
             ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat — eggs, avocado, olive oil. Both are fat-soluble and absorb poorly without fat. Curcumin reduces shoulder joint inflammation without gut damage. Your shoulder will not send you a thank you note. But it will stop waking you up at 3am, which is basically the same thing. D3 in the morning only — evening D3 disrupts the sleep where your shoulder does its best repair work.', 0],
           ],
           fuel: [
-            ['🥗 High-Protein Breakfast + Water', 'Eat 25–40g of protein with breakfast — eggs, Greek yogurt, cottage cheese, smoked salmon. Then drink 16oz of water before you do anything else. Your tendons are largely water. Your joint fluid is largely water. Dehydration slows healing in ways that are measurable, documented, and completely preventable. Feed your shoulder and hydrate it. Both. Before the day gets away from you.', 0],
+            ['🥗 High-Protein Breakfast + Water', 'Eat 25–40g of protein with breakfast. What does that actually look like? Three large eggs (18g) plus a cup of Greek yogurt (17g) = 35g. A cup of cottage cheese (25g) plus two eggs (12g) = 37g. Four ounces of smoked salmon (24g) plus two eggs (12g) = 36g. Two scrambled eggs (12g) plus a scoop of protein powder in milk (25g) = 37g. Pick one that sounds good to you. That is your target. Then drink 16oz of water before you do anything else. Your tendons are largely water. Your joint fluid is largely water. Dehydration slows healing in ways that are measurable, documented, and completely preventable. Feed your shoulder and hydrate it. Both. Before the day gets away from you.', 0],
           ],
         },
         midday: {
@@ -1507,7 +1506,7 @@
             ['💊 Fish Oil (2–3g EPA+DHA)', 'Take with lunch and food. EPA and DHA directly reduce the inflammatory compounds causing your shoulder to swell and hurt. The effect is cumulative — it builds over 6 or more weeks of consistent daily use. You will not feel one dose. You will absolutely feel thirty. Today is one of those thirty. Take it with food so it absorbs properly.', 0],
           ],
           fuel: [
-            ['🥗 Protein Lunch + Water + Vegetables', 'Eat 30–40g of protein at lunch — chicken, fish, eggs, legumes, Greek yogurt. Add colorful vegetables and a healthy fat (olive oil, avocado, nuts). Drink 20oz of water with this meal. Check your total protein for the day — aim for 130–160g. If you are behind, now is the time to catch up. Your rotator cuff tendons are literally made of protein. You cannot rebuild them without the raw material.', 0],
+            ['🥗 Protein Lunch + Water + Vegetables', 'Eat 30–40g of protein at lunch. Real numbers: a 5oz chicken breast — roughly the size of a deck of cards — is about 35g. A can of tuna is 25g. Half a can of sardines plus two hard-boiled eggs is 30g. A cup of Greek yogurt plus a handful of almonds is 25g. Pick one — that is the target. Add colorful vegetables and a healthy fat (olive oil, avocado, nuts). Drink 20oz of water with this meal. Check your total protein for the day — aim for 130–160g total — that is roughly four 30–35g protein servings through the day. Three large eggs = 18g. A can of tuna = 25g. A 5oz chicken breast = 35g. A cup of Greek yogurt = 17g. Mix and match to hit the target. If you are behind, catch up now. Your rotator cuff tendons are literally made of protein. You cannot rebuild them without the raw material.', 0],
           ],
         },
         evening: {
@@ -1520,7 +1519,7 @@
             ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate relaxes the muscles guarding the injured shoulder, reduces nighttime cramps, and dramatically improves deep sleep quality. Deep sleep is when your body releases the growth hormone that drives tissue repair. Most adults over 50 are deficient without knowing it. This is not a supplement. This is a recovery strategy. The glycinate form specifically — not oxide, not citrate — absorbs best and is gentlest on your stomach.', 0],
           ],
           fuel: [
-            ['🥗 Protein Dinner + Omega-3 Source', 'Eat 30–40g protein at dinner. Include an omega-3 food source — salmon, sardines, walnuts, or fish oil if you missed the midday dose. Check your total protein for the day — 130–160g is the target. If you hit it, your shoulder has everything it needs to repair tonight. If you did not, make a note and adjust tomorrow. Consistency over days and weeks is what heals injuries.', 0],
+            ['🥗 Protein Dinner + Omega-3 Source', 'Eat 30–40g protein at dinner. A 5oz salmon fillet is 35g and covers your omega-3 for the day — two birds, one fish. A chicken thigh plus a cup of Greek yogurt is 40g. A can of sardines on crackers with cottage cheese is 30g. Hit the protein and you are done for the day. Check your total protein for the day — 130–160g is the target for the day — roughly four 30–35g protein servings. A 5oz salmon fillet at dinner (35g) (35g) plus what you had earlier should get you there. If you hit it, your shoulder has everything it needs tonight. If you did not, make a note and adjust tomorrow. Consistency over days and weeks is what heals injuries.', 0],
           ],
           journal: [
             ['📓 Recovery Journal + Mindset Check', 'Rate your shoulder pain 1–10. Rate your range of motion 1–10 — how high can you raise your arm? Note one movement that felt better than yesterday. Sunday check-in: Is pain decreasing? Is range of motion improving? What is my biggest win this week? Then read this: tendons and connective tissue continue remodeling for 12–18 months after injury. Healing is not linear. Your job is not to heal overnight. Your job is to give your body what it needs today — which you just did — and trust the process.', 0],
@@ -1545,7 +1544,7 @@
             ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Same as Phase 1. With fat. In the morning. Consistent. You probably feel the difference by now — less morning stiffness, less 3am wake-ups. That is this working.', 0],
           ],
           fuel: [
-            ['🥗 High-Protein Breakfast + Water', 'Same targets — 25–40g protein, 16oz water. You are adding resistance work now so protein demand is slightly higher. If you have been hitting 130–160g daily, keep going. If you have been falling short, Phase 2 is the time to fix that.', 0],
+            ['🥗 High-Protein Breakfast + Water', 'Same targets — 25–40g protein at breakfast, 16oz water. Now that you are adding resistance work your muscles need it more than ever. Three large eggs (18g) plus a cup of Greek yogurt (17g) = 35g. Or a cup of cottage cheese (25g) plus two eggs (12g) = 37g. Pick your go-to and stick with it. If you have been hitting 130–160g daily, keep going. If not, Phase 2 is the time to fix that.', 0],
           ],
         },
         midday: {
@@ -1558,7 +1557,7 @@
             ['💊 Fish Oil (2–3g EPA+DHA)', 'Same as Phase 1. With lunch. Every day. You are 8+ days in now — the cumulative anti-inflammatory effect is building in your tissue. Keep it going.', 0],
           ],
           fuel: [
-            ['🥗 Protein Lunch + Water + Vegetables', 'Same targets. 30–40g protein, 20oz water, colorful vegetables, healthy fat. You know the drill. You have been doing it for a week. Your body knows the drill too.', 0],
+            ['🥗 Protein Lunch + Water + Vegetables', 'Same targets — 30–40g protein at lunch. A 5oz chicken breast (35g), a can of tuna (25g), a 5oz salmon fillet (35g), or two eggs (12g) plus a cup of cottage cheese (25g) = 37g. 20oz water, colorful vegetables, healthy fat. You know the drill by now. Your body knows it too.', 0],
           ],
         },
         evening: {
@@ -1569,7 +1568,7 @@
             ['Moist Heat — 15 Minutes', 'After all that work, your shoulder has earned this. 15 minutes, moist heat, before bed. Every night.', 900],
           ],
           supplements: [
-            ['💊 Magnesium Glycinate (300–400mg)', 'Same as Phase 1. Your muscles are working harder now — magnesium is more important, not less. Sleep quality is your recovery quality. Protect it.', 0],
+            ['💊 Magnesium Glycinate (300–400mg)', 'Same as Phase 1. Your muscles are working harder now. Hit 130–160g protein today — roughly 35g per meal. A salmon fillet at dinner covers protein and omega-3 in one shot. Magnesium is more important now too, not less. Sleep quality is your recovery quality. Protect it.', 0],
           ],
           fuel: [
             ['🥗 Protein Dinner + Omega-3 Source', 'Same targets. You added resistance work today. Your muscles need that protein tonight. Hit 130–160g for the day. Your shoulder is counting on it.', 0],
@@ -1624,7 +1623,7 @@
             ['💊 Magnesium Glycinate (300–400mg)', 'Same as always. You are sleeping better. That is this working. Keep going.', 0],
           ],
           fuel: [
-            ['🥗 Protein Dinner + Omega-3 Source', 'Hit 130–160g total today. You are doing meaningful strength work — your muscles need this tonight.', 0],
+            ['🥗 Protein Dinner + Omega-3 Source', 'Hit 130–160g total today — roughly four 30–35g protein servings spread through the day — breakfast, lunch, dinner, and one snack if needed. You are doing serious strength work now. A 5oz salmon fillet, a chicken breast, a cup of Greek yogurt — your muscles are counting on tonight&#39;s meal specifically.', 0],
           ],
           journal: [
             ['📓 Recovery Journal + Phase 3 Check-In', 'Rate pain 1–10. Rate range of motion 1–10. Compare to Day 1 and Day 8 — write both numbers down. The trajectory tells the story. Note which exercises challenged you today. Note what you can do now that you could not do on Day 1. Sunday: Is your range of motion approaching normal? Can you reach overhead? Behind your back? What would full recovery look like and how close are you? Write it down. You are getting there.', 0],
@@ -1660,7 +1659,7 @@
             ['💊 Fish Oil (2–3g EPA+DHA)', 'Every day. For life. This is not recovery anymore — this is inflammation management for a person over 50 who wants to stay active and mobile.', 0],
           ],
           fuel: [
-            ['🥗 Protein Lunch + Water', '30–40g protein. 20oz water. Same targets, same reasons. You know this by now.', 0],
+            ['🥗 Protein Lunch + Water', '30–40g protein at lunch — a 5oz chicken breast (35g), a can of tuna (25g), or a 5oz salmon fillet (35g). 20oz water. Same targets, same reasons. You know this by now.', 0],
           ],
         },
         evening: {
@@ -1672,7 +1671,7 @@
             ['💊 Magnesium Glycinate (300–400mg)', 'Every night. You sleep better with it. Your muscles recover better with it. This is just part of your evening now.', 0],
           ],
           fuel: [
-            ['🥗 Protein Dinner + Omega-3 Source', '30–40g protein. Omega-3 food source. 130–160g total for the day. This is not a recovery diet anymore. This is just how a person who wants to stay strong and mobile eats.', 0],
+            ['🥗 Protein Dinner + Omega-3 Source', '30–40g protein at dinner — a salmon fillet does double duty here, covering both protein and omega-3. Chicken thigh, eggs, sardines, Greek yogurt all work too. 130–160g total for the day. This is not a recovery diet anymore. This is just how a person who wants to stay strong and mobile eats.', 0],
           ],
           journal: [
             ['📓 Weekly Check-In', 'Once a week — Sunday works well. Rate pain (should be 0–2 by now). Rate range of motion (should be 8–10). Rate strength (can you do everything you could before the injury?). Note what you are doing now that you could not do on Day 1. Write it down. Read it back. That is the whole story of your recovery in one note. You did that.', 0],
@@ -1851,7 +1850,7 @@
     // Show on Day 1 always, or if user manually dismissed and comes back same day
     try {
       const dismissed = localStorage.getItem('hm_onboarded');
-      if (dismissed && day > 1) return; // dismissed and past Day 1 — don't show
+      if (dismissed && day > 1) return; // dismissed and past Day 1 — do not show
     } catch(e) {}
     if (day <= 1) banner.style.display = 'block';
   }
@@ -1918,7 +1917,7 @@
       m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. A 2014 study found curcumin as effective as ibuprofen for knee osteoarthritis pain — without the gut damage and without blocking the cartilage repair process that ibuprofen quietly interferes with. Look for a formula with black pepper (piperine) — increases absorption by 2000%. Vitamin D3 in the morning only — evening D3 can disrupt melatonin and the sleep where your knee does its best repair work.'],
       d1: ['Two Exercises That Build the Muscle Your Knee Needs Most', 'The quad is the primary protector of your knee joint. When it is weak the joint takes the punishment. Straight leg raise: lie on your back, non-injured knee bent, foot flat. Keep healing leg straight. Tighten quad as hard as you can, raise leg 12 inches, hold 3 sec, lower slowly. 3 sets of 10. Short arc quad: roll a towel under your healing knee at about 45°. Keeping your thigh still, slowly straighten lower leg to full extension. Hold 2 sec, lower slowly. 3 sets of 15. These two moves together are worth more than almost anything else you can do for a healing knee.'],
       d2: ['The One-Leg Stand — Your Knee Forgot How to Trust Itself', 'Stand at your kitchen counter. Rest your fingertips on the edge — just enough to catch yourself. Lift your non-injured foot just off the floor and balance on your healing leg with the knee slightly bent. Hold 20–30 sec. Here is something nobody tells you when you hurt your knee: it forgot how to trust itself. Every injury disrupts the nerve signals that tell the knee where it is in space. This exercise rebuilds that conversation. You are teaching your knee it is safe to be in charge again. Lunch: salmon, leafy greens, walnuts, berries, olive oil. Pass on nightshades — tomatoes, peppers, eggplant, potatoes — many knee patients notice they increase swelling.'],
-      d3: ['Your Cartilage Is Thirsty AND Hungry', 'Drink 20 oz of water right now. Here is the thing about knee cartilage that should make you put down whatever you are doing and pick up a glass: it has no blood supply. Zero. Not a little. None at all. It feeds itself entirely by absorbing fluid from the joint space around it — like a sponge being squeezed and released with every bend of your knee. That fluid is almost entirely water. When you are dehydrated the sponge has nothing to absorb. You could do every exercise perfectly and take every supplement on time and your cartilage would still be running on fumes without adequate hydration. Also check your protein today: aim for 130 to 160 grams total, with 30 to 40 at this meal. Your quad — the primary stabilizer and protector of your knee joint — is being rebuilt from protein right now. A lunch without protein is like sending the construction crew to work with no materials. Your cartilage needs the water. Your quad needs the protein. Today they are both your job.'],
+      d3: ['Your Cartilage Is Thirsty AND Hungry', 'Drink 20 oz of water right now. Here is the thing about knee cartilage that should make you put down whatever you are doing and pick up a glass: it has no blood supply. Zero. Not a little. None at all. It feeds itself entirely by absorbing fluid from the joint space around it — like a sponge being squeezed and released with every bend of your knee. That fluid is almost entirely water. When you are dehydrated the sponge has nothing to absorb. You could do every exercise perfectly and take every supplement on time and your cartilage would still be running on fumes without adequate hydration. Also check your protein today: aim for 130 to 160 grams total, with 30 to 40 at this meal. Your quad — the primary stabilizer and protector of your knee joint — is being rebuilt from protein right now. A lunch without protein is like sending the construction crew to work with no materials. A can of tuna (25g), a 5oz chicken breast (35g), three large eggs plus Greek yogurt (35g), or half a can of sardines with two hard-boiled eggs (28g) — any of these takes under five minutes and gets you there. Your cartilage needs the water. Your quad needs the protein. Today they are both your job.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. EPA and DHA directly reduce the specific inflammatory compounds that cause knee swelling, stiffness, and pain. Research shows consistent daily use over 6+ weeks measurably reduces joint stiffness and pain scores. The keyword is consistent. One dose does nothing. Thirty doses builds a measurable anti-inflammatory effect in your tissue. Today is one of those thirty. Take it with food and feel good about being a person who does the thing.'],
       d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen into a midday drink with Vitamin C. Your knee is held together by cartilage, tendons, and ligaments — all primarily made of collagen. Vitamin C is required to assemble collagen into usable tissue — without it the collagen you take just passes through. The two must go together. Taken daily and consistently this combination is one of the most research-supported nutritional tools for joint recovery.'],
       e1: ['Two Stretches Your Knee Has Been Waiting For All Day', 'Hamstring: sit on edge of firm chair, healing leg straight out, heel on floor, toes up. Sit tall, lean chest forward from hips — do not round your back — until you feel a pull along the back of your thigh. Hold 30 sec, switch. Calf stretch: stand at wall, healing leg straight back, press heel firmly into floor, front knee slightly bent. Hold 30 sec. Tight hamstrings and calves pull directly on the knee from above and below. Every step today tugged on both. Releasing them tonight is the difference between waking up stiff and waking up like a person who took care of themselves yesterday. Which you did.'],
@@ -1935,7 +1934,7 @@
       m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat — eggs, avocado, olive oil. Both are fat-soluble and absorb poorly without fat in the same meal. Curcumin reduces hip joint inflammation without gut damage or interference with healing. Especially valuable for bursitis and post-replacement inflammation. Add black pepper or a formula with piperine — increases absorption by 2000%. Vitamin D3 in the morning only — evening D3 can interfere with melatonin and disrupt the sleep your hip needs for repair.'],
       d1: ['Clamshells — The Exercise That Looks Easy and Is Not', 'Lie on your non-injured side. Stack your hips directly on top of each other — this is the key and most people get it wrong. Bend both knees to about 45° with feet stacked together. Place your top hand on your hip to feel whether it rolls back. It will want to. Do not let it. Without rolling your top hip backward at all, slowly lift your top knee toward the ceiling as high as you can. Hold 2 sec at the top. Lower slowly. 3 sets of 15. There is a muscle on the side of your hip that has been quietly failing you — possibly for years. It is called the gluteus medius. It is small. It looks unimpressive. And it is the reason your hip hurts every time you walk, because when it is weak your entire pelvis tilts with every step. These sets of 15 are the two of you getting formally introduced. Give it two weeks.'],
       d2: ['The Healing Walk — Same Distance, Completely Different Purpose', 'Walk 5–10 minutes with intention. Focus on striking the floor evenly with both feet. Upright posture — head up, shoulders relaxed. A stride length that feels symmetrical. Most people recovering from hip injuries unconsciously develop a compensating gait — they shift weight away from the healing side, shorten their stride, hitch the hip with every step. These patterns feel protective and become structural problems over time. You are training your hip to move normally again. Every intentional step counts. Lunch: fatty fish, leafy greens, olive oil, avocado, berries. You get to vote on your recovery three times a day. Make it count.'],
-      d3: ['Water + Protein — Your Hip Is Thirsty AND Hungry', 'Drink 20 oz of water right now. Your hip joint capsule needs hydration to stay lubricated and every healing tissue around it needs water to function at all. Also check your protein: aim for 130 to 160 grams total today with 30 to 40 at this meal. Most people over 50 are significantly under-eating protein — not a little under, significantly. And the hip joint capsule, the gluteus medius you are rebuilding with those clamshells, the tendons and surrounding muscles — all of it is being reconstructed from protein right now. A carb-heavy lunch is like hiring a construction crew and forgetting to order the building materials. The crew shows up, looks around, shrugs, and goes home. Also confirm creatine is in today — it directly powers the cellular energy needed for the muscle tissue repair your hip stabilizers depend on. Your body has been doing its best with whatever you give it. Today you are giving it what it actually needs. That changes things.'],
+      d3: ['Water + Protein — Your Hip Is Thirsty AND Hungry', 'Drink 20 oz of water right now. Your hip joint capsule needs hydration to stay lubricated and every healing tissue around it needs water to function at all. Also check your protein: aim for 130–160g total today — roughly 4–5 protein servings of 30–40g each spread across meals. At this meal: a 5oz chicken breast (35g), a can of tuna (25g), half a can of sardines (15g) plus two large eggs (12g) = 27g, or a cup of Greek yogurt (17g) plus a scoop of protein powder (25g) = 42g. Most people over 50 are significantly under-eating protein — not a little under, significantly. And the hip joint capsule, the gluteus medius you are rebuilding with those clamshells, the tendons and surrounding muscles — all of it is being reconstructed from protein right now. A carb-heavy lunch is like hiring a construction crew and forgetting to order the building materials. The crew shows up, looks around, shrugs, and goes home. A can of tuna on the side fixes this (25g). Two large hard-boiled eggs fixes part of it (12g) — add a cup of Greek yogurt and you are at 29g. A 5oz chicken breast fixes it entirely (35g). It does not have to be complicated. Also confirm creatine is in today — it directly powers the cellular energy needed for the muscle tissue repair your hip stabilizers depend on. Your body has been doing its best with whatever you give it. Today you are giving it what it actually needs. That changes things.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. EPA and DHA directly reduce the inflammatory cytokines causing hip joint swelling, pain, and stiffness. For bursitis and post-surgical hip inflammation, fish oil is one of the most evidence-supported natural interventions available. The effect builds like interest in a savings account — slowly, invisibly, and then all at once. One dose per day. That is the whole investment.'],
       d5: ['🥗 What You Eat Today Is Either Helping or Hurting — Pick a Side', 'Your team: salmon, sardines, walnuts, spinach, kale, olive oil, eggs, berries, sweet potato, avocado. The other team: canola oil, soybean oil, corn oil, sugar, alcohol, anything in a package with more than five ingredients. You do not have to be perfect. But you do get to choose — three times a day — which side your meal is playing for. That is more power over your recovery than most people realize they have.'],
       e1: ['Piriformis Stretch — The One That Goes Straight to the Source', 'Lie flat on your back, both knees bent, feet flat. Cross your healing leg so the ankle rests on top of your opposite thigh just above the knee — your legs form a figure-4 shape. Flex the foot of your crossed leg to protect your knee. For gentle: press the crossed knee away from you. For deeper: interlace your hands behind the lower thigh and slowly draw that leg toward your chest until you feel a deep stretch in the back of the hip and glute. Hold 30 sec, switch sides. The piriformis sits directly over the sciatic nerve. When it is tight — and after a full day on your feet it almost always is — it compresses the nerve and creates that deep aching glute pain. Releasing it every evening is one of the highest-return things you can do for this injury.'],
@@ -1952,7 +1951,7 @@
       m5: ['💊 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. Both are fat-soluble — without fat in the same meal they absorb poorly. Curcumin blocks the inflammatory signals that irritate spinal nerves and compress discs. Add black pepper (piperine) for 2000% better absorption. That is not a typo. Two thousand percent. Vitamin D3 in the morning only — evening D3 can interfere with melatonin and disrupt the sleep where your spine does its repair work. Low D3 is directly linked to chronic lower back pain, disc degeneration, and the kind of stiffness that never fully goes away.'],
       d1: ['Bird Dog + Glute Bridges — The Two Exercises That Actually Fix Back Pain', 'Most people treat back pain by resting the back. The research says the opposite. Bird dog: hands and knees, wrists under shoulders, knees under hips, back flat like a table. Tighten your core gently — not a crunch, just a brace. Slowly extend your right arm forward while simultaneously extending your left leg straight back, both parallel to the floor. Do not rotate your hips. Hold 5 sec, return slowly. 10 reps each side. This builds the deep stabilizers that protect your spine with every movement you make. Glute bridge: on your back, knees bent at 90°, feet flat. Press through your heels, squeeze your glutes — really squeeze — and lift your hips until your body forms a straight line from shoulders to knees. Hold 3 sec, lower slowly. 10 reps. Weak glutes are behind more back pain than almost any other single factor. Nobody tells you that either.'],
       d2: ['The Wall Test — and What It Reveals About Your Back', 'Find a wall. Stand with your back against it, heels about 2 inches out. Try to flatten your lower back against the wall. Can you do it easily? With effort? Not at all? Whatever you find is important information about the tension patterns driving your pain. Hold the flattened position for 30 sec. Do this 3 times today. Prolonged sitting compresses your spinal discs by up to 40% more than standing and weakens the muscles that hold you upright at the same time. Every time you do this wall reset you are undoing a little of that damage. Lunch: leafy greens, fatty fish, olive oil, avocado, berries. Skip sugar, alcohol, white bread, and processed foods — all directly increase spinal inflammation.'],
-      d3: ['Your Discs Are Thirsty And Your Spine Muscles Are Hungry', 'Drink 20 or more ounces of water right now. Spinal discs have no blood supply of their own — they feed themselves by absorbing fluid from surrounding tissue through the compression and release of movement. When you are dehydrated those discs compress more under the load of your own body weight and the result is more pain, more stiffness, and slower healing. Every single time without exception. Aim for 2 to 3 liters total today. This is one of the highest-return, lowest-cost things you can do for your back and almost nobody does it consistently. Be the exception. Also check your protein: aim for 130 to 160 grams today with 30 to 40 at this meal. The bird dog and glute bridge you did this morning are actively rebuilding the core and glute muscles that protect your spine — and those muscles are made entirely of protein. A carb-heavy lunch is the nutritional equivalent of trying to build a house with no lumber. Your discs need the water. Your spine muscles need the protein. Give them both.'],
+      d3: ['Your Discs Are Thirsty And Your Spine Muscles Are Hungry', 'Drink 20 or more ounces of water right now. Spinal discs have no blood supply of their own — they feed themselves by absorbing fluid from surrounding tissue through the compression and release of movement. When you are dehydrated those discs compress more under the load of your own body weight and the result is more pain, more stiffness, and slower healing. Every single time without exception. Aim for 2 to 3 liters total today. This is one of the highest-return, lowest-cost things you can do for your back and almost nobody does it consistently. Be the exception. Also check your protein: aim for 130 to 160 grams today with 30 to 40 at this meal. The bird dog and glute bridge you did this morning are actively rebuilding the core and glute muscles that protect your spine — and those muscles are made entirely of protein. A carb-heavy lunch is the nutritional equivalent of trying to build a house with no lumber. Fix it easily: Add a can of tuna (25g), three large hard-boiled eggs (18g), a cup of Greek yogurt (17g), or a 5oz chicken breast (35g) to whatever you are already eating. Your discs need the water. Your spine muscles need the protein. Give them both.'],
       d4: ['💊 Fish Oil / Omega-3 (2–3g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids have a specific and well-documented effect on spinal inflammation — they reduce the compounds that irritate nerve roots, squeeze discs, and create the kind of radiating pain that travels down your leg. Multiple studies show consistent fish oil use reduces both disc inflammation and nerve pain over 6+ weeks of daily use. The word there is consistent. One dose does nothing. Thirty doses builds a measurable anti-inflammatory effect in your tissues. Today is one of those thirty.'],
       d5: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen into a midday drink with Vitamin C. Spinal discs, the ligaments holding your vertebrae together, and the connective tissue supporting your entire spine are all largely made of collagen. Vitamin C is the co-factor your body requires to assemble collagen into new tissue — without it the collagen passes through. One important note: avoid long-term ibuprofen and naproxen if you can. NSAIDs block the prostaglandins your body needs to repair disc tissue. They manage the pain while quietly slowing the healing. You have better tools now.'],
       e1: ["Child's Pose + Supine Twist — The Best Two Minutes of Your Day", "Child's pose: kneel on a soft surface and sit your hips back toward your heels. Reach both arms straight out in front of you, palms flat, forehead resting on the floor or a pillow. Breathe slowly and deeply into your lower back and ribs. Feel your entire back expand with each inhale. Hold 60 sec. This position decompresses every single lumbar vertebra simultaneously. No machine in any gym does what this does. Supine twist: lie on your back, both knees bent, arms out in a T shape, palms down. Keeping your knees together, let them fall slowly to one side. Your opposite shoulder stays flat. Hold 30 sec. Bring knees back to center. Other side. The day is almost done. You showed up. These two moves are how you close the loop."],
@@ -1969,7 +1968,7 @@
       m5: ['💊 Turmeric / Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. Post-surgical inflammation is necessary for healing but often becomes excessive — curcumin modulates inflammation to the right level without shutting it down completely the way NSAIDs do. NSAIDs after surgery can actually impair bone and tissue healing. Vitamin D3 in the morning only — evening D3 can interfere with melatonin and disrupt the sleep where your body does its most intensive repair.'],
       d1: ['PT Prescribed Exercises — Every Single One, Every Single Day', 'Complete every exercise your physical therapist has assigned — exactly as prescribed, in the exact order, for the exact number of reps. Do not skip exercises that seem too easy. Do not add exercises that seem helpful. Your PT has sequenced your program deliberately. Pain-free movement only: a 2–3 out of 10 discomfort is acceptable, anything above a 4 means stop and call your PT. Controlled slow movement recruits more muscle fibers and builds more strength than fast sloppy reps. Slow is not weak. Slow is the whole point.'],
       d2: ['Recovery Walk + Posture Check', 'Walk 5–10 minutes at a comfortable unhurried pace. Walking is one of the most powerful post-surgical recovery tools available — it promotes circulation, prevents blood clots, reduces stiffness, and supports lymphatic drainage. Focus on your posture as you walk: head up, shoulders back and relaxed, core gently engaged. After surgery many people unconsciously guard the surgical area by hunching or limping — this creates secondary pain in the back, hips, and shoulders. Walk tall, even if slowly. You earned the right to take up space on this sidewalk.'],
-      d3: ['Drink 20 oz Water + Hit Your Protein Target', 'Drink 20 oz water now — anesthesia and pain medications are dehydrating, and most post-surgical patients are chronically under-hydrated. Also check your protein: aim for 130–160g total today with 30–40g at this meal. Protein is the literal raw material for every tissue being repaired right now — muscle, tendon, ligament, fascia, skin. Most people over 50 significantly under-eat protein, which is one of the leading causes of slow post-surgical recovery. Also confirm you took your creatine this morning — it directly supports the cellular energy needed for surgical tissue repair.'],
+      d3: ['Drink 20 oz Water + Hit Your Protein Target', 'Drink 20 oz water now — anesthesia and pain medications are dehydrating, and most post-surgical patients are chronically under-hydrated. Also check your protein: aim for 130–160g total today — roughly four 30–35g protein servings. At this meal: a 5oz chicken breast (35g), a can of tuna (25g), three large eggs plus Greek yogurt (35g). Protein is the literal raw material for every tissue being repaired right now — muscle, tendon, ligament, fascia, skin. Most people over 50 significantly under-eat protein, which is one of the leading causes of slow post-surgical recovery. Also confirm you took your creatine this morning — it directly supports the cellular energy needed for surgical tissue repair.'],
       d4: ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen powder into a midday drink with Vitamin C. Every internal tissue being repaired after surgery — tendons, ligaments, joint capsule, muscle fascia, skin — is largely collagen. Vitamin C is the essential co-factor your body needs to actually assemble collagen peptides into new tissue. Without it the collagen you consume cannot be built into usable repair material. Taken consistently every day this combination is one of the most evidence-based nutritional interventions for post-surgical recovery.'],
       d5: ['🥗 Eat to Heal', 'Eat: wild salmon, chicken, eggs, leafy greens, sweet potato, berries, olive oil, avocado, walnuts. Avoid: sugar, white bread, processed snacks, fried foods, alcohol, and processed seed oils. Every meal is either accelerating or delaying your recovery. The choice is yours three times a day.'],
       e1: ['Evening Gentle Stretch', 'Perform only the stretches your PT has specifically cleared for this stage of your recovery. For each stretch: move slowly to the point of gentle tension, never pain. Hold 20–30 sec while breathing slowly. The goal of evening stretching is to release the muscle guarding that builds through the day and improve circulation to the healing tissue overnight.'],
