@@ -547,6 +547,98 @@
   }
   .badge-content { position: relative; }
 
+
+  /* TASK DESCRIPTION FORMATTING */
+  .task-desc { font-size: 0.95rem; color: var(--text-mid); line-height: 1.65; }
+  .task-desc .step {
+    display: block;
+    padding: 0.4rem 0 0.4rem 0;
+    border-bottom: 1px solid rgba(212,196,168,0.3);
+  }
+  .task-desc .step:last-child { border-bottom: none; }
+  .task-desc .step-label {
+    font-weight: 700; color: var(--navy);
+    font-size: 0.9rem; display: block;
+    margin-bottom: 2px;
+  }
+  .task-desc .why {
+    display: block; margin-top: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    background: rgba(201,146,58,0.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    font-style: italic; font-size: 0.9rem;
+    color: var(--text-mid);
+  }
+  .task-desc .supplement-row {
+    display: flex; align-items: flex-start;
+    gap: 8px; padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(212,196,168,0.2);
+  }
+  .task-desc .supplement-row:last-child { border-bottom: none; }
+  .task-desc .pill {
+    background: var(--gold-pale); border: 1px solid var(--gold);
+    border-radius: 20px; padding: 2px 8px;
+    font-size: 0.8rem; font-weight: 600; color: var(--navy);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  body.dark .task-desc .step { border-color: rgba(255,255,255,0.1); }
+  body.dark .task-desc .step-label { color: #e8b86d; }
+  body.dark .task-desc .why { background: rgba(201,146,58,0.15); border-color: #c9923a; }
+  body.dark .task-desc .pill { background: rgba(201,146,58,0.2); border-color: #c9923a; color: #e8b86d; }
+
+
+  /* PHASE SYSTEM */
+  .phase-banner {
+    background: linear-gradient(135deg, #1a4028, #2d6b45);
+    border-radius: var(--radius); padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem; position: relative; overflow: hidden;
+  }
+  .phase-banner::before {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: rgba(201,146,58,0.1);
+  }
+  .phase-banner h3 { color: #e8b86d; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.3rem; }
+  .phase-banner p { color: rgba(255,255,255,0.85); font-size: 0.9rem; line-height: 1.5; }
+  .phase-banner .phase-close {
+    position: absolute; top: 0.8rem; right: 0.8rem;
+    background: rgba(255,255,255,0.15); border: none; color: white;
+    border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
+    font-size: 0.9rem; display: flex; align-items: center; justify-content: center;
+  }
+  .phase-timeline {
+    display: flex; gap: 6px; margin-top: 0.8rem; flex-wrap: wrap;
+  }
+  .phase-pill {
+    padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+    border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6);
+  }
+  .phase-pill.current {
+    background: #c9923a; border-color: #c9923a; color: white;
+  }
+  .phase-pill.locked { opacity: 0.5; }
+
+  /* CATEGORY SUB-HEADERS */
+  .cat-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0.6rem 1.2rem 0.4rem;
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    font-size: 0.8rem; font-weight: 700; color: var(--text-light);
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  body.dark .cat-header { background: #122615; color: rgba(255,255,255,0.5); }
+
+  /* PHASE UNLOCK CELEBRATION */
+  .phase-unlock-banner {
+    display: none; background: linear-gradient(135deg, #c9923a, #e8b86d);
+    border-radius: var(--radius); padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem; text-align: center;
+    animation: fadeZoom 0.5s ease-out;
+  }
+  .phase-unlock-banner h3 { color: white; font-size: 1.2rem; font-weight: 800; }
+  .phase-unlock-banner p { color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-top: 0.3rem; }
+
 </style>
 </head>
 <body>
@@ -1231,6 +1323,533 @@
     }
   }
 
+
+  // ── FORMAT TASK DESCRIPTIONS ──────────────────────────────────────────
+  function formatDesc(text, key) {
+    // Supplement items (m4, m5, d4, d5, e3, e4) — pill style
+    const isSupp = key === 'supplements' || ['m4','m5','d4','d5','e3','e4'].includes(key);
+    if (isSupp) return formatSupplement(text);
+
+    // Multi-exercise items — split on numbered steps or First/Second/Third
+    if (text.includes('First:') || text.includes('Second:') || text.includes('Move 1') || text.includes('Move 2')) {
+      return formatSteps(text);
+    }
+
+    // Everything else — split into readable paragraphs on sentence breaks
+    return formatParagraphs(text);
+  }
+
+  function formatSupplement(text) {
+    // Split on periods for supplement descriptions — each fact gets its own line
+    const sentences = text.split(/(?<=\.\s)/);
+    if (sentences.length <= 2) return '<span>' + text + '</span>';
+    
+    // First sentence is the "take this" instruction — bold it
+    const intro = sentences[0];
+    const rest = sentences.slice(1);
+    
+    // Find the science/why sentences vs instructions
+    const whyIdx = rest.findIndex(s => 
+      s.includes('study') || s.includes('research') || s.includes('shown') || 
+      s.includes('because') || s.includes('without') || s.includes('absorb')
+    );
+    
+    let html = '<strong style="color:var(--navy);display:block;margin-bottom:6px;">' + intro + '</strong>';
+    
+    rest.forEach((s, i) => {
+      if (!s.trim()) return;
+      if (i === whyIdx || s.includes('study') || s.includes('research') || s.includes('shown')) {
+        html += '<span class="why">' + s.trim() + '</span>';
+      } else {
+        html += '<span style="display:block;padding:3px 0;font-size:0.9rem;">' + s.trim() + '</span>';
+      }
+    });
+    return html;
+  }
+
+  function formatSteps(text) {
+    // Split on First:, Second:, Third: markers
+    const parts = text.split(/(First:|Second:|Third:|Fourth:|Step 1:|Step 2:|Step 3:)/);
+    if (parts.length <= 1) return formatParagraphs(text);
+    
+    let html = '';
+    // Intro text before first step
+    if (parts[0].trim()) {
+      html += '<span style="display:block;margin-bottom:8px;">' + parts[0].trim() + '</span>';
+    }
+    
+    for (let i = 1; i < parts.length; i += 2) {
+      const label = parts[i];
+      const stepText = parts[i+1] ? parts[i+1].trim() : '';
+      
+      // Find the end of the step instructions vs the why
+      const sentences = stepText.split(/(?<=\.\s)/);
+      const whySentences = [];
+      const doSentences = [];
+      
+      sentences.forEach(s => {
+        if (s.includes('This ') || s.includes('retrains') || s.includes('because') || s.includes('targets') || s.includes('responsible')) {
+          whySentences.push(s);
+        } else {
+          doSentences.push(s);
+        }
+      });
+      
+      html += '<div class="step">';
+      html += '<span class="step-label">' + label + '</span>';
+      html += '<span>' + doSentences.join(' ').trim() + '</span>';
+      if (whySentences.length > 0) {
+        html += '<span class="why">' + whySentences.join(' ').trim() + '</span>';
+      }
+      html += '</div>';
+    }
+    return html;
+  }
+
+  function formatParagraphs(text) {
+    // Split long text into digestible chunks
+    // Break on double sentences at natural pause points
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+    
+    if (sentences.length <= 3) return '<span>' + text + '</span>';
+    
+    // Group into chunks of 2-3 sentences
+    const chunks = [];
+    let current = [];
+    
+    sentences.forEach((s, i) => {
+      current.push(s.trim());
+      // Break after every 2-3 sentences or at natural transitions
+      const isTransition = s.includes('Also') || s.includes('Now') || 
+                          s.includes('Here is') || s.includes('And ') ||
+                          s.includes('Sunday');
+      if (current.length >= 2 && (isTransition || current.length >= 3)) {
+        chunks.push(current.join(' '));
+        current = [];
+      }
+    });
+    if (current.length > 0) chunks.push(current.join(' '));
+    
+    // Last chunk gets the "why" treatment if it starts with explanatory words
+    return chunks.map((chunk, i) => {
+      const isWhy = chunk.startsWith('Here is') || chunk.startsWith('This is') || 
+                    chunk.startsWith('That is') || chunk.startsWith('Your brain') ||
+                    chunk.startsWith('Sunday');
+      if (isWhy) {
+        return '<span class="why">' + chunk + '</span>';
+      }
+      return '<span style="display:block;padding:4px 0;' + (i < chunks.length-1 ? 'border-bottom:1px solid rgba(212,196,168,0.25);margin-bottom:4px;' : '') + '">' + chunk + '</span>';
+    }).join('');
+  }
+
+
+  // ── PHASE SYSTEM ──────────────────────────────────────────────────────────
+  const PHASES = {
+    shoulder: [
+      {
+        phase: 1,
+        days: '1–7',
+        title: 'Wake It Up',
+        tagline: 'Gentle but purposeful. Build the habit. Control inflammation. Start healing.',
+        morning: {
+          movement: [
+            ['Pendulum Swings', 'Stand next to a table or chair. Lean forward from your hips and rest your good arm on the surface. Let your injured arm hang straight down — completely relaxed. Like a wet noodle. Like you forgot it was attached to you. Make slow small circles: 10 clockwise, 10 counterclockwise. Let gravity do the work — never swing or force it. This is a spa day for your rotator cuff. You earned it.', 120],
+            ['Doorway Chest Stretch', 'Pick a doorway. Any doorway. Your house just became a physical therapy clinic — no copay required. Place your forearm flat against the frame, elbow at 90°, upper arm parallel to the floor. Step forward until you feel a gentle stretch across your chest and the front of your shoulder. Not pain — stretch. Hold 30 sec each side. The muscle you are releasing is the pec minor. It is tight in almost every shoulder patient and almost nobody talks about it. Now you know.', 60],
+            ['Gentle Neck and Upper Trap Stretch', 'Sit tall in a chair. Drop your right ear toward your right shoulder — slowly, no forcing. Reach your right hand over your head and rest it gently on your left temple, adding a little weight. Hold 20 sec. Switch sides. Then chin to chest, hold 20 sec. Your neck and upper traps have been guarding your shoulder since the injury. They need this. Every morning.', 60],
+            ['Morning Walk — 10 to 15 Minutes', 'Put on shoes and go outside. Walk at a comfortable pace with your head up, shoulders relaxed, and both arms swinging naturally. Not a power walk. Not a shuffle. A real walk. This is the most underrated recovery tool in this entire protocol and it costs exactly nothing. It increases circulation to the healing tissue, reduces inflammation systemically, and starts your day with a win before 9am.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen (10g) + Vitamin C (500mg)', 'Take both with breakfast. Collagen is the raw lumber your body uses to rebuild your rotator cuff tendons. Vitamin C is the carpenter who shows up and assembles it into new tissue — without Vitamin C the lumber just sits in the yard. Morning is ideal because tendon repair runs hottest in the first half of the day. This is breakfast for your shoulder.', 0],
+            ['💊 Creatine (3–5g)', 'Take with breakfast. Most people think creatine is for people who want bigger biceps. It is not only that. Creatine is cellular energy currency — it fuels the repair process itself, accelerates tissue healing, reduces inflammation, and helps rebuild the supporting muscles around your shoulder. Think of it as powering the whole construction crew. Take it every morning without fail.', 0],
+            ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat — eggs, avocado, olive oil. Both are fat-soluble and absorb poorly without fat. Curcumin reduces shoulder joint inflammation without gut damage. Your shoulder will not send you a thank you note. But it will stop waking you up at 3am, which is basically the same thing. D3 in the morning only — evening D3 disrupts the sleep where your shoulder does its best repair work.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast + Water', 'Eat 25–40g of protein with breakfast — eggs, Greek yogurt, cottage cheese, smoked salmon. Then drink 16oz of water before you do anything else. Your tendons are largely water. Your joint fluid is largely water. Dehydration slows healing in ways that are measurable, documented, and completely preventable. Feed your shoulder and hydrate it. Both. Before the day gets away from you.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['Posture Reset — Wall Stand', 'Find a wall. Stand with your back against it, heels 2 inches out. Try to flatten your lower back and the back of your head against the wall simultaneously. Shoulders relaxed — not pinched back, not hunched forward. Hold 30 sec. Do this 3 times. This is not just posture work. Most shoulder impingement is driven by how you carry yourself. This one habit — three times a day — changes the mechanical environment your healing shoulder lives in.', 90],
+            ['Scapular Retractions — No Equipment', 'Sit or stand tall. Without shrugging, squeeze your shoulder blades toward each other, then slide them gently downward — like tucking them into your back pockets. Hold 5 sec, fully release. 10 reps. Feels like nothing. Does a lot. This retrains the lower trapezius — the muscle responsible for keeping your shoulder blade in its proper position. In Phase 2 we add a resistance band. For now, just get the movement pattern right.', 0],
+            ['Midday Walk — 10 Minutes', 'Another walk. Yes, another one. Consistent movement throughout the day keeps circulation flowing to your healing tissue. This one does not have to be long. Around the block. Down the hall and back. Ten minutes of upright movement with both arms swinging. Your shoulder is paying attention.', 0],
+          ],
+          supplements: [
+            ['💊 Fish Oil (2–3g EPA+DHA)', 'Take with lunch and food. EPA and DHA directly reduce the inflammatory compounds causing your shoulder to swell and hurt. The effect is cumulative — it builds over 6 or more weeks of consistent daily use. You will not feel one dose. You will absolutely feel thirty. Today is one of those thirty. Take it with food so it absorbs properly.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Water + Vegetables', 'Eat 30–40g of protein at lunch — chicken, fish, eggs, legumes, Greek yogurt. Add colorful vegetables and a healthy fat (olive oil, avocado, nuts). Drink 20oz of water with this meal. Check your total protein for the day — aim for 130–160g. If you are behind, now is the time to catch up. Your rotator cuff tendons are literally made of protein. You cannot rebuild them without the raw material.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Cross-Body Shoulder Stretch', 'Use your good arm to gently pull your injured arm across your chest at shoulder height. Hold 30 sec. Switch sides. You should feel a stretch in the back of the shoulder — not pain. If it hurts, ease off. This releases posterior shoulder tightness that is present in nearly every rotator cuff case and limits your range of motion more than almost anything else.', 60],
+            ['Sleeper Stretch', 'Lie on your healing shoulder with your upper arm flat against the bed and your forearm pointing to the ceiling, elbow at 90°. Use your other hand to gently press that forearm toward the mattress. Hold 20 sec. Never force it. This looks ridiculous and works beautifully. The sleeper stretch specifically targets posterior shoulder capsule tightness — the single most common mechanical restriction in rotator cuff recovery.', 60],
+            ['Moist Heat — 15 Minutes', 'Take a damp warm towel or heating pad with a moist cloth and put it on your shoulder for 15 minutes before bed. Moist heat penetrates deeper than dry heat, relaxes the muscle guarding that built up all day, and improves circulation to the tendon while you sleep. Think of it as tucking your shoulder in for the night. It has had a big day.', 900],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 min before bed. Magnesium glycinate relaxes the muscles guarding the injured shoulder, reduces nighttime cramps, and dramatically improves deep sleep quality. Deep sleep is when your body releases the growth hormone that drives tissue repair. Most adults over 50 are deficient without knowing it. This is not a supplement. This is a recovery strategy. The glycinate form specifically — not oxide, not citrate — absorbs best and is gentlest on your stomach.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', 'Eat 30–40g protein at dinner. Include an omega-3 food source — salmon, sardines, walnuts, or fish oil if you missed the midday dose. Check your total protein for the day — 130–160g is the target. If you hit it, your shoulder has everything it needs to repair tonight. If you did not, make a note and adjust tomorrow. Consistency over days and weeks is what heals injuries.', 0],
+          ],
+          journal: [
+            ['📓 Recovery Journal + Mindset Check', 'Rate your shoulder pain 1–10. Rate your range of motion 1–10 — how high can you raise your arm? Note one movement that felt better than yesterday. Sunday check-in: Is pain decreasing? Is range of motion improving? What is my biggest win this week? Then read this: tendons and connective tissue continue remodeling for 12–18 months after injury. Healing is not linear. Your job is not to heal overnight. Your job is to give your body what it needs today — which you just did — and trust the process.', 0],
+          ],
+        },
+      },
+      {
+        phase: 2,
+        days: '8–21',
+        title: 'Start Building',
+        tagline: 'Add resistance. Strengthen the stabilizers. The real work begins.',
+        morning: {
+          movement: [
+            ['Pendulum Swings', 'Your warm-up stays — it always will. Stand next to a table, lean forward, let the arm hang completely relaxed. 10 slow circles clockwise, 10 counterclockwise. Bigger circles now if you can do it pain-free. Your range of motion should be noticeably better than Week 1. Notice that.', 120],
+            ['Wall Slides', 'Stand with your back flat against a wall, elbows bent at 90° and pressed against the wall like you are being held up in a Western. Slowly slide both arms up the wall as high as you can while keeping your elbows and wrists touching the wall the entire time. Slide back down. 10 slow reps. This retrains your shoulder blade to move the way it was designed to move — which it has probably forgotten how to do. Welcome to Phase 2.', 0],
+            ['Doorway Chest Stretch', 'Same as Phase 1 — forearm on frame, step through, 30 sec each side. Your pec minor is more cooperative now. Go slightly deeper if it feels right.', 60],
+            ['Morning Walk — 15 to 20 Minutes', 'Longer now. Same upright posture, same natural arm swing. If you have been consistent all week this walk is easier than Day 1. That is not a coincidence. That is your body responding to the work.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen (10g) + Vitamin C (500mg)', 'Same as Phase 1. Every morning. Non-negotiable. Your tendons are still rebuilding and will be for months. This combination is the foundation of that process.', 0],
+            ['💊 Creatine (3–5g)', 'Same as Phase 1. Now that you are adding resistance work, creatine is supporting both the healing AND the strength rebuild. Double duty. Take it every morning.', 0],
+            ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Same as Phase 1. With fat. In the morning. Consistent. You probably feel the difference by now — less morning stiffness, less 3am wake-ups. That is this working.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast + Water', 'Same targets — 25–40g protein, 16oz water. You are adding resistance work now so protein demand is slightly higher. If you have been hitting 130–160g daily, keep going. If you have been falling short, Phase 2 is the time to fix that.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['Resistance Band External Rotations', 'Anchor a light resistance band at elbow height. Stand facing it. Bend your elbow at 90° and pin it firmly against your side — keep it there throughout. Hold the band with your injured hand. Slowly rotate your forearm outward, keeping your elbow glued to your side — then slowly return. 3 sets of 15, slow and controlled. This targets the infraspinatus and teres minor — the exact muscles most responsible for shoulder stability and most likely the ones that got you here. You are fixing the original problem. That deserves a moment of appreciation.', 0],
+            ['Scapular Retractions with Band', 'Same movement as Phase 1 but now with a light resistance band anchored in front of you at chest height. Hold with both hands, arms extended. Squeeze shoulder blades together and back — hold 3 sec — return. 3 sets of 15. Adding resistance changes everything. Your lower trap is finally getting what it needs.', 0],
+            ['Midday Walk — 15 Minutes', 'Keep walking. Every day. Your cardiovascular system is your healing system. Walking keeps it working.', 0],
+          ],
+          supplements: [
+            ['💊 Fish Oil (2–3g EPA+DHA)', 'Same as Phase 1. With lunch. Every day. You are 8+ days in now — the cumulative anti-inflammatory effect is building in your tissue. Keep it going.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Water + Vegetables', 'Same targets. 30–40g protein, 20oz water, colorful vegetables, healthy fat. You know the drill. You have been doing it for a week. Your body knows the drill too.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Cross-Body Shoulder Stretch', 'Same as Phase 1. Hold a little longer if range allows — up to 45 sec. You should be noticing improvement in how far across your body that arm will go. That is real progress.', 60],
+            ['Sleeper Stretch', 'Same as Phase 1. If it is getting easier that means the posterior capsule is releasing. That is exactly what you want.', 60],
+            ['Rows with Resistance Band', 'Anchor a resistance band low in front of you. Hold with your injured arm, elbow bent at 90°. Pull your elbow straight back, keeping it close to your body. Pause 1 sec, return slowly. 3 sets of 15. Your posterior shoulder muscles are the ones that keep everything in its proper place. Most people never train them. You are not most people.', 0],
+            ['Moist Heat — 15 Minutes', 'After all that work, your shoulder has earned this. 15 minutes, moist heat, before bed. Every night.', 900],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'Same as Phase 1. Your muscles are working harder now — magnesium is more important, not less. Sleep quality is your recovery quality. Protect it.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', 'Same targets. You added resistance work today. Your muscles need that protein tonight. Hit 130–160g for the day. Your shoulder is counting on it.', 0],
+          ],
+          journal: [
+            ['📓 Recovery Journal + Phase 2 Check-In', 'Rate pain 1–10. Rate range of motion 1–10. Compare to Day 1 — write it down. The difference between where you started and where you are now is real and it is measurable. Note how the resistance exercises felt today — any pain above a 3 means lighten the band or reduce reps. Sunday: Is pain decreasing? Is range improving? Are you doing more than Week 1? What is your biggest win this week? You are building something real here.', 0],
+          ],
+        },
+      },
+      {
+        phase: 3,
+        days: '22–42',
+        title: 'Rebuild',
+        tagline: 'Strength focus. Fuller range of motion. Getting back to everything you love.',
+        morning: {
+          movement: [
+            ['Pendulum Swings — Weighted', 'Same movement, now hold a light weight (1–2 lbs) or a full water bottle. The added weight increases the decompression effect on the joint. 15 circles each direction. Your shoulder should feel significantly looser than Day 1. That is 3 weeks of consistent work showing up.', 120],
+            ['Wall Slides with Resistance', 'Same wall slide movement but now hold a light resistance band overhead as you slide up. This adds rotator cuff activation to the movement. 3 sets of 12. Slow and controlled.', 0],
+            ['Face Pulls', 'Resistance band anchored at face height. Grip with both hands and pull toward your face with elbows flaring out to the sides, hands finishing beside your ears. Like you are showing off a bicep pose to nobody in particular. Pause 1 sec, return slowly. 3 sets of 15. This is the exercise that ties everything together — rear deltoid, external rotators, scapular stabilizers — all at once.', 0],
+            ['Morning Walk — 20 to 30 Minutes', 'A real walk now. You have earned this pace. Head up, arms swinging, shoulders relaxed. You are moving differently than you were on Day 1. Notice that.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen (10g) + Vitamin C (500mg)', 'Still every morning. Still non-negotiable. Tendon remodeling takes 12–18 months. You are at week 3. Keep going.', 0],
+            ['💊 Creatine (3–5g)', 'Still every morning. You are doing serious strength work now — creatine is powering the muscle rebuild that makes your shoulder stable for life.', 0],
+            ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Same as always. With fat. In the morning. If you have been consistent you are well past the point where the anti-inflammatory effect is fully active in your system.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast + Water', 'You are doing more physical work now — protein need is at the higher end. Aim for 40g at breakfast. 16oz water minimum before you start moving.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['Resistance Band External Rotations — Progressive', 'Same movement as Phase 2 but with a slightly heavier band or more reps — 3 sets of 20. Your external rotators should be meaningfully stronger now. If the light band feels too easy, step up. If stepping up causes pain above a 3, stay where you are and add reps instead.', 0],
+            ['Scaption Raises', 'Stand holding light weights or a resistance band. Raise both arms up and out at a 45-degree angle — halfway between straight forward and straight out to the sides — thumbs up, to shoulder height. Lower slowly. 3 sets of 12. This is the safest arc for the rotator cuff and directly targets the supraspinatus — the most commonly injured rotator cuff muscle.', 0],
+            ['Core Stability Work', 'Dead bug: lie on your back, arms pointing to ceiling, knees bent 90°. Slowly lower your right arm overhead while extending your left leg — back stays flat on the floor. Return. Switch sides. 3 sets of 10 each side. Your core is your shoulder stability foundation. Every upper body movement starts from the core. This is not optional.', 0],
+            ['Walk — 20 Minutes', 'Keep walking. Always keep walking.', 0],
+          ],
+          supplements: [
+            ['💊 Fish Oil (2–3g EPA+DHA)', 'Same as always. Still building cumulative anti-inflammatory effect. Still important.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Water + Vegetables', 'Same targets. You know this by now. Do it anyway.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Cross-Body Stretch + Sleeper Stretch', 'Both stretches, same as before. Your range should be significantly improved. Hold each position a little longer — 45 sec to 1 min. This is maintenance now, not rehabilitation.', 120],
+            ['Rows — Progressive', 'Heavier band, same movement. 3 sets of 15. Your posterior shoulder is building real strength now. This is the work that prevents re-injury.', 0],
+            ['Moist Heat — 15 Minutes', 'You are doing more now — heat matters more now. Every night.', 900],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'Same as always. You are sleeping better. That is this working. Keep going.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', 'Hit 130–160g total today. You are doing meaningful strength work — your muscles need this tonight.', 0],
+          ],
+          journal: [
+            ['📓 Recovery Journal + Phase 3 Check-In', 'Rate pain 1–10. Rate range of motion 1–10. Compare to Day 1 and Day 8 — write both numbers down. The trajectory tells the story. Note which exercises challenged you today. Note what you can do now that you could not do on Day 1. Sunday: Is your range of motion approaching normal? Can you reach overhead? Behind your back? What would full recovery look like and how close are you? Write it down. You are getting there.', 0],
+          ],
+        },
+      },
+      {
+        phase: 4,
+        days: '43+',
+        title: 'Maintain & Protect',
+        tagline: 'Full strength. Make sure this never happens again.',
+        morning: {
+          movement: [
+            ['Full Warm-Up Circuit', 'Pendulums (2 min), wall slides with band (3x12), face pulls (3x15), arm circles (10 each direction). This is your warm-up now — it takes 8 minutes and prepares your shoulder for anything the day throws at it.', 480],
+            ['Overhead Press — When Cleared by PT', 'Light dumbbells or band, press straight overhead — slow controlled movement, full range. Only when your PT or physician has cleared overhead work. 3 sets of 12. This is the movement that tells you your shoulder is back.', 0],
+            ['Morning Walk — 30 Minutes', 'Every morning. Non-negotiable. You know why by now.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen (10g) + Vitamin C (500mg)', 'Still. You are 6+ weeks in. Tendons remodel for 12–18 months. This is your long game.', 0],
+            ['💊 Creatine (3–5g)', 'Still. You are maintaining strength now. Creatine keeps you there.', 0],
+            ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Still. With fat. Morning. This is not a recovery protocol anymore — this is just how you live.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast + Water', '40g protein, 16oz water. Every morning. This is a lifestyle now, not a recovery plan.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['Rehab Circuit — 3 to 4 Days Per Week', 'External rotations (3x20), scaption raises (3x15), face pulls (3x20), rows (3x20), core stability (3x10 each side). This is your maintenance circuit. 20 minutes, 3–4 days a week. This is what keeps you out of the PT office for the next decade.', 0],
+            ['Walk — 20 to 30 Minutes', 'Still walking. Always walking.', 0],
+          ],
+          supplements: [
+            ['💊 Fish Oil (2–3g EPA+DHA)', 'Every day. For life. This is not recovery anymore — this is inflammation management for a person over 50 who wants to stay active and mobile.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Water', '30–40g protein. 20oz water. Same targets, same reasons. You know this by now.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Full Shoulder Stretch Sequence', 'Cross-body (45 sec), sleeper stretch (30 sec), doorway stretch (30 sec each side). 5 minutes. Every evening. This is your insurance policy against re-injury.', 300],
+            ['Moist Heat as Needed', 'On days when you trained hard or the shoulder is talking to you — 15 minutes. Not every night necessarily. Listen to your shoulder. You know it now.', 0],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'Every night. You sleep better with it. Your muscles recover better with it. This is just part of your evening now.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', '30–40g protein. Omega-3 food source. 130–160g total for the day. This is not a recovery diet anymore. This is just how a person who wants to stay strong and mobile eats.', 0],
+          ],
+          journal: [
+            ['📓 Weekly Check-In', 'Once a week — Sunday works well. Rate pain (should be 0–2 by now). Rate range of motion (should be 8–10). Rate strength (can you do everything you could before the injury?). Note what you are doing now that you could not do on Day 1. Write it down. Read it back. That is the whole story of your recovery in one note. You did that.', 0],
+          ],
+        },
+      },
+    ]
+  };
+
+  // Phase boundaries
+  const PHASE_DAYS = [1, 8, 22, 43];
+  const PHASE_LABELS = ['Wake It Up', 'Start Building', 'Rebuild', 'Maintain & Protect'];
+  const PHASE_TAGLINES = [
+    'Gentle but purposeful. Build the habit. Control inflammation.',
+    'Add resistance. Strengthen the stabilizers.',
+    'Strength focus. Fuller range of motion.',
+    'Full strength. Make sure this never happens again.'
+  ];
+
+  function getCurrentPhase(day) {
+    if (day >= 43) return 3;
+    if (day >= 22) return 2;
+    if (day >= 8) return 1;
+    return 0;
+  }
+
+  function getDaysUntilNextPhase(day) {
+    if (day >= 43) return null;
+    if (day >= 22) return 43 - day;
+    if (day >= 8) return 22 - day;
+    return 8 - day;
+  }
+
+
+  // ── RENDER PHASE PROTOCOL ─────────────────────────────────────────────────
+  function renderPhaseProtocol(injury, day) {
+    // Check if we have phase data for this injury
+    if (!PHASES[injury]) return false;
+
+    const phaseIdx = getCurrentPhase(day);
+    const phase = PHASES[injury][phaseIdx];
+    if (!phase) return false;
+
+    // Check for phase unlock (day is exactly a phase boundary)
+    const prevPhaseIdx = getCurrentPhase(day - 1);
+    if (phaseIdx > prevPhaseIdx && day > 1) {
+      showPhaseUnlock(phaseIdx);
+    }
+
+    // Build all tasks for this phase
+    const allTasks = [];
+    const sections = ['morning', 'midday', 'evening'];
+    const categories = ['movement', 'supplements', 'fuel', 'journal'];
+    const catIcons = { movement: '🏃', supplements: '💊', fuel: '🥗', journal: '📓' };
+    const catLabels = { movement: 'Movement', supplements: 'Supplements', fuel: 'Fuel & Hydration', journal: 'Journal' };
+
+    sections.forEach(section => {
+      const sectionData = phase[section];
+      if (!sectionData) return;
+
+      categories.forEach(cat => {
+        const items = sectionData[cat];
+        if (!items || items.length === 0) return;
+
+        items.forEach((item, i) => {
+          allTasks.push({
+            id: section + '_' + cat + '_' + i,
+            section,
+            category: cat,
+            name: item[0],
+            desc: item[1],
+            timer: item[2] || 0,
+            catIcon: catIcons[cat],
+            catLabel: catLabels[cat],
+          });
+        });
+      });
+    });
+
+    // Render into DOM
+    renderTasks(allTasks, phase, day);
+    return true;
+  }
+
+  function renderTasks(tasks, phase, day) {
+    // Group by section
+    const sections = ['morning', 'midday', 'evening'];
+    const sectionTitles = {
+      morning: 'Morning Recovery',
+      midday: 'Midday Check-In',
+      evening: 'Evening Wind-Down'
+    };
+    const sectionIcons = { morning: '🌅', midday: '☀️', evening: '🌙' };
+
+    sections.forEach(section => {
+      const sectionTasks = tasks.filter(t => t.section === section);
+      if (sectionTasks.length === 0) return;
+
+      const itemsContainer = document.getElementById(section + '-items');
+      if (!itemsContainer) return;
+
+      // Update section title with injury name
+      const injuryLabels = {shoulder:'Shoulder',knee:'Knee',hip:'Hip',back:'Lower Back',surgery:'Post-Surgery'};
+      const titleEl = document.getElementById(section + '-section-title');
+      if (titleEl) titleEl.textContent = sectionTitles[section] + (section === 'morning' ? ' — ' + (injuryLabels[selectedInjury] || '') : '');
+
+      // Clear existing items
+      itemsContainer.innerHTML = '';
+
+      // Group by category
+      const categories = ['movement', 'supplements', 'fuel', 'journal'];
+      let taskCounter = 0;
+
+      categories.forEach(cat => {
+        const catTasks = sectionTasks.filter(t => t.category === cat);
+        if (catTasks.length === 0) return;
+
+        // Add category header
+        const catIcons = { movement: '🏃', supplements: '💊', fuel: '🥗', journal: '📓' };
+        const catLabels = { movement: 'Movement', supplements: 'Supplements', fuel: 'Fuel & Hydration', journal: 'Journal' };
+
+        const catHeader = document.createElement('div');
+        catHeader.className = 'cat-header';
+        catHeader.innerHTML = catIcons[cat] + ' ' + catLabels[cat];
+        itemsContainer.appendChild(catHeader);
+
+        catTasks.forEach(task => {
+          taskCounter++;
+          const item = document.createElement('div');
+          item.className = 'task-item';
+          item.dataset.taskId = task.id;
+          item.onclick = function() { toggleTask(this); };
+
+          const timerBtn = task.timer > 0
+            ? '<button class="task-timer" onclick="openTimer(event,'' + task.name.replace(/'/g,'\'') + '',' + task.timer + ')">⏱ ' + formatTime(task.timer) + '</button>'
+            : '';
+
+          item.innerHTML = '<div class="task-check"><div class="task-check-inner"></div></div>' +
+            '<div class="task-info">' +
+              '<div class="task-name">' + task.name + '</div>' +
+              '<div class="task-desc">' + formatDesc(task.desc, task.category) + '</div>' +
+            '</div>' +
+            timerBtn;
+
+          itemsContainer.appendChild(item);
+        });
+      });
+    });
+
+    // Update total task count
+    totalTasks = tasks.length;
+    doneTasks = 0;
+    updateProgress();
+  }
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return m > 0 ? m + ' min' : s + ' sec';
+  }
+
+  function showPhaseUnlock(phaseIdx) {
+    const banner = document.getElementById('phase-unlock-banner');
+    if (!banner) return;
+    banner.querySelector('h3').textContent = '🎉 Phase ' + (phaseIdx + 1) + ' Unlocked — ' + PHASE_LABELS[phaseIdx] + '!';
+    banner.querySelector('p').textContent = PHASE_TAGLINES[phaseIdx];
+    banner.style.display = 'block';
+    setTimeout(() => banner.style.display = 'none', 8000);
+  }
+
+  // ── ONBOARDING BANNER ─────────────────────────────────────────────────────
+  function showOnboarding(day) {
+    if (day > 1) return; // Only show on Day 1
+    try {
+      if (localStorage.getItem('hm_onboarded')) return;
+    } catch(e) {}
+
+    const banner = document.getElementById('onboarding-banner');
+    if (banner) banner.style.display = 'block';
+  }
+
+  function dismissOnboarding() {
+    const banner = document.getElementById('onboarding-banner');
+    if (banner) banner.style.display = 'none';
+    try { localStorage.setItem('hm_onboarded', '1'); } catch(e) {}
+  }
+
+  // ── UPDATE STREAK BADGE WITH PHASE COUNTDOWN ──────────────────────────────
+  function updateStreakBadge(day) {
+    try {
+      const streakEl = document.getElementById('streak-num');
+      const labelEl = document.getElementById('streak-label');
+      if (streakEl) streakEl.textContent = 'Day ' + day;
+      const daysLeft = getDaysUntilNextPhase(day);
+      if (labelEl) {
+        if (daysLeft === null) {
+          labelEl.textContent = 'Phase 4 — Maintaining!';
+        } else if (daysLeft === 0) {
+          labelEl.textContent = '🎉 New phase today!';
+        } else {
+          const nextPhase = getCurrentPhase(day) + 2;
+          labelEl.textContent = 'Phase ' + nextPhase + ' in ' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '');
+        }
+      }
+    } catch(e) {}
+  }
+
   const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50'];
 
   const QUOTES = [
@@ -1390,12 +2009,26 @@
   function goToApp() { launchApp(); }
 
   function launchApp() {
-    const p = PROTOCOLS[selectedInjury] || PROTOCOLS['surgery'];
-    ['m1','m2','m3','m4','m5','d1','d2','d3','d4','d5','e1','e2','e3','e4','e5'].forEach(k => {
-      const n = document.getElementById(k+'-name');
-      const d = document.getElementById(k+'-desc');
-      if(n && p[k]) { n.textContent = p[k][0]; d.textContent = p[k][1]; }
-    });
+    // Get current day
+    let currentDay = 1;
+    try {
+      const s = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      currentDay = s.day || 1;
+    } catch(e) {}
+
+    // Try phase system first, fall back to old protocols
+    const usedPhase = renderPhaseProtocol(selectedInjury, currentDay);
+    if (!usedPhase) {
+      const p = PROTOCOLS[selectedInjury] || PROTOCOLS['surgery'];
+      ['m1','m2','m3','m4','m5','d1','d2','d3','d4','d5','e1','e2','e3','e4','e5'].forEach(k => {
+        const n = document.getElementById(k+'-name');
+        const d = document.getElementById(k+'-desc');
+        if(n && p[k]) { n.textContent = p[k][0]; d.innerHTML = formatDesc(p[k][1], k); }
+      });
+    }
+
+    updateStreakBadge(currentDay);
+    showOnboarding(currentDay);
     document.getElementById('app-name').textContent = userName;
     document.getElementById('about-btn').style.display = 'flex';
     document.getElementById('enc-name').textContent = userName;
