@@ -2119,15 +2119,15 @@
     const todayStr = new Date().toDateString();
     if (savedQuote !== todayStr) {
       // New day or first load — pick fresh quote, never the completion message
-      const q = QUOTES[Math.floor(Math.random()*QUOTES.length)]; document.getElementById('daily-quote').textContent = q; try { localStorage.setItem('hm_daily_quote', q); } catch(e) {}
+      const q = QUOTES[Math.floor(Math.random()*QUOTES.length)]; const dq = document.getElementById('daily-quote'); if(dq) dq.textContent = q; try { localStorage.setItem('hm_daily_quote', q); } catch(e) {}
       localStorage.setItem('hm_quote_date', todayStr);
     } else {
       // Same day — restore quote but NOT the completion message
       const saved = localStorage.getItem('hm_daily_quote');
       if (saved && !saved.includes('🎉')) {
-        document.getElementById('daily-quote').textContent = saved;
+        const dq3 = document.getElementById('daily-quote'); if(dq3) dq3.textContent = saved;
       } else {
-        const q = QUOTES[Math.floor(Math.random()*QUOTES.length)]; document.getElementById('daily-quote').textContent = q; try { localStorage.setItem('hm_daily_quote', q); } catch(e) {}
+        const q = QUOTES[Math.floor(Math.random()*QUOTES.length)]; const dq = document.getElementById('daily-quote'); if(dq) dq.textContent = q; try { localStorage.setItem('hm_daily_quote', q); } catch(e) {}
       }
     }
     updateGreeting();
@@ -2238,7 +2238,7 @@
     // ── 100% celebration ───────────────────────────────────────────────
     if (pct === 100) {
       setTimeout(() => {
-        document.getElementById('daily-quote').textContent = '🎉 You did it! Every single item. Your body felt that. Your healing momentum is REAL and it is building. See you tomorrow.';
+        const dq2 = document.getElementById('daily-quote'); if(dq2) dq2.textContent = '🎉 You did it! Every single item. Your body felt that. Your healing momentum is REAL and it is building. See you tomorrow.';
         if (fill) fill.style.background = '#2d7a4f';
       }, 300);
     }
