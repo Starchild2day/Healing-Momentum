@@ -1172,8 +1172,16 @@
   }
 
   // ── AUTO LOGIN — runs after DOM ready ────────────────────────────────
+  const APP_VERSION = 'hm_v2';
+
   function checkSession() {
     try {
+      // Version check — wipe old sessions from previous builds
+      if (localStorage.getItem('hm_version') !== APP_VERSION) {
+        localStorage.clear();
+        localStorage.setItem('hm_version', APP_VERSION);
+        return; // Show disclaimer fresh
+      }
       const saved = localStorage.getItem('hm_user');
       if (saved) {
         const session = JSON.parse(saved);
@@ -1195,7 +1203,10 @@
           return;
         }
       }
-    } catch(e) {}
+    } catch(e) {
+      localStorage.clear();
+      localStorage.setItem('hm_version', APP_VERSION);
+    }
   }
 
 
@@ -2049,6 +2060,7 @@
     // Save session so returning users don't need to re-enter
     try {
       const existing = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      localStorage.setItem('hm_version', APP_VERSION);
       localStorage.setItem('hm_user', JSON.stringify({
         name, injury, agreed: true, day: existing.day || 1
       }));
