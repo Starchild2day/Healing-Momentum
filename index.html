@@ -136,6 +136,7 @@
   }
   .injury-btn:hover { background: var(--navy-light); }
   .injury-btn:disabled { background: var(--border); cursor: not-allowed; }
+  .injury-btn { background: var(--border); cursor: not-allowed; opacity: 0.6; transition: all 0.2s; }
 
   /* APP SCREEN */
   #app { background: #f0ebe0; flex-direction: column; gap: 0; }
@@ -780,7 +781,7 @@
       </div>
     </div>
     <hr style="border:none;border-top:1px solid var(--border);margin:0.5rem 0 1rem;">
-    <button class="injury-btn" id="injury-btn" disabled onclick="goToApp()">Start My Protocol →</button>
+    <button class="injury-btn" id="injury-btn" onclick="goToApp()">Start My Protocol →</button>
   </div>
 </div>
 
@@ -2085,7 +2086,7 @@
     selectedInjury = injury;
     document.querySelectorAll('.injury-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
-    document.getElementById('injury-btn').disabled = false;
+    const btn = document.getElementById('injury-btn'); btn.disabled = false; btn.removeAttribute('disabled'); btn.style.background = 'var(--navy)'; btn.style.cursor = 'pointer'; btn.style.opacity = '1';
   }
 
   function goToApp() { launchApp(); }
