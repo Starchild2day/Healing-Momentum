@@ -639,6 +639,21 @@
   .phase-unlock-banner h3 { color: white; font-size: 1.2rem; font-weight: 800; }
   .phase-unlock-banner p { color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-top: 0.3rem; }
 
+
+  #disclaimer-btn {
+    width: 100%; padding: 1rem; border: none;
+    border-radius: 12px; font-size: 1.15rem; font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif;
+    background: #dde4ec; color: #8a9aaa;
+    cursor: not-allowed; opacity: 0.5;
+    transition: all 0.2s;
+  }
+  #disclaimer-btn.active {
+    background: #c9923a; color: #ffffff;
+    cursor: pointer; opacity: 1;
+  }
+  #disclaimer-btn.active:hover { background: #e8b86d; }
+
 </style>
 </head>
 <body>
@@ -681,7 +696,7 @@
       <input type="checkbox" id="agree-check" onchange="toggleAgree()">
       <label for="agree-check">I have read and understood this disclaimer. I agree to use Healing Momentum at my own risk and accept full responsibility for my health decisions.</label>
     </div>
-    <button id="disclaimer-btn" onclick="acceptDisclaimer()" style="width:100%;padding:1rem;border:none;border-radius:12px;font-size:1.15rem;font-weight:700;font-family:'Source Sans 3',sans-serif;background:#dde4ec;color:#8a9aaa;cursor:not-allowed;opacity:0.5;pointer-events:none;">I Agree — Continue</button>
+    <button id="disclaimer-btn" onclick="acceptDisclaimer()">I Agree — Continue</button>
   </div>
 </div>
 
@@ -1085,15 +1100,21 @@
   function toggleAgree() {
     const btn = document.getElementById('disclaimer-btn');
     const checked = document.getElementById('agree-check').checked;
-    btn.style.background = checked ? '#c9923a' : '#dde4ec';
-    btn.style.color = checked ? '#ffffff' : '#8a9aaa';
-    btn.style.cursor = checked ? 'pointer' : 'not-allowed';
-    btn.style.opacity = checked ? '1' : '0.5';
-    btn.style.pointerEvents = checked ? 'auto' : 'none';
+    if (checked) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
   }
   function acceptDisclaimer() {
-    if (!document.getElementById('agree-check').checked) {
-      alert('Please check the box to agree before continuing.');
+    const checked = document.getElementById('agree-check').checked;
+    if (!checked) {
+      // Visually shake the checkbox to draw attention
+      const check = document.querySelector('.disclaimer-check');
+      if (check) {
+        check.style.animation = 'shake 0.4s ease';
+        setTimeout(() => check.style.animation = '', 500);
+      }
       return;
     }
     showScreen('gate');
