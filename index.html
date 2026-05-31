@@ -173,14 +173,14 @@
   }
   .ring-pct { font-size: 2rem; font-weight: 800; color: var(--white); line-height: 1.2; }
   .ring-done { font-size: 0.95rem; color: rgba(255,255,255,0.7); }
-  .quote-wrap { padding: 0 1.5rem 0.6rem; }
+  .quote-wrap { padding: 0 1.2rem 0.5rem; }
   .quote {
     background: rgba(255,255,255,0.08); border-left: 3px solid var(--gold);
-    border-radius: 0 8px 8px 0; padding: 0.8rem 1rem;
-    font-size: 1rem; color: rgba(255,255,255,0.8); font-style: italic; line-height: 1.5;
+    border-radius: 0 8px 8px 0; padding: 0.5rem 0.8rem;
+    font-size: 0.85rem; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.4;
   }
 
-  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; }
+  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
 
   .section-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
   .section-header {
@@ -651,6 +651,16 @@
   }
   #disclaimer-btn.active:hover { background: #e8b86d; }
 
+
+  body.dark .task-desc span { color: #e8f0e4 !important; }
+  body.dark .task-desc .why { 
+    background: rgba(201,146,58,0.15) !important; 
+    border-color: #c9923a !important;
+    color: #f0e8d4 !important;
+  }
+  body.dark .task-desc strong { color: #e8b86d !important; }
+  body.dark .cat-header { color: rgba(255,255,255,0.6) !important; background: #122615 !important; }
+
 </style>
 </head>
 <body>
@@ -795,16 +805,16 @@
       </div>
     </div>
     <div class="quote-wrap">
-      <div class="quote" id="daily-quote">"Healing is not a race. Every rep, every stretch, every moment of care moves you forward."</div>
+      <div class="quote" id="daily-quote"></div>
     </div>
   </div>
 
   <!-- STICKY PROGRESS BAR -->
   <div id="sticky-bar" style="
     position: sticky; top: 0; z-index: 40;
-    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 0.5rem 1.2rem 0.7rem;
+    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 0.5rem 1.2rem 0.5rem;
     display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 0 0 #f0ebe0, 0 6px 8px rgba(0,0,0,0.1);
   ">
     <div style="flex:1; height: 10px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden;">
       <div id="progress-bar-fill" style="
@@ -816,7 +826,7 @@
     <div style="color: #e8b86d; font-size: 0.9rem; font-weight: 700; min-width: 40px; text-align: right;" id="bar-pct">0%</div>
     <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; min-width: 50px;" id="bar-count">0 of 15</div>
   </div>
-  <div class="app-body" style="padding-top:0.8rem;">
+  <div class="app-body">
 
     <!-- ONBOARDING BANNER — Day 1 only -->
     <div id="onboarding-banner" style="display:none;" class="phase-banner">
@@ -2083,7 +2093,21 @@
     document.getElementById('app-name').textContent = userName;
     document.getElementById('about-btn').style.display = 'flex';
     document.getElementById('enc-name').textContent = userName;
-    document.getElementById('daily-quote').textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+    const savedQuote = localStorage.getItem('hm_quote_date');
+    const todayStr = new Date().toDateString();
+    if (savedQuote !== todayStr) {
+      // New day or first load — pick fresh quote, never the completion message
+      const q = QUOTES[Math.floor(Math.random()*QUOTES.length)]; document.getElementById('daily-quote').textContent = q; try { localStorage.setItem('hm_daily_quote', q); } catch(e) {}
+      localStorage.setItem('hm_quote_date', todayStr);
+    } else {
+      // Same day — restore quote but NOT the completion message
+      const saved = localStorage.getItem('hm_daily_quote');
+      if (saved && !saved.includes('🎉')) {
+        document.getElementById('daily-quote').textContent = saved;
+      } else {
+        const q = QUOTES[Math.floor(Math.random()*QUOTES.length)]; document.getElementById('daily-quote').textContent = q; try { localStorage.setItem('hm_daily_quote', q); } catch(e) {}
+      }
+    }
     updateGreeting();
     document.getElementById('about-btn').style.display = 'flex';
     document.getElementById('signout-btn').style.display = 'flex';
@@ -2181,7 +2205,7 @@
       const done = items.querySelectorAll('.task-item.done').length;
       const total = items.querySelectorAll('.task-item').length;
       document.getElementById(s+'-prog').textContent = done + ' / ' + total;
-      if (done === total) {
+      if (done === total && total > 0) {
         showCelebration(s);
       } else {
         const badge = document.getElementById(s+'-done-badge');
