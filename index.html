@@ -33,7 +33,8 @@
   html, body { height: 100%; font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); font-size: 18px; }
 
   /* SCREENS */
-  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen { display: none; min-height: 100vh; flex-direction: column; overflow: hidden; height: 0; }
+  .screen.active { height: auto; overflow: visible; }
   .screen.active { display: flex; }
 
   /* GATE SCREEN */
@@ -2046,6 +2047,13 @@
     if (!BETA_CODES.includes(code)) { alert('Please enter a valid beta access code.'); return; }
     userName = name;
     selectedInjury = injury;
+    // Save session so returning users don't need to re-enter
+    try {
+      const existing = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      localStorage.setItem('hm_user', JSON.stringify({
+        name, injury, agreed: true, day: existing.day || 1
+      }));
+    } catch(e) {}
     if (injury) { launchApp(); } else { showScreen('injury-select'); }
   }
 
@@ -2055,6 +2063,11 @@
     if (!name) { alert('Please enter your name.'); return; }
     if (!BETA_CODES.includes(code)) { alert('Access code not recognized.'); return; }
     userName = name;
+    // Try to restore injury from saved session
+    try {
+      const saved = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      if (saved.injury) selectedInjury = saved.injury;
+    } catch(e) {}
     if (selectedInjury) { launchApp(); } else { showScreen('injury-select'); }
   }
 
@@ -2298,6 +2311,10 @@
 
   // ── RUN SESSION CHECK AFTER PAGE LOADS ────────────────────────────────
   window.addEventListener('load', function() {
+    try {
+      localStorage.removeItem('hm_daily_quote');
+      localStorage.removeItem('hm_quote_date');
+    } catch(e) {}
     checkSession();
   });
 
