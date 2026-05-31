@@ -398,15 +398,14 @@
   body.dark .timer-display { color: #e8b86d !important; }
 
   .dark-toggle {
-    position: fixed; top: 1rem; right: 1rem; z-index: 9999;
-    width: 48px; height: 48px; border-radius: 50%;
+    width: 40px; height: 40px; border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.4);
-    background: #1a4028;
-    font-size: 1.4rem; cursor: pointer; display: flex;
+    background: rgba(255,255,255,0.15);
+    font-size: 1.2rem; cursor: pointer; display: flex;
     align-items: center; justify-content: center;
-    transition: all 0.3s; box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    transition: all 0.3s; flex-shrink: 0;
   }
-  .dark-toggle:hover { transform: scale(1.1); background: #245534; }
+  .dark-toggle:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
 
 
   #disclaimer {
@@ -658,9 +657,6 @@
 </head>
 <body>
 
-<!-- DARK MODE TOGGLE -->
-<button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
-
 <!-- SCREEN 0: DISCLAIMER -->
 <div id="disclaimer" class="screen active">
   <div class="disclaimer-card">
@@ -787,12 +783,16 @@
         <div class="greeting">Good morning,</div>
         <div class="header-name" id="app-name">Mark</div>
       </div>
-      <div class="streak-badge">
-        <div>🔥</div>
-        <div>
-          <div class="streak-num" id="streak-count">1</div>
-          <div class="streak-label">day streak</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
+        <div class="streak-badge">
+          <div>🔥</div>
+          <div>
+            <div class="streak-num" id="streak-num">Day 1</div>
+            <div class="streak-label" id="streak-label">Phase 2 in 7 days</div>
+          </div>
         </div>
+        </div><!-- end flex wrapper -->
       </div>
     </div>
     <div class="quote-wrap">
@@ -1846,13 +1846,14 @@
 
   // ── ONBOARDING BANNER ─────────────────────────────────────────────────────
   function showOnboarding(day) {
-    if (day > 1) return; // Only show on Day 1
-    try {
-      if (localStorage.getItem('hm_onboarded')) return;
-    } catch(e) {}
-
     const banner = document.getElementById('onboarding-banner');
-    if (banner) banner.style.display = 'block';
+    if (!banner) return;
+    // Show on Day 1 always, or if user manually dismissed and comes back same day
+    try {
+      const dismissed = localStorage.getItem('hm_onboarded');
+      if (dismissed && day > 1) return; // dismissed and past Day 1 — don't show
+    } catch(e) {}
+    if (day <= 1) banner.style.display = 'block';
   }
 
   function dismissOnboarding() {
