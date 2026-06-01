@@ -1015,7 +1015,7 @@
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
+          <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌙</button>
           <!-- Day counter -->
           <div style="text-align:center;">
             <div id="streak-num" style="font-size:1rem;font-weight:700;color:#e8b86d;white-space:nowrap;">Day 1</div>
@@ -1475,7 +1475,7 @@
     const btn = document.getElementById('dark-toggle');
     body.classList.toggle('dark');
     const isDark = body.classList.contains('dark');
-    btn.textContent = isDark ? '☀️' : '🌿';
+    btn.textContent = isDark ? '☀️' : '🌙';
     try { localStorage.setItem('healingDarkMode', isDark ? '1' : '0'); } catch(e){}
   }
   if (typeof localStorage !== 'undefined') {
@@ -2491,7 +2491,7 @@
         { name: 'Collagen Peptides', dose: '10g daily', note: 'Unflavored powder, stirs into any drink' },
         { name: 'Vitamin C', dose: '500–1000mg daily', note: 'Take with collagen for best absorption' },
         { name: 'Creatine Monohydrate', dose: '3–5g daily', note: 'Unflavored powder, any brand' },
-        { name: 'Turmeric / Curcumin', dose: '500mg daily', note: 'With black pepper (piperine) for absorption' },
+        { name: 'Turmeric / Curcumin with Black Pepper', dose: '500mg daily', note: 'Must contain piperine (black pepper extract) — increases absorption by up to 2000%. Take with a fat-containing meal. Without both of these it barely absorbs at all.' },
         { name: 'Vitamin D3', dose: '2000 IU daily', note: 'Take in the morning with fat' },
         { name: 'Fish Oil (EPA+DHA)', dose: '2–3g daily', note: 'With meals to avoid fishy aftertaste' },
         { name: 'Magnesium Glycinate', dose: '300–400mg nightly', note: 'Glycinate form specifically — gentlest on stomach' },
