@@ -942,19 +942,28 @@
         <div class="greeting">Good morning,</div>
         <div class="header-name" id="app-name">Mark</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
-        <!-- Day counter -->
-        <div class="streak-badge" style="padding:5px 10px;">
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);text-align:center;">DAY</div>
-          <div class="streak-num" id="streak-num" style="font-size:1.3rem;line-height:1;">1</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
+          <!-- Day counter -->
+          <div class="streak-badge" style="padding:4px 10px;text-align:center;">
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">DAY</div>
+            <div id="streak-num" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;">1</div>
+          </div>
+          <!-- Streak counter -->
+          <div class="streak-badge" style="padding:4px 10px;text-align:center;">
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">MOMENTUM BUILT</div>
+            <div style="display:flex;align-items:center;gap:2px;justify-content:center;">
+              <span id="streak-fire">○</span>
+              <span id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;">0</span>
+            </div>
+          </div>
         </div>
-        <!-- Streak counter — always visible -->
-        <div class="streak-badge" style="padding:5px 10px;">
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);text-align:center;">STREAK</div>
-          <div style="display:flex;align-items:center;gap:3px;">
-            <div id="streak-fire" style="font-size:1rem;">🔥</div>
-            <div id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1;">0</div>
+        <!-- Phase countdown label + progress bar -->
+        <div style="text-align:right;padding-right:2px;">
+          <div id="streak-label" style="font-size:0.72rem;color:rgba(255,255,255,0.65);margin-bottom:3px;">Phase 2 in 7 days</div>
+          <div style="width:130px;height:5px;background:rgba(255,255,255,0.15);border-radius:3px;overflow:hidden;">
+            <div id="phase-bar-fill" style="height:100%;width:0%;background:linear-gradient(90deg,#c9923a,#e8b86d);border-radius:3px;transition:width 0.5s ease;"></div>
           </div>
         </div>
         </div><!-- end flex wrapper -->
@@ -2218,16 +2227,52 @@
       if (streakCountEl) streakCountEl.textContent = streak;
       if (fireEl) fireEl.textContent = streak > 0 ? '🔥' : '○';
 
-      // Check for early unlock opportunity
-      const currentPhase = getCurrentPhase(day);
-      const earnedPhase = s.earnedPhase !== undefined ? s.earnedPhase : currentPhase;
-      const daysLeft = getDaysUntilNextPhase(day);
-      const streakToNext = currentPhase === 0 ? 5 : currentPhase === 1 ? 14 : currentPhase === 2 ? 30 : null;
-      const streakLeft = streakToNext ? Math.max(0, streakToNext - streak) : null;
+      // Phase countdown label
+      const labelEl = document.getElementById('streak-label');
+      if (labelEl) {
+        const currentPhase = getCurrentPhase(day);
+        const earnedPhase = s.earnedPhase !== undefined ? s.earnedPhase : currentPhase;
+        const daysLeft = getDaysUntilNextPhase(day);
+        const streakToNext = currentPhase === 0 ? 5 : currentPhase === 1 ? 14 : currentPhase === 2 ? 30 : null;
+        const streakLeft = streakToNext ? Math.max(0, streakToNext - streak) : null;
 
-      // Update streak fire color based on streak length
-      if (fireEl && streak > 0) {
-        fireEl.style.filter = streak >= 7 ? 'hue-rotate(0deg)' : 'hue-rotate(20deg)';
+        // Phase boundaries for progress calculation
+        const phaseBoundaries = [0, 8, 22, 43];
+        const phaseEnd = phaseBoundaries[currentPhase + 1] || 43;
+        const phaseStart = phaseBoundaries[currentPhase] || 0;
+        const phasePct = Math.min(100, Math.round(((day - phaseStart) / (phaseEnd - phaseStart)) * 100));
+
+        const phaseBar = document.getElementById('phase-bar-fill');
+        if (phaseBar) {
+          phaseBar.style.width = phasePct + '%';
+          // Gold when close to unlock, green when earned early
+          if (earnedPhase > currentPhase) {
+            phaseBar.style.background = '#4a9e5c';
+          } else if (phasePct >= 80) {
+            phaseBar.style.background = 'linear-gradient(90deg,#c9923a,#e8b86d)';
+          } else {
+            phaseBar.style.background = 'linear-gradient(90deg,#c9923a,#e8b86d)';
+          }
+        }
+
+        if (earnedPhase > currentPhase) {
+          labelEl.textContent = '⚡ Phase ' + (earnedPhase+1) + ' unlocked early!';
+          labelEl.style.color = '#e8b86d';
+        } else if (streak > 0 && streakLeft !== null && streakLeft <= 3) {
+          labelEl.textContent = '🔥 ' + streakLeft + ' full day' + (streakLeft !== 1 ? 's' : '') + ' → Phase ' + (currentPhase+2) + ' early!';
+          labelEl.style.color = '#e8b86d';
+        } else if (daysLeft === null) {
+          labelEl.textContent = '🏆 Phase 4 — Maintaining!';
+          if (phaseBar) phaseBar.style.width = '100%';
+          if (phaseBar) phaseBar.style.background = '#2d7a4f';
+        } else if (daysLeft === 0) {
+          labelEl.textContent = '🎉 New phase unlocks today!';
+          labelEl.style.color = '#e8b86d';
+        } else {
+          const nextPhase = currentPhase + 2;
+          labelEl.textContent = 'Phase ' + nextPhase + ' in ' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '');
+          labelEl.style.color = 'rgba(255,255,255,0.65)';
+        }
       }
     } catch(e) {}
   }
