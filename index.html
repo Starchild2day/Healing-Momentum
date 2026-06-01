@@ -944,11 +944,17 @@
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
-        <div class="streak-badge">
-          <div id="streak-fire">🔥</div>
-          <div>
-            <div class="streak-num" id="streak-num">Day 1</div>
-            <div class="streak-label" id="streak-label">Phase 2 in 7 days</div>
+        <!-- Day counter -->
+        <div class="streak-badge" style="padding:5px 10px;">
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);text-align:center;">DAY</div>
+          <div class="streak-num" id="streak-num" style="font-size:1.3rem;line-height:1;">1</div>
+        </div>
+        <!-- Streak counter — always visible -->
+        <div class="streak-badge" style="padding:5px 10px;">
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);text-align:center;">STREAK</div>
+          <div style="display:flex;align-items:center;gap:3px;">
+            <div id="streak-fire" style="font-size:1rem;">🔥</div>
+            <div id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1;">0</div>
           </div>
         </div>
         </div><!-- end flex wrapper -->
@@ -2202,40 +2208,26 @@
       const s = JSON.parse(localStorage.getItem('hm_user') || '{}');
       const streak = s.streak || 0;
       const streakEl = document.getElementById('streak-num');
-      const labelEl = document.getElementById('streak-label');
+      const streakCountEl = document.getElementById('streak-count');
       const fireEl = document.getElementById('streak-fire');
 
-      // Show streak if > 0, otherwise show day
-      if (streakEl) {
-        if (streak > 0) {
-          streakEl.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
-          if (fireEl) fireEl.textContent = '🔥';
-        } else {
-          streakEl.textContent = 'Day ' + day;
-          if (fireEl) fireEl.textContent = '📅';
-        }
-      }
+      // Day counter
+      if (streakEl) streakEl.textContent = day;
 
-      // Label shows phase progress + streak motivation
-      if (labelEl) {
-        const currentPhase = getCurrentPhase(day);
-        const earnedPhase = s.earnedPhase !== undefined ? s.earnedPhase : currentPhase;
-        const daysLeft = getDaysUntilNextPhase(day);
-        const streakToNext = currentPhase === 0 ? 5 : currentPhase === 1 ? 14 : currentPhase === 2 ? 30 : null;
-        const streakLeft = streakToNext ? streakToNext - streak : null;
+      // Streak counter — always show number
+      if (streakCountEl) streakCountEl.textContent = streak;
+      if (fireEl) fireEl.textContent = streak > 0 ? '🔥' : '○';
 
-        if (earnedPhase > currentPhase) {
-          labelEl.textContent = '⚡ Phase ' + (earnedPhase+1) + ' unlocked early!';
-        } else if (streak > 0 && streakLeft !== null && streakLeft <= 3) {
-          labelEl.textContent = '🔥 ' + streakLeft + ' more full day' + (streakLeft !== 1 ? 's' : '') + ' → Phase ' + (currentPhase+2) + ' early!';
-        } else if (daysLeft === null) {
-          labelEl.textContent = 'Phase 4 — Maintaining!';
-        } else if (daysLeft === 0) {
-          labelEl.textContent = '🎉 New phase today!';
-        } else {
-          const nextPhase = currentPhase + 2;
-          labelEl.textContent = 'Phase ' + nextPhase + ' in ' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '');
-        }
+      // Check for early unlock opportunity
+      const currentPhase = getCurrentPhase(day);
+      const earnedPhase = s.earnedPhase !== undefined ? s.earnedPhase : currentPhase;
+      const daysLeft = getDaysUntilNextPhase(day);
+      const streakToNext = currentPhase === 0 ? 5 : currentPhase === 1 ? 14 : currentPhase === 2 ? 30 : null;
+      const streakLeft = streakToNext ? Math.max(0, streakToNext - streak) : null;
+
+      // Update streak fire color based on streak length
+      if (fireEl && streak > 0) {
+        fireEl.style.filter = streak >= 7 ? 'hue-rotate(0deg)' : 'hue-rotate(20deg)';
       }
     } catch(e) {}
   }
