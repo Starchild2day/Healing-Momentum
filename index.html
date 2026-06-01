@@ -1800,7 +1800,7 @@
             ['🥗 Protein Dinner + Omega-3 Source', 'Eat 30–40g protein at dinner. A 5oz salmon fillet is 35g and covers your omega-3 for the day — two birds, one fish. A chicken thigh plus a cup of Greek yogurt is 40g. A can of sardines on crackers with cottage cheese is 30g. Hit the protein and you are done for the day. Check your total protein for the day — 130–160g is the target for the day — roughly four 30–35g protein servings. A 5oz salmon fillet at dinner (35g) (35g) plus what you had earlier should get you there. If you hit it, your shoulder has everything it needs tonight. If you did not, make a note and adjust tomorrow. Consistency over days and weeks is what heals injuries.', 0],
           ],
           journal: [
-            ['📓 Recovery Journal + Mindset Check', 'Rate your shoulder pain 1–10. Rate your range of motion 1–10 — how high can you raise your arm? Note one movement that felt better than yesterday. Sunday check-in: Is pain decreasing? Is range of motion improving? What is my biggest win this week? Then read this: tendons and connective tissue continue remodeling for 12–18 months after injury. Healing is not linear. Your job is not to heal overnight. Your job is to give your body what it needs today — which you just did — and trust the process.', 0],
+            ['📓 Open Recovery Journal', 'Rate your shoulder pain 1–10. Rate your range of motion 1–10 — how high can you raise your arm? Note one movement that felt better than yesterday. Sunday check-in: Is pain decreasing? Is range of motion improving? What is my biggest win this week? Then read this: tendons and connective tissue continue remodeling for 12–18 months after injury. Healing is not linear. Your job is not to heal overnight. Your job is to give your body what it needs today — which you just did — and trust the process.', 0],
           ],
         },
       },
@@ -1852,7 +1852,7 @@
             ['🥗 Protein Dinner + Omega-3 Source', 'Same targets. You added resistance work today. Your muscles need that protein tonight. Hit 130–160g for the day. Your shoulder is counting on it.', 0],
           ],
           journal: [
-            ['📓 Recovery Journal + Phase 2 Check-In', 'Rate pain 1–10. Rate range of motion 1–10. Compare to Day 1 — write it down. The difference between where you started and where you are now is real and it is measurable. Note how the resistance exercises felt today — any pain above a 3 means lighten the band or reduce reps. Sunday: Is pain decreasing? Is range improving? Are you doing more than Week 1? What is your biggest win this week? You are building something real here.', 0],
+            ['📓 Open Recovery Journal', 'Rate pain 1–10. Rate range of motion 1–10. Compare to Day 1 — write it down. The difference between where you started and where you are now is real and it is measurable. Note how the resistance exercises felt today — any pain above a 3 means lighten the band or reduce reps. Sunday: Is pain decreasing? Is range improving? Are you doing more than Week 1? What is your biggest win this week? You are building something real here.', 0],
           ],
         },
       },
@@ -1904,7 +1904,7 @@
             ['🥗 Protein Dinner + Omega-3 Source', 'Hit 130–160g total today — roughly four 30–35g protein servings spread through the day — breakfast, lunch, dinner, and one snack if needed. You are doing serious strength work now. A 5oz salmon fillet, a chicken breast, a cup of Greek yogurt — your muscles are counting on tonight&#39;s meal specifically.', 0],
           ],
           journal: [
-            ['📓 Recovery Journal + Phase 3 Check-In', 'Rate pain 1–10. Rate range of motion 1–10. Compare to Day 1 and Day 8 — write both numbers down. The trajectory tells the story. Note which exercises challenged you today. Note what you can do now that you could not do on Day 1. Sunday: Is your range of motion approaching normal? Can you reach overhead? Behind your back? What would full recovery look like and how close are you? Write it down. You are getting there.', 0],
+            ['📓 Open Recovery Journal', 'Rate pain 1–10. Rate range of motion 1–10. Compare to Day 1 and Day 8 — write both numbers down. The trajectory tells the story. Note which exercises challenged you today. Note what you can do now that you could not do on Day 1. Sunday: Is your range of motion approaching normal? Can you reach overhead? Behind your back? What would full recovery look like and how close are you? Write it down. You are getting there.', 0],
           ],
         },
       },
@@ -1952,7 +1952,7 @@
             ['🥗 Protein Dinner + Omega-3 Source', '30–40g protein at dinner — a salmon fillet does double duty here, covering both protein and omega-3. Chicken thigh, eggs, sardines, Greek yogurt all work too. 130–160g total for the day. This is not a recovery diet anymore. This is just how a person who wants to stay strong and mobile eats.', 0],
           ],
           journal: [
-            ['📓 Weekly Check-In', 'Once a week — Sunday works well. Rate pain (should be 0–2 by now). Rate range of motion (should be 8–10). Rate strength (can you do everything you could before the injury?). Note what you are doing now that you could not do on Day 1. Write it down. Read it back. That is the whole story of your recovery in one note. You did that.', 0],
+            ['📓 Open Recovery Journal', 'Once a week — Sunday works well. Rate pain (should be 0–2 by now). Rate range of motion (should be 8–10). Rate strength (can you do everything you could before the injury?). Note what you are doing now that you could not do on Day 1. Write it down. Read it back. That is the whole story of your recovery in one note. You did that.', 0],
           ],
         },
       },
@@ -2088,10 +2088,12 @@
             ? '<button class="task-timer" onclick="openTimer(event,\'' + safeName + '\',' + task.timer + ')">⏱ ' + formatTime(task.timer) + '</button>'
             : '';
 
+          const isJournal = task.category === 'journal';
+          const journalHint = isJournal ? '<span style="display:inline-block;margin-top:6px;background:var(--gold-pale);border:1px solid var(--gold);border-radius:20px;padding:3px 10px;font-size:0.8rem;color:var(--navy);font-weight:600;">Tap to open →</span>' : '';
           item.innerHTML = '<div class="task-check"><div class="task-check-inner"></div></div>' +
             '<div class="task-info">' +
               '<div class="task-name">' + task.name + '</div>' +
-              '<div class="task-desc">' + formatDesc(task.desc, task.category) + '</div>' +
+              '<div class="task-desc">' + formatDesc(task.desc, task.category) + journalHint + '</div>' +
             '</div>' +
             timerBtn;
 
@@ -2224,7 +2226,8 @@
       if (allEntries.length > 90) allEntries.shift();
       localStorage.setItem('hm_journal', JSON.stringify(allEntries));
       // Mark journal task as done
-      const journalTask = document.querySelector('[data-task-id="evening_journal_0"]');
+      // Find journal task — works for both static and phase-rendered tasks
+      const journalTask = document.querySelector('[data-task-id*="journal"]');
       if (journalTask && !journalTask.classList.contains('done')) {
         journalTask.classList.add('done');
         doneTasks++;
