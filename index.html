@@ -139,7 +139,7 @@
   .injury-btn { background: var(--border); cursor: not-allowed; opacity: 0.6; transition: all 0.2s; }
 
   /* APP SCREEN */
-  #app { background: #f0ebe0; flex-direction: column; gap: 0; height: 100dvh; display: flex; }
+  #app { background: #f0ebe0; flex-direction: column; gap: 0; }
 
   .app-header {
     background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 1rem 1.5rem 0.6rem;
@@ -181,7 +181,7 @@
     font-size: 0.85rem; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.4;
   }
 
-  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; min-height: 0; }
+  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
 
   .section-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
   .section-header {
@@ -978,14 +978,14 @@
     <div id="onboarding-banner" style="display:none;" class="phase-banner">
       <button class="phase-close" onclick="dismissOnboarding()">✕</button>
       <h3>👋 Welcome to Healing Momentum</h3>
-      <p>Your recovery has 4 phases. Each one builds on the last. Here is the road ahead:</p>
+      <p>Your body has not stopped knowing how to heal. It just needs you to show up for it now. Your recovery has 4 phases — each one builds on the last:</p>
       <div class="phase-timeline">
         <div class="phase-pill current">Phase 1 · Days 1–7 · Wake It Up</div>
         <div class="phase-pill locked">Phase 2 · Days 8–21 · Start Building</div>
         <div class="phase-pill locked">Phase 3 · Days 22–42 · Rebuild</div>
         <div class="phase-pill locked">Phase 4 · Day 43+ · Maintain &amp; Protect</div>
       </div>
-      <p style="margin-top:0.8rem;font-size:0.85rem;opacity:0.8;">What you see today is not what you will be doing in Week 2. The program evolves as you do. Tap ✕ to get started.</p>
+      <p style="margin-top:0.8rem;font-size:0.85rem;opacity:0.8;">You spent decades not thinking about healing. Your body just did it. That changes after 50 — and once you understand that, everything else makes sense. Tap ✕ to begin.</p>
     </div>
 
     <!-- PHASE UNLOCK BANNER -->
@@ -2355,14 +2355,23 @@
 
   const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50'];
 
-  const QUOTES = [
-    '"Healing is not a race. Every rep, every stretch, every moment of care moves you forward."',
-    '"Your body knows how to heal. Your job is to show up and give it the chance."',
-    '"Progress isn\'t always visible. But every day you do the work, something is changing."',
-    '"The comeback is always stronger than the setback."',
-    '"Small steps every day add up to miles of healing."'
+    const QUOTES = [
+    'Your body has not stopped knowing how to heal. It just needs you to show up for it now.',
+    'You spent decades not thinking about healing. Your body just did it. That changes after 50. This app is what showing up looks like.',
+    'The difference between young and older is not that the body heals less. It is that you have to become a participant in the process now.',
+    'Healing is not the absence of effort after 50. It is the presence of intention.',
+    'Your body is not broken. It is asking for your attention. For the first time, maybe ever.',
+    'You cannot outrun this one. But you can out-show-up it. That is exactly what you are doing.',
+    'Every rep, every stretch, every supplement, every glass of water — your body feels all of it.',
+    'The invincibility you felt at 30 was real. So is this. Different rules, same body, same determination.',
+    'You did not get here by giving up. You are not going to start now.',
+    'Slow is not weak. Consistent is not boring. This is what serious healing looks like.',
+    'Your body has been waiting for you to take it seriously. You finally did.',
+    'Recovery is a collaboration now. You bring the intention. Your body brings the biology.',
+    'The person who heals fastest is not the youngest or the healthiest. It is the most consistent. That is you.',
+    'Every morning you do this, you are voting for the life you want to get back to.',
+    'What changed is not your body is broken. What changed is it needs a partner now.'
   ];
-
   const PROTOCOLS = {
     shoulder: {
       m1: ['Pendulum Swings — Yes, You Will Look Silly. Do It Anyway.', 'Stand next to a table or chair. Lean forward from your hips and rest your good arm on the surface. Let your injured arm hang straight down — completely relaxed. Like a wet noodle. Like you forgot it was attached to you. Make slow small circles: 10 clockwise, 10 counterclockwise. Let gravity do the work. Your PT gave you this first because it decompresses the joint without engaging the injured muscles. Think of it as a spa day for your rotator cuff. You earned it.'],
