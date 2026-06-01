@@ -34,8 +34,7 @@
 
   /* SCREENS */
   .screen { display: none !important; }
-  .screen.active { display: flex !important; flex-direction: column; }
-  #disclaimer.active, #gate.active, #injury-select.active { min-height: 100vh; }
+  .screen.active { display: flex !important; min-height: 100vh; flex-direction: column; }
 
   /* GATE SCREEN */
   #gate {
@@ -140,7 +139,7 @@
   .injury-btn { background: var(--border); cursor: not-allowed; opacity: 0.6; transition: all 0.2s; }
 
   /* APP SCREEN */
-  #app { background: #f0ebe0; flex-direction: column; gap: 0; height: 100vh; overflow: hidden; }
+  #app { background: #f0ebe0; flex-direction: column; gap: 0; }
 
   .app-header {
     background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 1rem 1.5rem 0.6rem;
@@ -182,7 +181,7 @@
     font-size: 0.85rem; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.4;
   }
 
-  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: scroll; background: #f0ebe0; margin-top: 0; min-height: 0; height: 0; }
+  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
 
   .section-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
   .section-header {
@@ -1633,21 +1632,32 @@
       }, 200);
     }
 
-    // Auto-open next section
+    // Collapse completed section and auto-open next
+    setTimeout(() => {
+      const doneItems = document.getElementById(section + '-items');
+      const doneArrow = document.getElementById(section + '-arrow');
+      if (doneItems) doneItems.classList.remove('open');
+      if (doneArrow) doneArrow.classList.remove('open');
+    }, 1500); // Brief delay so user sees the banner first
+
     if (section === 'morning') {
-      const next = document.getElementById('midday-items');
-      const arrow = document.getElementById('midday-arrow');
-      if (next && !next.classList.contains('open')) {
-        next.classList.add('open');
-        if (arrow) arrow.classList.add('open');
-      }
+      setTimeout(() => {
+        const next = document.getElementById('midday-items');
+        const arrow = document.getElementById('midday-arrow');
+        if (next && !next.classList.contains('open')) {
+          next.classList.add('open');
+          if (arrow) arrow.classList.add('open');
+        }
+      }, 1600);
     } else if (section === 'midday') {
-      const next = document.getElementById('evening-items');
-      const arrow = document.getElementById('evening-arrow');
-      if (next && !next.classList.contains('open')) {
-        next.classList.add('open');
-        if (arrow) arrow.classList.add('open');
-      }
+      setTimeout(() => {
+        const next = document.getElementById('evening-items');
+        const arrow = document.getElementById('evening-arrow');
+        if (next && !next.classList.contains('open')) {
+          next.classList.add('open');
+          if (arrow) arrow.classList.add('open');
+        }
+      }, 1600);
     }
   }
 
