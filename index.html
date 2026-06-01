@@ -679,6 +679,125 @@
   body.dark .task-desc strong { color: #e8b86d !important; }
   body.dark .cat-header { color: rgba(255,255,255,0.6) !important; background: #122615 !important; }
 
+
+  /* JOURNAL FULL SCREEN */
+  .journal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: var(--cream); flex-direction: column;
+    overflow-y: auto;
+  }
+  .journal-overlay.active { display: flex; }
+  body.dark .journal-overlay { background: #0d1f0f; }
+
+  .journal-header {
+    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%);
+    padding: 1.2rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem; flex-shrink: 0;
+  }
+  .journal-header h2 { color: #ffffff; font-size: 1.3rem; font-weight: 800; flex: 1; margin: 0; }
+  .journal-header .journal-date { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+  .journal-close {
+    background: rgba(255,255,255,0.15); border: none; color: white;
+    border-radius: 50%; width: 36px; height: 36px; font-size: 1.1rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .journal-body { flex: 1; padding: 1.2rem; display: flex; flex-direction: column; gap: 1.4rem; }
+
+  .journal-section {
+    background: var(--white); border-radius: 16px;
+    padding: 1.2rem; box-shadow: var(--shadow);
+  }
+  body.dark .journal-section { background: #1a3320; }
+
+  .journal-section h3 {
+    font-size: 1rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px;
+  }
+  body.dark .journal-section h3 { color: #e8b86d; }
+
+  /* SLIDER */
+  .slider-wrap { padding: 0.3rem 0; }
+  .slider-labels { display: flex; justify-content: space-between;
+    font-size: 0.78rem; color: var(--text-light); margin-bottom: 0.4rem; }
+  .journal-slider {
+    width: 100%; height: 8px; border-radius: 4px;
+    outline: none; cursor: pointer; appearance: none;
+    background: linear-gradient(to right, #2d7a4f 0%, #c9923a 50%, #c0392b 100%);
+  }
+  .journal-slider::-webkit-slider-thumb {
+    appearance: none; width: 28px; height: 28px;
+    border-radius: 50%; background: var(--white);
+    border: 3px solid var(--navy); cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .slider-value {
+    text-align: center; font-size: 1.6rem; font-weight: 800;
+    color: var(--navy); margin-top: 0.5rem;
+  }
+  body.dark .slider-value { color: #ffffff; }
+
+  /* SWELLING BUTTONS */
+  .swelling-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .swell-btn {
+    flex: 1; padding: 0.6rem 0.4rem; border-radius: 10px;
+    border: 2px solid var(--border); background: var(--white);
+    font-size: 0.85rem; font-weight: 600; color: var(--text-mid);
+    cursor: pointer; text-align: center; transition: all 0.2s;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .swell-btn.selected {
+    border-color: var(--navy); background: var(--navy); color: white;
+  }
+  body.dark .swell-btn { background: #122615; border-color: #2d4f35; color: #e8f0e4; }
+  body.dark .swell-btn.selected { background: #c9923a; border-color: #c9923a; color: white; }
+
+  /* WIN TEXT AREA */
+  .journal-win {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 0.8rem; font-size: 1rem; font-family: 'Source Sans 3', sans-serif;
+    color: var(--text); background: var(--white); resize: none;
+    line-height: 1.5; min-height: 80px;
+  }
+  .journal-win:focus { outline: none; border-color: var(--gold); }
+  body.dark .journal-win { background: #122615; border-color: #2d4f35; color: #ffffff; }
+
+  /* SUNDAY CHECK-IN */
+  .sunday-checkin { display: none; }
+  .sunday-checkin.visible { display: block; }
+  .sunday-q {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+  }
+  .sunday-q:last-child { border-bottom: none; }
+  .sunday-q span { font-size: 0.95rem; color: var(--text-mid); flex: 1; }
+  body.dark .sunday-q span { color: #e8f0e4; }
+  .sunday-btns { display: flex; gap: 6px; }
+  .sunday-btn {
+    padding: 4px 12px; border-radius: 20px; border: 1.5px solid var(--border);
+    background: var(--white); font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; font-family: 'Source Sans 3', sans-serif;
+    color: var(--text-mid); transition: all 0.2s;
+  }
+  .sunday-btn.yes.selected { background: #2d7a4f; border-color: #2d7a4f; color: white; }
+  .sunday-btn.no.selected { background: #c0392b; border-color: #c0392b; color: white; }
+  body.dark .sunday-btn { background: #122615; border-color: #2d4f35; color: #e8f0e4; }
+
+  /* SAVE BUTTON */
+  .journal-save {
+    width: 100%; padding: 1rem; background: var(--gold);
+    border: none; border-radius: 12px; color: white;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+  .journal-save:hover { background: var(--gold-light); }
+  .journal-saved {
+    text-align: center; color: #2d7a4f; font-size: 0.9rem;
+    font-weight: 600; margin-top: 0.5rem; display: none;
+  }
+
 </style>
 </head>
 <body>
@@ -1028,6 +1147,109 @@
   </div>
 </div>
 
+
+
+<!-- JOURNAL FULL SCREEN -->
+<div class="journal-overlay" id="journal-overlay">
+  <div class="journal-header">
+    <div>
+      <h2>📓 Recovery Journal</h2>
+      <div class="journal-date" id="journal-date"></div>
+    </div>
+    <button class="journal-close" onclick="closeJournal()">✕</button>
+  </div>
+  <div class="journal-body">
+
+    <!-- PAIN LEVEL -->
+    <div class="journal-section">
+      <h3>😣 Pain Level</h3>
+      <div class="slider-wrap">
+        <div class="slider-labels"><span>No pain</span><span>Moderate</span><span>Worst</span></div>
+        <input type="range" class="journal-slider" id="j-pain" min="0" max="10" value="5"
+               oninput="updateSlider('j-pain','j-pain-val')">
+        <div class="slider-value" id="j-pain-val">5</div>
+      </div>
+    </div>
+
+    <!-- RANGE OF MOTION -->
+    <div class="journal-section">
+      <h3>💪 Range of Motion</h3>
+      <div class="slider-wrap">
+        <div class="slider-labels"><span>Barely moving</span><span>Getting there</span><span>Full range</span></div>
+        <input type="range" class="journal-slider" id="j-rom" min="0" max="10" value="5"
+               style="background: linear-gradient(to right, #c0392b 0%, #c9923a 50%, #2d7a4f 100%);"
+               oninput="updateSlider('j-rom','j-rom-val')">
+        <div class="slider-value" id="j-rom-val">5</div>
+      </div>
+    </div>
+
+    <!-- ENERGY -->
+    <div class="journal-section">
+      <h3>⚡ Energy Today</h3>
+      <div class="slider-wrap">
+        <div class="slider-labels"><span>Exhausted</span><span>OK</span><span>Felt great</span></div>
+        <input type="range" class="journal-slider" id="j-energy" min="0" max="10" value="5"
+               style="background: linear-gradient(to right, #c0392b 0%, #c9923a 50%, #2d7a4f 100%);"
+               oninput="updateSlider('j-energy','j-energy-val')">
+        <div class="slider-value" id="j-energy-val">5</div>
+      </div>
+    </div>
+
+    <!-- SWELLING -->
+    <div class="journal-section">
+      <h3>🌡️ Swelling</h3>
+      <div class="swelling-btns">
+        <button class="swell-btn" onclick="selectSwell(this,'none')">None</button>
+        <button class="swell-btn" onclick="selectSwell(this,'mild')">Mild</button>
+        <button class="swell-btn" onclick="selectSwell(this,'moderate')">Moderate</button>
+        <button class="swell-btn" onclick="selectSwell(this,'significant')">Significant</button>
+      </div>
+    </div>
+
+    <!-- ONE WIN -->
+    <div class="journal-section">
+      <h3>🌟 One Win Today</h3>
+      <textarea class="journal-win" id="j-win"
+        placeholder="What felt better today, no matter how small? What did you do that you could not do last week?"></textarea>
+    </div>
+
+    <!-- SUNDAY CHECK-IN -->
+    <div class="journal-section sunday-checkin" id="sunday-section">
+      <h3>📅 Weekly Check-In</h3>
+      <div class="sunday-q">
+        <span>Is my pain decreasing week over week?</span>
+        <div class="sunday-btns">
+          <button class="sunday-btn yes" onclick="selectSunday(this,'pain-better','yes')">Yes</button>
+          <button class="sunday-btn no" onclick="selectSunday(this,'pain-better','no')">Not yet</button>
+        </div>
+      </div>
+      <div class="sunday-q">
+        <span>Is my range of motion improving?</span>
+        <div class="sunday-btns">
+          <button class="sunday-btn yes" onclick="selectSunday(this,'rom-better','yes')">Yes</button>
+          <button class="sunday-btn no" onclick="selectSunday(this,'rom-better','no')">Not yet</button>
+        </div>
+      </div>
+      <div class="sunday-q">
+        <span>Am I doing more than last month?</span>
+        <div class="sunday-btns">
+          <button class="sunday-btn yes" onclick="selectSunday(this,'doing-more','yes')">Yes</button>
+          <button class="sunday-btn no" onclick="selectSunday(this,'doing-more','no')">Not yet</button>
+        </div>
+      </div>
+      <div class="sunday-q">
+        <span>My biggest win this week:</span>
+      </div>
+      <textarea class="journal-win" id="j-weekly-win" style="margin-top:0.5rem;"
+        placeholder="Write your biggest win this week..."></textarea>
+    </div>
+
+    <!-- SAVE -->
+    <button class="journal-save" onclick="saveJournal()">Save Today's Entry ✓</button>
+    <div class="journal-saved" id="journal-saved">✓ Saved! Keep going — you are building something real.</div>
+
+  </div>
+</div>
 
 <!-- ABOUT BUTTON (visible in app) -->
 <button class="about-btn" id="about-btn" onclick="openAbout()">ℹ️</button>
@@ -1937,6 +2159,101 @@
     } catch(e) {}
   }
 
+
+  // ── JOURNAL SYSTEM ────────────────────────────────────────────────────────
+  let swellValue = '';
+  const sundayAnswers = {};
+
+  function openJournal() {
+    const overlay = document.getElementById('journal-overlay');
+    overlay.classList.add('active');
+    // Set date
+    const today = new Date();
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    document.getElementById('journal-date').textContent = today.toLocaleDateString('en-US', options);
+    // Show sunday check-in if today is Sunday
+    const isSunday = today.getDay() === 0;
+    const sundaySection = document.getElementById('sunday-section');
+    if (sundaySection) sundaySection.classList.toggle('visible', isSunday);
+    // Restore saved values for today
+    restoreJournal();
+  }
+
+  function closeJournal() {
+    document.getElementById('journal-overlay').classList.remove('active');
+  }
+
+  function updateSlider(sliderId, valId) {
+    const val = document.getElementById(sliderId).value;
+    document.getElementById(valId).textContent = val;
+  }
+
+  function selectSwell(btn, value) {
+    document.querySelectorAll('.swell-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    swellValue = value;
+  }
+
+  function selectSunday(btn, question, answer) {
+    const parent = btn.closest('.sunday-btns');
+    parent.querySelectorAll('.sunday-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    sundayAnswers[question] = answer;
+  }
+
+  function saveJournal() {
+    try {
+      const today = new Date().toDateString();
+      const entry = {
+        date: today,
+        pain: document.getElementById('j-pain').value,
+        rom: document.getElementById('j-rom').value,
+        energy: document.getElementById('j-energy').value,
+        swelling: swellValue,
+        win: document.getElementById('j-win').value,
+        sunday: sundayAnswers,
+        weeklyWin: document.getElementById('j-weekly-win') ? document.getElementById('j-weekly-win').value : ''
+      };
+      // Save to localStorage
+      const allEntries = JSON.parse(localStorage.getItem('hm_journal') || '[]');
+      // Replace today's entry if exists
+      const idx = allEntries.findIndex(e => e.date === today);
+      if (idx > -1) allEntries[idx] = entry;
+      else allEntries.push(entry);
+      // Keep last 90 days
+      if (allEntries.length > 90) allEntries.shift();
+      localStorage.setItem('hm_journal', JSON.stringify(allEntries));
+      // Show saved message
+      const saved = document.getElementById('journal-saved');
+      saved.style.display = 'block';
+      setTimeout(() => {
+        saved.style.display = 'none';
+        closeJournal();
+      }, 2000);
+    } catch(e) {
+      alert('Could not save. Please try again.');
+    }
+  }
+
+  function restoreJournal() {
+    try {
+      const today = new Date().toDateString();
+      const allEntries = JSON.parse(localStorage.getItem('hm_journal') || '[]');
+      const entry = allEntries.find(e => e.date === today);
+      if (!entry) return;
+      if (entry.pain) { document.getElementById('j-pain').value = entry.pain; document.getElementById('j-pain-val').textContent = entry.pain; }
+      if (entry.rom) { document.getElementById('j-rom').value = entry.rom; document.getElementById('j-rom-val').textContent = entry.rom; }
+      if (entry.energy) { document.getElementById('j-energy').value = entry.energy; document.getElementById('j-energy-val').textContent = entry.energy; }
+      if (entry.swelling) {
+        swellValue = entry.swelling;
+        document.querySelectorAll('.swell-btn').forEach(b => {
+          if (b.getAttribute('onclick').includes(entry.swelling)) b.classList.add('selected');
+        });
+      }
+      if (entry.win) document.getElementById('j-win').value = entry.win;
+    } catch(e) {}
+  }
+
   const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50'];
 
   const QUOTES = [
@@ -2188,6 +2505,12 @@
 
   function toggleTask(el) {
     if (el.tagName === 'BUTTON') return;
+    // If this is a journal item, open the journal instead
+    const taskId = el.dataset.taskId;
+    if (taskId && taskId.includes('journal')) {
+      openJournal();
+      return;
+    }
     const wasDone = el.classList.contains('done');
     el.classList.toggle('done');
     doneTasks = wasDone ? doneTasks - 1 : doneTasks + 1;
