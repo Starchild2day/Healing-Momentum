@@ -2611,10 +2611,40 @@
     timerRunning = false;
     clearInterval(timerInterval);
     document.getElementById('timer-title').textContent = label;
-    document.getElementById('timer-sub').textContent = formatTime(seconds) + ' — tap Start when ready';
     document.getElementById('timer-display').textContent = formatTime(seconds);
-    document.getElementById('timer-start-btn').textContent = 'Start';
+    document.getElementById('timer-start-btn').textContent = 'Pause';
+    document.getElementById('timer-start-btn').style.background = '#c9923a';
     document.getElementById('timer-modal').classList.add('active');
+    // Auto-start immediately
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      document.getElementById('timer-display').textContent = formatTime(timerSeconds);
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timer-display').textContent = '✓';
+        document.getElementById('timer-start-btn').textContent = 'Great!';
+        document.getElementById('timer-start-btn').style.background = '#2d7a4f';
+        document.getElementById('timer-sub').textContent = 'Nice work!';
+        try {
+          const ctx = new AudioContext();
+          const tones = [523, 659, 784, 1047];
+          tones.forEach((freq, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            o.frequency.value = freq;
+            o.type = 'sine';
+            g.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.18);
+            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.18 + 0.4);
+            o.start(ctx.currentTime + i * 0.18);
+            o.stop(ctx.currentTime + i * 0.18 + 0.4);
+          });
+        } catch(e) {}
+      }
+    }, 1000);
+    document.getElementById('timer-sub').textContent = 'Running — tap Pause to pause';
   }
 
   function toggleTimer() {
