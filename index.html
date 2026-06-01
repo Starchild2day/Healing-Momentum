@@ -34,7 +34,8 @@
 
   /* SCREENS */
   .screen { display: none !important; }
-  .screen.active { display: flex !important; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex !important; flex-direction: column; }
+  #disclaimer.active, #gate.active, #injury-select.active { min-height: 100vh; }
 
   /* GATE SCREEN */
   #gate {
@@ -139,7 +140,7 @@
   .injury-btn { background: var(--border); cursor: not-allowed; opacity: 0.6; transition: all 0.2s; }
 
   /* APP SCREEN */
-  #app { background: #f0ebe0; flex-direction: column; gap: 0; }
+  #app { background: #f0ebe0; flex-direction: column; gap: 0; height: 100vh; height: 100dvh; overflow: hidden; }
 
   .app-header {
     background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 1rem 1.5rem 0.6rem;
@@ -181,7 +182,7 @@
     font-size: 0.85rem; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.4;
   }
 
-  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
+  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; min-height: 0; }
 
   .section-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
   .section-header {
@@ -932,7 +933,7 @@
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
         <div class="streak-badge">
-          <div>🔥</div>
+          <div id="streak-fire">🔥</div>
           <div>
             <div class="streak-num" id="streak-num">Day 1</div>
             <div class="streak-label" id="streak-label">Phase 2 in 7 days</div>
@@ -1428,16 +1429,29 @@
           userName = session.name;
           selectedInjury = session.injury;
           // Check if it is a new day and increment counter
-          const taskData = localStorage.getItem('hm_tasks');
-          if (taskData) {
-            const { date } = JSON.parse(taskData);
-            const today = new Date().toDateString();
-            if (date !== today) {
-              session.day = (session.day || 1) + 1;
-              localStorage.setItem('hm_user', JSON.stringify(session));
-              localStorage.removeItem('hm_tasks');
+          const today = new Date().toDateString();
+          const lastActiveDate = localStorage.getItem('hm_last_date');
+          if (lastActiveDate && lastActiveDate !== today) {
+            // New day — increment day counter
+            session.day = (session.day || 1) + 1;
+            // Check if yesterday was a full completion day — update streak
+            const taskData = localStorage.getItem('hm_tasks');
+            if (taskData) {
+              const { isFullDay } = JSON.parse(taskData);
+              if (isFullDay) {
+                session.streak = (session.streak || 0) + 1;
+                // Check if streak earns early phase unlock
+                session.earnedPhase = getEarnedPhase(session.day, session.streak);
+              } else {
+                session.streak = 0; // Miss a full day — streak resets
+              }
+            } else {
+              session.streak = 0; // No tasks saved — streak resets
             }
+            localStorage.setItem('hm_user', JSON.stringify(session));
+            localStorage.removeItem('hm_tasks');
           }
+          localStorage.setItem('hm_last_date', today);
           launchApp();
           return;
         }
@@ -1599,6 +1613,15 @@
     badge.style.animation = anim + ' 0.6s ease-out';
 
     if (section === 'evening') {
+      // Update streak display after full day completion
+      try {
+        const s = JSON.parse(localStorage.getItem('hm_user') || '{}');
+        const currentStreak = (s.streak || 0) + 1; // +1 for today (saved tomorrow)
+        const streakEl = document.getElementById('streak-num');
+        const fireEl = document.getElementById('streak-fire');
+        if (streakEl) streakEl.textContent = currentStreak + ' day' + (currentStreak !== 1 ? 's' : '');
+        if (fireEl) fireEl.textContent = '🔥';
+      } catch(e) {}
       setTimeout(() => {
         const c = document.getElementById('evening-confetti');
         if (c) launchConfetti(c, colors || confettiSets[0], emojis || emojiSets[0]);
@@ -1960,6 +1983,19 @@
   };
 
   // Phase boundaries
+
+  // ── EARNED PHASE — streak can unlock phases early ─────────────────────────
+  // Calendar minimum: Phase 2 = Day 8, Phase 3 = Day 22, Phase 4 = Day 43
+  // Streak accelerator: 5 full days = Phase 2, 14 = Phase 3, 30 = Phase 4
+  function getEarnedPhase(day, streak) {
+    const calendarPhase = getCurrentPhase(day);
+    let streakPhase = 0;
+    if (streak >= 30) streakPhase = 3;
+    else if (streak >= 14) streakPhase = 2;
+    else if (streak >= 5) streakPhase = 1;
+    return Math.max(calendarPhase, streakPhase);
+  }
+
   const PHASE_DAYS = [1, 8, 22, 43];
   const PHASE_LABELS = ['Wake It Up', 'Start Building', 'Rebuild', 'Maintain & Protect'];
   const PHASE_TAGLINES = [
@@ -1989,7 +2025,12 @@
     // Check if we have phase data for this injury
     if (!PHASES[injury]) return false;
 
-    const phaseIdx = getCurrentPhase(day);
+    // Use earned phase if streak unlocked early access
+    let phaseIdx = getCurrentPhase(day);
+    try {
+      const s = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      if (s.earnedPhase !== undefined) phaseIdx = Math.max(phaseIdx, s.earnedPhase);
+    } catch(e) {}
     const phase = PHASES[injury][phaseIdx];
     if (!phase) return false;
 
@@ -2144,17 +2185,41 @@
   // ── UPDATE STREAK BADGE WITH PHASE COUNTDOWN ──────────────────────────────
   function updateStreakBadge(day) {
     try {
+      const s = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      const streak = s.streak || 0;
       const streakEl = document.getElementById('streak-num');
       const labelEl = document.getElementById('streak-label');
-      if (streakEl) streakEl.textContent = 'Day ' + day;
-      const daysLeft = getDaysUntilNextPhase(day);
+      const fireEl = document.getElementById('streak-fire');
+
+      // Show streak if > 0, otherwise show day
+      if (streakEl) {
+        if (streak > 0) {
+          streakEl.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
+          if (fireEl) fireEl.textContent = '🔥';
+        } else {
+          streakEl.textContent = 'Day ' + day;
+          if (fireEl) fireEl.textContent = '📅';
+        }
+      }
+
+      // Label shows phase progress + streak motivation
       if (labelEl) {
-        if (daysLeft === null) {
+        const currentPhase = getCurrentPhase(day);
+        const earnedPhase = s.earnedPhase !== undefined ? s.earnedPhase : currentPhase;
+        const daysLeft = getDaysUntilNextPhase(day);
+        const streakToNext = currentPhase === 0 ? 5 : currentPhase === 1 ? 14 : currentPhase === 2 ? 30 : null;
+        const streakLeft = streakToNext ? streakToNext - streak : null;
+
+        if (earnedPhase > currentPhase) {
+          labelEl.textContent = '⚡ Phase ' + (earnedPhase+1) + ' unlocked early!';
+        } else if (streak > 0 && streakLeft !== null && streakLeft <= 3) {
+          labelEl.textContent = '🔥 ' + streakLeft + ' more full day' + (streakLeft !== 1 ? 's' : '') + ' → Phase ' + (currentPhase+2) + ' early!';
+        } else if (daysLeft === null) {
           labelEl.textContent = 'Phase 4 — Maintaining!';
         } else if (daysLeft === 0) {
           labelEl.textContent = '🎉 New phase today!';
         } else {
-          const nextPhase = getCurrentPhase(day) + 2;
+          const nextPhase = currentPhase + 2;
           labelEl.textContent = 'Phase ' + nextPhase + ' in ' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '');
         }
       }
@@ -2411,6 +2476,7 @@
     try {
       const existing = JSON.parse(localStorage.getItem('hm_user') || '{}');
       localStorage.setItem('hm_version', APP_VERSION);
+      localStorage.setItem('hm_last_date', new Date().toDateString());
       localStorage.setItem('hm_user', JSON.stringify({
         name, injury, agreed: true, day: existing.day || 1
       }));
@@ -2536,7 +2602,9 @@
       document.querySelectorAll('.task-item.done').forEach(item => {
         if (item.dataset.taskId) checked.push(item.dataset.taskId);
       });
-      localStorage.setItem('hm_tasks', JSON.stringify({ date: today, checked }));
+      const total = document.querySelectorAll('.task-item').length;
+      const isFullDay = checked.length >= total && total > 0;
+      localStorage.setItem('hm_tasks', JSON.stringify({ date: today, checked, isFullDay }));
     } catch(e) {}
   }
 
