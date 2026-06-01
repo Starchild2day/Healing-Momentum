@@ -1124,11 +1124,11 @@
             <div class="task-desc" id="e4-desc">Take before bed</div>
           </div>
         </div>
-        <div class="task-item" data-task-id="e5" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="evening_journal_0" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
-            <div class="task-name" id="e5-name">Recovery Journal</div>
-            <div class="task-desc" id="e5-desc">Rate your pain 1–10. Note one win from today. Takes 2 minutes.</div>
+            <div class="task-name" id="e5-name">📓 Open Recovery Journal</div>
+            <div class="task-desc" id="e5-desc">Tap to open your journal — sliders for pain, range of motion, energy, swelling, and your one win today. Takes 60 seconds. Worth every one of them–10. Note one win from today. Takes 2 minutes.</div>
           </div>
           <button class="task-timer" onclick="openTimer(event,'Journaling',120)">⏱ 2 min</button>
         </div>
@@ -2223,6 +2223,14 @@
       // Keep last 90 days
       if (allEntries.length > 90) allEntries.shift();
       localStorage.setItem('hm_journal', JSON.stringify(allEntries));
+      // Mark journal task as done
+      const journalTask = document.querySelector('[data-task-id="evening_journal_0"]');
+      if (journalTask && !journalTask.classList.contains('done')) {
+        journalTask.classList.add('done');
+        doneTasks++;
+        updateProgress();
+        saveTaskState();
+      }
       // Show saved message
       const saved = document.getElementById('journal-saved');
       saved.style.display = 'block';
