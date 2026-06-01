@@ -811,6 +811,77 @@
     color: #e8b86d;
   }
 
+
+  /* PHASE SUPPLIES CARD */
+  .supplies-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: var(--cream); flex-direction: column; overflow-y: auto;
+  }
+  .supplies-overlay.active { display: flex; }
+  body.dark .supplies-overlay { background: #0d1f0f; }
+
+  .supplies-header {
+    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%);
+    padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-shrink: 0;
+  }
+  .supplies-header h2 { color: #fff; font-size: 1.2rem; font-weight: 800; flex: 1; margin: 0; }
+  .supplies-close {
+    background: rgba(255,255,255,0.15); border: none; color: white;
+    border-radius: 50%; width: 36px; height: 36px; font-size: 1.1rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  .supplies-body { flex: 1; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+
+  .supplies-phase-card {
+    background: var(--white); border-radius: 16px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  body.dark .supplies-phase-card { background: #1a3320; }
+
+  .supplies-phase-header {
+    background: linear-gradient(135deg, #1a4028, #2d6b45);
+    padding: 0.8rem 1.2rem; display: flex; align-items: center; gap: 10px;
+  }
+  .supplies-phase-header h3 { color: #e8b86d; font-size: 1rem; font-weight: 800; margin: 0; flex: 1; }
+  .supplies-phase-header span { color: rgba(255,255,255,0.7); font-size: 0.8rem; }
+
+  .supplies-category { padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border); }
+  .supplies-category:last-child { border-bottom: none; }
+  .supplies-category h4 {
+    font-size: 0.8rem; font-weight: 700; color: var(--text-light);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem;
+  }
+  body.dark .supplies-category h4 { color: rgba(255,255,255,0.5); }
+
+  .supply-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0.5rem 0; border-bottom: 1px solid rgba(212,196,168,0.2);
+  }
+  .supply-item:last-child { border-bottom: none; }
+  .supply-name { flex: 1; font-size: 0.95rem; color: var(--text); font-weight: 500; }
+  body.dark .supply-name { color: #e8f0e4; }
+  .supply-dose { font-size: 0.8rem; color: var(--text-light); }
+  body.dark .supply-dose { color: rgba(255,255,255,0.5); }
+  .supply-link {
+    background: var(--gold); color: white; border: none; border-radius: 8px;
+    padding: 4px 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; white-space: nowrap;
+    text-decoration: none; display: inline-block;
+  }
+  .supply-link:hover { background: var(--gold-light); }
+  .supply-link.coming-soon {
+    background: var(--border); color: var(--text-light); cursor: default;
+  }
+  body.dark .supply-link.coming-soon { background: #2d4f35; color: rgba(255,255,255,0.4); }
+
+  .supplies-note {
+    background: var(--gold-pale); border: 1px solid var(--gold);
+    border-radius: 12px; padding: 0.8rem 1rem; font-size: 0.85rem;
+    color: var(--text-mid); line-height: 1.5;
+  }
+  body.dark .supplies-note { background: rgba(201,146,58,0.1); color: #e8f0e4; }
+
 </style>
 </head>
 <body>
@@ -978,6 +1049,21 @@
   </div>
 
   <div class="app-body">
+
+    <!-- SUPPLIES BUTTON -->
+    <div onclick="buildSuppliesHTML(); openSupplies();" style="
+      background: linear-gradient(135deg, #1a4028, #2d6b45);
+      border-radius: 12px; padding: 0.7rem 1.2rem;
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      box-shadow: var(--shadow);
+    ">
+      <span style="font-size:1.4rem;">🛒</span>
+      <div style="flex:1;">
+        <div style="color:#e8b86d; font-weight:700; font-size:0.95rem;">Phase Supplies</div>
+        <div style="color:rgba(255,255,255,0.7); font-size:0.78rem;">Supplements · Equipment · Nutrition</div>
+      </div>
+      <span style="color:rgba(255,255,255,0.5); font-size:1.2rem;">→</span>
+    </div>
 
     <!-- ONBOARDING BANNER — Day 1 only -->
     <div id="onboarding-banner" style="display:none;" class="phase-banner">
@@ -1166,6 +1252,20 @@
 </div>
 
 
+
+
+<!-- SUPPLIES FULL SCREEN -->
+<div class="supplies-overlay" id="supplies-overlay">
+  <div class="supplies-header">
+    <div>
+      <h2>🛒 Phase Supplies</h2>
+    </div>
+    <button class="supplies-close" onclick="closeSupplies()">✕</button>
+  </div>
+  <div class="supplies-body" id="supplies-body">
+    <!-- Built dynamically by buildSuppliesHTML() -->
+  </div>
+</div>
 
 <!-- JOURNAL FULL SCREEN -->
 <div class="journal-overlay" id="journal-overlay">
@@ -2378,6 +2478,149 @@
       }
       if (entry.win) document.getElementById('j-win').value = entry.win;
     } catch(e) {}
+  }
+
+
+  // ── PHASE SUPPLIES DATA ───────────────────────────────────────────────────
+  const PHASE_SUPPLIES = [
+    {
+      phase: 1,
+      days: 'Days 1–7',
+      title: 'Phase 1 Supplies — Wake It Up',
+      supplements: [
+        { name: 'Collagen Peptides', dose: '10g daily', note: 'Unflavored powder, stirs into any drink' },
+        { name: 'Vitamin C', dose: '500–1000mg daily', note: 'Take with collagen for best absorption' },
+        { name: 'Creatine Monohydrate', dose: '3–5g daily', note: 'Unflavored powder, any brand' },
+        { name: 'Turmeric / Curcumin', dose: '500mg daily', note: 'With black pepper (piperine) for absorption' },
+        { name: 'Vitamin D3', dose: '2000 IU daily', note: 'Take in the morning with fat' },
+        { name: 'Fish Oil (EPA+DHA)', dose: '2–3g daily', note: 'With meals to avoid fishy aftertaste' },
+        { name: 'Magnesium Glycinate', dose: '300–400mg nightly', note: 'Glycinate form specifically — gentlest on stomach' },
+      ],
+      equipment: [],
+      food: [
+        { name: 'High-quality protein sources', dose: '130–160g daily total', note: 'Eggs, chicken, salmon, Greek yogurt, cottage cheese' },
+        { name: 'Colorful vegetables', dose: 'Every meal', note: 'Anti-inflammatory — spinach, kale, berries, sweet potato' },
+        { name: 'Healthy fats', dose: 'Every meal', note: 'Olive oil, avocado, walnuts, salmon' },
+      ]
+    },
+    {
+      phase: 2,
+      days: 'Days 8–21',
+      title: 'Phase 2 Supplies — Start Building',
+      supplements: [
+        { name: 'All Phase 1 supplements', dose: 'Same doses', note: 'Keep everything going — nothing changes here' },
+        { name: 'Zinc', dose: '15–30mg daily', note: 'Supports tissue repair and immune function during active rehab' },
+      ],
+      equipment: [
+        { name: 'Light Resistance Band Set', dose: 'Light + Medium', note: 'Theraband or similar — needed for external rotations, rows, face pulls' },
+      ],
+      food: [
+        { name: 'Increase protein slightly', dose: '150–175g daily', note: 'You are adding resistance work — muscles need more raw material' },
+      ]
+    },
+    {
+      phase: 3,
+      days: 'Days 22–42',
+      title: 'Phase 3 Supplies — Rebuild',
+      supplements: [
+        { name: 'All Phase 1–2 supplements', dose: 'Same doses', note: 'Consistency is everything — do not stop what is working' },
+      ],
+      equipment: [
+        { name: 'Medium–Heavy Resistance Bands', dose: 'Medium + Heavy', note: 'Step up from Phase 2 bands as strength improves' },
+        { name: 'Light Dumbbells', dose: '2–5 lbs', note: 'For weighted pendulums and scaption raises' },
+      ],
+      food: [
+        { name: 'Protein — maintain higher intake', dose: '150–175g daily', note: 'Active strength rebuilding phase — protein is critical' },
+      ]
+    },
+    {
+      phase: 4,
+      days: 'Day 43+',
+      title: 'Phase 4 Supplies — Maintain & Protect',
+      supplements: [
+        { name: 'All previous supplements', dose: 'Same doses', note: 'This is your long-term stack — not recovery, just how you live now' },
+      ],
+      equipment: [
+        { name: 'Full Resistance Band Set', dose: 'Light through Heavy', note: 'For ongoing maintenance circuit 3–4x per week' },
+        { name: 'Dumbbells 5–15 lbs', dose: 'As cleared by PT', note: 'For overhead press and full strength work' },
+      ],
+      food: [
+        { name: 'Maintain protein + anti-inflammatory diet', dose: '130–160g daily', note: 'This is your permanent baseline — not a diet, a lifestyle' },
+      ]
+    }
+  ];
+
+  function openSupplies() {
+    const overlay = document.getElementById('supplies-overlay');
+    overlay.classList.add('active');
+  }
+
+  function closeSupplies() {
+    document.getElementById('supplies-overlay').classList.remove('active');
+  }
+
+  function buildSuppliesHTML() {
+    const body = document.getElementById('supplies-body');
+    if (!body || body.children.length > 1) return; // Already built
+
+    let html = '';
+    PHASE_SUPPLIES.forEach((phase, idx) => {
+      const isCurrent = getCurrentPhase(getCurrentDay()) === idx;
+      html += '<div class="supplies-phase-card">';
+      html += '<div class="supplies-phase-header">';
+      html += '<h3>' + phase.title + '</h3>';
+      html += '<span>' + phase.days + (isCurrent ? ' · Current' : '') + '</span>';
+      html += '</div>';
+
+      // Supplements
+      if (phase.supplements.length > 0) {
+        html += '<div class="supplies-category"><h4>💊 Supplements</h4>';
+        phase.supplements.forEach(item => {
+          html += '<div class="supply-item">';
+          html += '<div><div class="supply-name">' + item.name + '</div>';
+          html += '<div class="supply-dose">' + item.dose + ' · ' + item.note + '</div></div>';
+          html += '<span class="supply-link coming-soon">Shop ↗</span>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+
+      // Equipment
+      if (phase.equipment.length > 0) {
+        html += '<div class="supplies-category"><h4>🏋️ Equipment</h4>';
+        phase.equipment.forEach(item => {
+          html += '<div class="supply-item">';
+          html += '<div><div class="supply-name">' + item.name + '</div>';
+          html += '<div class="supply-dose">' + item.dose + ' · ' + item.note + '</div></div>';
+          html += '<span class="supply-link coming-soon">Shop ↗</span>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+
+      // Food
+      if (phase.food.length > 0) {
+        html += '<div class="supplies-category"><h4>🥗 Nutrition Focus</h4>';
+        phase.food.forEach(item => {
+          html += '<div class="supply-item">';
+          html += '<div><div class="supply-name">' + item.name + '</div>';
+          html += '<div class="supply-dose">' + item.dose + ' · ' + item.note + '</div></div>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+
+      html += '</div>'; // end phase card
+    });
+
+    body.innerHTML = '<div class="supplies-note">💡 Shop links coming soon — currently being curated with our clinical partner. Every recommendation in this app is research-backed and selected for quality and value.</div>' + html;
+  }
+
+  function getCurrentDay() {
+    try {
+      const s = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      return s.day || 1;
+    } catch(e) { return 1; }
   }
 
   const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50'];
