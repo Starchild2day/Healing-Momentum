@@ -181,7 +181,7 @@
     font-size: 0.85rem; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.4;
   }
 
-  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
+  .app-body { flex: 1; padding: 2.8rem 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
 
   .section-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
   .section-header {
@@ -954,12 +954,12 @@
       </div>
     </div>
 
-  <!-- PROGRESS BAR — fixed between header and content -->
+  <!-- PROGRESS BAR — position fixed, always visible -->
   <div id="sticky-bar" style="
+    display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 500;
     background: #1a4028; padding: 0.5rem 1.2rem;
     display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   ">
     <div style="flex:1; height: 10px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden;">
       <div id="progress-bar-fill" style="
@@ -2603,6 +2603,10 @@
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    // Show progress bar and about/signout buttons only in app screen
+    const inApp = id === 'app';
+    const bar = document.getElementById('sticky-bar');
+    if (bar) bar.style.display = inApp ? 'flex' : 'none';
   }
 
   function toggleSection(id) {
