@@ -143,12 +143,12 @@
 
   .app-header {
     position: sticky; top: 0; z-index: 100;
-    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 1rem 1.5rem 0.6rem;
+    background: linear-gradient(160deg, #1a4028 0%, #2d6b45 100%); padding: 0.5rem 1.2rem 0.4rem;
     color: var(--white);
   }
   .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-  .greeting { font-size: 1rem; color: rgba(255,255,255,0.65); }
-  .header-name { font-size: 1.8rem; margin-top: 2px; }
+  .greeting { font-size: 0.8rem; color: rgba(255,255,255,0.65); }
+  .header-name { font-size: 1.4rem; margin-top: 0; }
   .streak-badge {
     display: flex; align-items: center; gap: 6px;
     background: rgba(201,146,58,0.25); border: 1px solid var(--gold);
@@ -946,13 +946,12 @@
         <div style="display:flex;align-items:center;gap:8px;">
           <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌿</button>
           <!-- Day counter -->
-          <div class="streak-badge" style="padding:4px 10px;text-align:center;">
-            <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">DAY</div>
-            <div id="streak-num" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;">1</div>
+          <div style="text-align:center;">
+            <div id="streak-num" style="font-size:1rem;font-weight:700;color:#e8b86d;white-space:nowrap;">Day 1</div>
           </div>
           <!-- Streak counter -->
-          <div class="streak-badge" style="padding:4px 10px;text-align:center;">
-            <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">MOMENTUM BUILT</div>
+          <div class="streak-badge" style="padding:3px 8px;text-align:center;">
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);">MOMENTUM BUILT</div>
             <div style="display:flex;align-items:center;gap:2px;justify-content:center;">
               <span id="streak-fire">○</span>
               <span id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;">0</span>
@@ -969,7 +968,7 @@
         </div><!-- end flex wrapper -->
       </div>
       <!-- PROGRESS BAR — lives in header, scrolls with nothing -->
-    <div id="sticky-bar" style="padding: 0.5rem 1.2rem; display: flex; align-items: center; gap: 12px;">
+    <div id="sticky-bar" style="padding: 0.3rem 1.2rem; display: flex; align-items: center; gap: 12px;">
       <div style="flex:1; height: 10px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden;">
         <div id="progress-bar-fill" style="height:100%; width:0%; border-radius:10px; background: linear-gradient(90deg,#c9923a,#4a9e5c); transition: width 0.4s ease;"></div>
       </div>
@@ -1637,7 +1636,7 @@
         const currentStreak = (s.streak || 0) + 1; // +1 for today (saved tomorrow)
         const streakEl = document.getElementById('streak-num');
         const fireEl = document.getElementById('streak-fire');
-        if (streakEl) streakEl.textContent = currentStreak + ' day' + (currentStreak !== 1 ? 's' : '');
+        if (streakCountEl) streakCountEl.textContent = currentStreak + ' day' + (currentStreak !== 1 ? 's' : '');
         if (fireEl) fireEl.textContent = '🔥';
       } catch(e) {}
       setTimeout(() => {
@@ -2221,10 +2220,10 @@
       const fireEl = document.getElementById('streak-fire');
 
       // Day counter
-      if (streakEl) streakEl.textContent = day;
+      if (streakEl) streakEl.textContent = 'Day ' + day;
 
       // Streak counter — always show number
-      if (streakCountEl) streakCountEl.textContent = streak;
+      if (streakCountEl) streakCountEl.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
       if (fireEl) fireEl.textContent = streak > 0 ? '🔥' : '○';
 
       // Phase countdown label
