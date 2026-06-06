@@ -1262,7 +1262,7 @@
             <div class="task-desc" id="e4-desc">Take before bed</div>
           </div>
         </div>
-        <div class="task-item" data-task-id="evening_journal_0" onclick="toggleTask(this)">
+        <div class="task-item" data-task-id="e5" onclick="toggleTask(this)">
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="e5-name">📓 Open Recovery Journal</div>
@@ -3013,18 +3013,13 @@
         if(n && p[k]) {
           n.textContent = p[k][0];
           d.innerHTML = formatDesc(p[k][1], k);
-          // Make sure e5 journal task opens the journal on tap
-          if (k === 'e5') {
-            const taskItem = n.closest('.task-item');
-            if (taskItem) {
-              taskItem.dataset.taskId = 'evening_journal_0';
-              // Add tap hint if not already there
-              if (!d.querySelector('.journal-tap-hint')) {
-                const hint = document.createElement('span');
-                hint.className = 'journal-tap-hint';
-                hint.textContent = 'Tap to open →';
-                d.appendChild(hint);
-              }
+          // Journal items: detect by name and add tap hint
+          if (k === 'e5' && p[k] && p[k][0].includes('Journal')) {
+            if (!d.querySelector('.journal-tap-hint')) {
+              const hint = document.createElement('span');
+              hint.className = 'journal-tap-hint';
+              hint.textContent = 'Tap to open →';
+              d.appendChild(hint);
             }
           }
         }
@@ -3094,7 +3089,9 @@
     if (el.tagName === 'BUTTON') return;
     // If this is a journal item, open the journal instead
     const taskId = el.dataset.taskId;
-    if (taskId && taskId.includes('journal')) {
+    const taskName = el.querySelector('.task-name');
+    if ((taskId && taskId.includes('journal')) ||
+        (taskName && taskName.textContent.includes('Journal'))) {
       openJournal();
       return;
     }
