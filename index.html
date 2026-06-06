@@ -2719,7 +2719,17 @@
       setTimeout(() => {
         saved.style.display = 'none';
         closeJournal();
-      }, 2000);
+        // Reopen evening section so the filled circle is visible
+        const eveningItems = document.getElementById('evening-items');
+        const eveningArrow = document.getElementById('evening-arrow');
+        if (eveningItems && !eveningItems.classList.contains('open')) {
+          eveningItems.classList.add('open');
+          if (eveningArrow) eveningArrow.classList.add('open');
+        }
+        // Scroll evening section into view
+        const eveningSection = document.getElementById('evening');
+        if (eveningSection) eveningSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 1500);
     } catch(e) {
       alert('Could not save. Please try again.');
     }
