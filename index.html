@@ -1266,7 +1266,7 @@
           <div class="task-check"><div class="task-check-inner"></div></div>
           <div class="task-info">
             <div class="task-name" id="e5-name">📓 Open Recovery Journal</div>
-            <div class="task-desc" id="e5-desc">Tap to open your journal — sliders for pain, range of motion, energy, swelling, and your one win today. Takes 60 seconds. Worth every one of them–10. Note one win from today. Takes 2 minutes.</div>
+            <div class="task-desc" id="e5-desc">Tap anywhere on this item to open your journal. Rate pain, range of motion, energy, swelling, and note one win today. Takes 60 seconds.<br><span class="journal-tap-hint">Tap to open →</span></div>
           </div>
           <button class="task-timer" onclick="openTimer(event,'Journaling',120)">⏱ 2 min</button>
         </div>
@@ -1361,8 +1361,16 @@
     <!-- ONE WIN -->
     <div class="journal-section">
       <h3>🌟 One Win Today</h3>
-      <textarea class="journal-win" id="j-win"
-        placeholder="What felt better today, no matter how small? What did you do that you could not do last week?"></textarea>
+      <div style="position:relative;">
+        <textarea class="journal-win" id="j-win"
+          placeholder="What felt better today, no matter how small? What did you do that you could not do last week?"></textarea>
+        <button id="mic-btn" onclick="toggleVoice('j-win','mic-btn')" style="
+          position:absolute; bottom:10px; right:10px;
+          background:var(--navy); color:white; border:none;
+          border-radius:50%; width:36px; height:36px; font-size:1.1rem;
+          cursor:pointer; display:flex; align-items:center; justify-content:center;
+          box-shadow:0 2px 8px rgba(0,0,0,0.2);" title="Tap to speak">🎤</button>
+      </div>
     </div>
 
     <!-- SUNDAY CHECK-IN -->
@@ -1392,8 +1400,16 @@
       <div class="sunday-q">
         <span>My biggest win this week:</span>
       </div>
-      <textarea class="journal-win" id="j-weekly-win" style="margin-top:0.5rem;"
-        placeholder="Write your biggest win this week..."></textarea>
+      <div style="position:relative;">
+        <textarea class="journal-win" id="j-weekly-win" style="margin-top:0.5rem;"
+          placeholder="Write your biggest win this week..."></textarea>
+        <button id="mic-btn-weekly" onclick="toggleVoice('j-weekly-win','mic-btn-weekly')" style="
+          position:absolute; bottom:10px; right:10px;
+          background:var(--navy); color:white; border:none;
+          border-radius:50%; width:36px; height:36px; font-size:1.1rem;
+          cursor:pointer; display:flex; align-items:center; justify-content:center;
+          box-shadow:0 2px 8px rgba(0,0,0,0.2);" title="Tap to speak">🎤</button>
+      </div>
     </div>
 
     <!-- SAVE -->
@@ -2603,6 +2619,69 @@
     sundayAnswers[question] = answer;
   }
 
+  // ── VOICE TO TEXT ────────────────────────────────────────────────────────
+  let voiceRecognition = null;
+  let voiceActive = false;
+
+  function toggleVoice(targetId, btnId) {
+    const btn = document.getElementById(btnId);
+    const target = document.getElementById(targetId);
+
+    // Check browser support
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Voice input is not supported on this browser. Try Safari on iPhone or Chrome on Android.');
+      return;
+    }
+
+    if (voiceActive && voiceRecognition) {
+      // Stop recording
+      voiceRecognition.stop();
+      return;
+    }
+
+    // Start recording
+    voiceRecognition = new SpeechRecognition();
+    voiceRecognition.continuous = true;
+    voiceRecognition.interimResults = true;
+    voiceRecognition.lang = 'en-US';
+
+    let finalTranscript = target.value;
+
+    voiceRecognition.onstart = function() {
+      voiceActive = true;
+      if (btn) { btn.textContent = '⏹'; btn.style.background = '#c0392b'; }
+    };
+
+    voiceRecognition.onresult = function(event) {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript + ' ';
+        } else {
+          interim = event.results[i][0].transcript;
+        }
+      }
+      target.value = finalTranscript + interim;
+    };
+
+    voiceRecognition.onend = function() {
+      voiceActive = false;
+      target.value = finalTranscript;
+      if (btn) { btn.textContent = '🎤'; btn.style.background = 'var(--navy)'; }
+    };
+
+    voiceRecognition.onerror = function(e) {
+      voiceActive = false;
+      if (btn) { btn.textContent = '🎤'; btn.style.background = 'var(--navy)'; }
+      if (e.error === 'not-allowed') {
+        alert('Microphone permission denied. Please allow microphone access in your browser settings.');
+      }
+    };
+
+    voiceRecognition.start();
+  }
+
   function saveJournal() {
     try {
       const today = new Date().toDateString();
@@ -2627,7 +2706,7 @@
       localStorage.setItem('hm_journal', JSON.stringify(allEntries));
       // Mark journal task as done
       // Find journal task — works for both static and phase-rendered tasks
-      const journalTask = document.querySelector('[data-task-id*="journal"]');
+      const journalTask = document.querySelector('[data-task-id*="journal"]') || document.querySelector('[data-task-id="e5"]');
       if (journalTask && !journalTask.classList.contains('done')) {
         journalTask.classList.add('done');
         doneTasks++;
