@@ -1032,7 +1032,7 @@
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <button class="dark-toggle" id="supplies-toggle" onclick="buildSuppliesHTML(); openSupplies();" title="Phase Supplies">🛒</button>
+          <button class="dark-toggle" id="supplies-toggle" onclick="buildSuppliesHTML(); openSupplies();" title="Supplies">🛒</button>
           <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()">🌙</button>
           <!-- Day counter -->
           <div style="text-align:center;">
@@ -1069,6 +1069,23 @@
   <div class="app-body">
 
 
+
+    <!-- SUPPLIES BANNER — shown until tapped, then replaced by header icon -->
+    <div id="supplies-banner" style="display:none;">
+      <div onclick="dismissSuppliesBanner();" style="
+        background: linear-gradient(135deg, #1a4028, #2d6b45);
+        border-radius: 12px; padding: 0.85rem 1.2rem; margin-bottom: 12px;
+        display: flex; align-items: center; gap: 10px; cursor: pointer;
+        box-shadow: var(--shadow);
+      ">
+        <span style="font-size:1.5rem;">🛒</span>
+        <div style="flex:1;">
+          <div style="color:#e8b86d; font-weight:800; font-size:1rem;">Supplies</div>
+          <div style="color:rgba(255,255,255,0.75); font-size:0.8rem;">Everything you need for your recovery</div>
+        </div>
+        <span style="color:rgba(255,255,255,0.5); font-size:1.2rem;">→</span>
+      </div>
+    </div>
 
     <!-- ONBOARDING BANNER — Day 1 only -->
     <div id="onboarding-banner" style="display:none;" class="phase-banner">
@@ -1263,7 +1280,7 @@
 <div class="supplies-overlay" id="supplies-overlay">
   <div class="supplies-header">
     <div>
-      <h2>🛒 Phase Supplies</h2>
+      <h2>🛒 Supplies</h2>
     </div>
     <button class="supplies-close" onclick="closeSupplies()">✕</button>
   </div>
