@@ -955,7 +955,7 @@
         <option value="knee">Knee</option>
         <option value="hip">Hip</option>
         <option value="back">Lower Back</option>
-        <option value="surgery">Post-Surgery Recovery</option>
+        <option value="surgery">Post-Surgery Recovery (Orthopedic)</option>
       </select>
       <div class="beta-row">
         <input type="text" id="g-code" placeholder="Beta access code" style="text-transform:uppercase">
@@ -997,7 +997,7 @@
       </div>
       <div class="injury-option" onclick="selectInjury('surgery',this)">
         <div class="injury-icon">🏥</div>
-        <div><div class="injury-label">Post-Surgery Recovery</div><div class="injury-sub">General surgical recovery</div></div>
+        <div><div class="injury-label">Post-Surgery Recovery</div><div class="injury-sub">Orthopedic — joint, repair, reconstruction</div></div>
       </div>
     </div>
     <hr style="border:none;border-top:1px solid var(--border);margin:0.5rem 0 1rem;">
@@ -2104,6 +2104,196 @@
           ],
           journal: [
             ['📓 Open Recovery Journal', 'Once a week — Sunday works well. Rate pain (should be 0–2 by now). Rate range of motion (should be 8–10). Rate strength (can you do everything you could before the injury?). Note what you are doing now that you could not do on Day 1. Write it down. Read it back. That is the whole story of your recovery in one note. You did that.', 0],
+          ],
+        },
+      },
+    ],
+    surgery: [
+      {
+        phase: 1,
+        days: '1–14',
+        title: 'Protect and Stabilize',
+        tagline: 'Rest is not weakness. Protecting the repair is the whole job right now.',
+        morning: {
+          movement: [
+            ['Ankle Pumps and Diaphragmatic Breathing — Before Your Feet Touch the Floor', 'While still in bed, pump both feet up and down — flex toward your shins, point away — 20 slow pumps. This moves blood away from the surgical site before you load your body with standing. Then place one hand on your belly and breathe in deeply through your nose for 4 counts, feeling your hand rise. Hold 1 count. Out through your mouth for 6 counts. Ten rounds. Diaphragmatic breathing after surgery is not optional — it prevents the fluid buildup in the lungs that is one of the most common and avoidable post-surgical complications.', 60],
+            ['Ice — 15 Minutes on the Surgical Site', 'Apply ice wrapped in a thin cloth directly over the surgical area. Set a timer for exactly 15 minutes — not more. Morning icing is the single most important habit for controlling post-surgical swelling. Swelling is the enemy of range of motion, the primary source of pain, and the main reason people feel like recovery is not working. It is working. You just have to keep the swelling down so it can. Every morning without exception.', 900],
+            ['Prescribed PT Exercises Only — Exactly as Prescribed', 'Do every exercise your physical therapist has assigned — in the exact order, for the exact reps, at the exact effort level. Do not skip exercises that seem too easy. Do not add exercises that seem helpful. Do not push through anything above a 3 out of 10 on the pain scale. Your PT has deliberately sequenced this program for where your tissue is right now. Pain-free movement is the only movement.', 0],
+          ],
+          supplements: [
+            ['💊 Vitamin C (1000mg) + Zinc (15–30mg) + Creatine (3–5g)', 'Take all three with breakfast every morning. Vitamin C is essential for collagen synthesis — every internal tissue being repaired right now is collagen-based, and without Vitamin C your body cannot assemble collagen into usable repair material. Zinc is required at every stage of wound healing. Creatine accelerates the cellular energy production that drives tissue repair and helps rebuild the muscle mass lost during surgery. All three, every morning, without fail.', 0],
+            ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. Look for a curcumin formula with black pepper extract (piperine) — it increases absorption by up to 2000%. Post-surgical inflammation is necessary for healing but often becomes excessive. Curcumin modulates it without shutting it down the way NSAIDs do. Vitamin D3 in the morning only — evening D3 interferes with the sleep where your body does its most intensive repair.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast + 16 oz Water', 'Eat 30–40g of protein with breakfast. Three large eggs plus a cup of Greek yogurt = 35g. Two eggs plus protein powder in milk = 37g. Pick one. Then drink 16 oz of water. Your body is actively rebuilding tissue right now — protein is the raw material and water is the delivery system. Anesthesia and pain medications are dehydrating. You are probably less hydrated than you think.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['Short Walk — 5 to 10 Minutes at Your Own Pace', 'Get up and walk. Not fast. Not far. Just moving. Walking promotes circulation, prevents blood clots, reduces stiffness, and activates the lymphatic system that clears surgical waste products. Head up, shoulders relaxed, walk at a pace where you could hold a conversation. Five to ten minutes. That is actually a lot, right now.', 0],
+            ['Posture Check', 'After surgery, most people unconsciously guard the surgical site by hunching or shifting weight unevenly. This creates secondary pain in the back, hips, and shoulders. Sit or stand tall right now. Head level, shoulders back and relaxed, weight evenly distributed. Hold 30 seconds. Do this three times a day. You are retraining your body to stop guarding something that is being repaired.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen powder into a midday drink with Vitamin C. Every internal tissue being repaired after surgery — tendons, ligaments, joint capsule, muscle fascia, skin — is largely collagen. Vitamin C is the co-factor your body needs to assemble those peptides into new tissue. Taken together consistently, this is one of the most evidence-based nutritional interventions for post-surgical recovery.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Anti-Inflammatory Foods + 20 oz Water', 'Aim for 30–40g protein at lunch. A 5oz chicken breast is about 35g. A can of tuna is 25g. Add leafy greens, colorful vegetables, olive oil, and berries. Avoid sugar, white bread, processed snacks, and fried food. Drink 20 oz of water. Your goal today is 130–160g protein total.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Gentle PT-Cleared Stretches Only', 'Perform only the stretches your PT has specifically cleared for this stage. Move slowly to the point of gentle tension, never pain. Hold 20–30 seconds while breathing slowly. If your PT has not cleared stretches yet, skip this and go straight to the ice.', 0],
+            ['Ice — 15 Minutes Before Bed', 'Ice the surgical site for 15 minutes before sleep. Evening icing reduces cumulative inflammation, controls overnight swelling, and reduces pain enough to improve sleep quality. Sleep is when the majority of your tissue repair occurs. 15 minutes. Every night.', 900],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'Take 30–60 minutes before bed. Magnesium glycinate relaxes the muscles that guard the surgical area overnight, reduces post-surgical anxiety and restlessness, and measurably improves deep sleep quality — when growth hormone is released and the most intensive tissue repair of your day occurs. Pain medications and anesthesia both deplete magnesium. The glycinate form specifically absorbs best.', 0],
+            ['💊 Fish Oil/Omega-3 (2g EPA+DHA)', 'Take with dinner. Omega-3s are typically paused before surgery to prevent bleeding. They are extremely beneficial to restart in recovery. Always confirm with your surgeon that it is appropriate to restart at your stage of recovery.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', 'End the day with 30–40g protein. Wild salmon covers your protein and omega-3 in one meal. A chicken thigh plus Greek yogurt is 40g. Check your protein total for the day — 130–160g is the target. Your body rebuilds surgical tissue primarily overnight. Feed it before it starts working.', 0],
+          ],
+          journal: [
+            ['📓 Open Recovery Journal', 'Rate your pain 1–10. Rate your swelling: none, mild, moderate, significant. Note your energy level today. Check for warning signs — increased redness, warmth, discharge, or fever — and contact your surgeon immediately if present. Note one thing that felt better today. Sunday check-in: Is pain less than last week? Is swelling reducing? Am I doing more than a week ago? Write any questions for your next PT or surgeon visit.', 0],
+          ],
+        },
+      },
+      {
+        phase: 2,
+        days: '15–42',
+        title: 'Rebuild Carefully',
+        tagline: 'The repair is holding. Now we start asking more of it — slowly, deliberately.',
+        morning: {
+          movement: [
+            ['Gentle Range of Motion Work — Guided by Your PT', 'By Phase 2 your PT has cleared specific range of motion exercises for your surgery type. Do all of them within the pain-free range they have set. The goal is incremental expansion of movement — a few degrees more each week. Keep a mental note of where your range ends today. Next week it will be further. That progress is real even when it does not feel dramatic.', 0],
+            ['Ice or Heat — Follow Your PT Guidance', 'By Phase 2 many PTs transition from ice-only to alternating ice and heat. Morning heat before movement and evening ice after activity is a common protocol. Your tissue is transitioning from acute inflammation management to active remodeling. Temperature therapy supports both.', 600],
+            ['Morning Walk — 10 to 15 Minutes', 'Walking time increases in Phase 2. Head up, arms relaxed, posture tall. Circulation, lymphatic drainage, blood clot prevention, mood. Ten to fifteen minutes. Every morning.', 0],
+          ],
+          supplements: [
+            ['💊 Vitamin C (1000mg) + Zinc (15–30mg) + Creatine (3–5g)', 'Phase 2 is when the most intensive collagen remodeling occurs. All three supplements stay in. Do not stop because you feel better. Feeling better is when the real work happens.', 0],
+            ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Still every morning with fat. Phase 2 inflammation is less acute but ongoing. Curcumin addresses both phases. Vitamin D3 continues supporting calcium regulation, immune function, and tissue remodeling.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast + 16 oz Water', 'Same target: 30–40g protein with breakfast, 16 oz water first thing. Your activity is increasing — protein needs stay high. Collagen synthesis runs hottest in the first half of the day. Feed it in the morning.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['PT Strengthening Exercises — Every One, Every Day', 'Phase 2 introduces targeted strengthening around the surgical site. These exercises look easy. They are not when done with full control and complete range. Three sets means three sets. Slow controlled movement recruits more muscle fiber than fast sloppy movement. You are building the tissue that will protect this repair for the rest of your life.', 0],
+            ['Balance and Proprioception Work', 'Surgery disrupts the nerve signals that tell your body where the repaired joint is in space. Rebuilding proprioception is one of the most overlooked parts of post-surgical recovery and one of the most important for preventing re-injury. One-leg stands, balance work, and controlled single-leg movements rebuild the conversation between your joint and your brain.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Still every midday. You are in the most intensive tissue remodeling window of your entire recovery. Internal scaffolding is being rebuilt, tendons are laying down new collagen fibers. This combination is your daily support for that process.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Anti-Inflammatory Foods + 20 oz Water', 'Same targets. You are more active this phase. 130–160g protein total for the day. Increase colorful vegetables and omega-3 rich foods. Your body is in full construction mode. Keep the supply chain running.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Stretching and Flexibility — PT-Cleared Movements', 'Phase 2 stretching works to expand range of motion, not just maintain it. Hold each stretch 30–45 seconds. Tension is your tissue adapting. Pain is your tissue saying stop. Learn the difference. Your recovery depends on it.', 0],
+            ['Ice After Activity', 'After any strengthening session, ice the surgical site for 15 minutes before bed. If the day was light, 10 minutes of heat is appropriate. Pain or increased swelling after activity always means ice.', 900],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'Every night. Still. You are doing more now — muscles are working harder, soreness is a real factor, sleep quality directly affects recovery rate. Magnesium glycinate improves all three.', 0],
+            ['💊 Fish Oil/Omega-3 (2g EPA+DHA)', 'Every night with dinner. Your activity is increasing and so is the tissue stress that comes with it. Omega-3s manage that inflammation while your tissue adapts and strengthens.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', '30–40g protein at dinner. Check your daily total — 130–160g. Wild salmon, chicken, eggs, Greek yogurt. Your strengthening work today created the demand. Now meet it.', 0],
+          ],
+          journal: [
+            ['📓 Open Recovery Journal', 'Rate pain and swelling. Note range of motion changes — how much further can you move compared to last week? Note exercises that felt significantly easier than last session. Sunday check-in: Is pain less? Is range of motion improving? Am I completing exercises more easily? What is the biggest physical change I have noticed this week?', 0],
+          ],
+        },
+      },
+      {
+        phase: 3,
+        days: '43–84',
+        title: 'Strengthen and Stabilize',
+        tagline: 'The repaired tissue is maturing. Now we build the strength to protect it for life.',
+        morning: {
+          movement: [
+            ['Progressive Strengthening — More Load, More Control', 'Phase 3 significantly increases the demand on the repaired tissue and the muscles that protect it. Follow the progression exactly — do not jump ahead because something feels easy. The tissue is strengthening but collagen remodeling is still ongoing. Strength without tissue maturity is how re-injuries happen. Trust the program.', 0],
+            ['Cardiovascular Activity — As Cleared by PT', 'Most patients are cleared for some cardio in Phase 3 — swimming, stationary cycling, walking, or elliptical depending on surgery type. Start at the low end of what your PT clears. Increase gradually over weeks, not days.', 0],
+          ],
+          supplements: [
+            ['💊 Vitamin C (500–1000mg) + Creatine (3–5g)', 'Collagen synthesis peaks in Phase 3 as the surgical site lays down final structural fibers. Vitamin C remains essential. Creatine powers the significant strength gains being made this phase. Continue both daily.', 0],
+            ['💊 Turmeric/Curcumin (500mg) + Vitamin D3 (2000 IU)', 'Still every morning. Phase 3 exercise creates real tissue stress — curcumin manages the resulting inflammation while your body adapts and strengthens.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast + 16 oz Water', 'Protein target remains 130–160g per day. Phase 3 strength work creates real muscle demand. You are rebuilding what atrophied during the acute phase and adding new strength on top. Feed the work every morning.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['Functional Movement Training', 'Phase 3 shifts from isolated exercises to functional movement patterns — squats, lunges, reaches, carries, stairs, getting up from the floor. Your PT designs these specifically for your surgery type. This is where recovery becomes actual capability again.', 0],
+            ['Proprioception and Balance — Advanced Work', 'Phase 3 balance work adds complexity — unstable surfaces, eyes closed, dual-task challenges. Your nervous system is rebuilding the automatic protective reflexes that guard your repaired joint during unexpected movements. This is what prevents the fall, the step off a curb, the catch that would have caused re-injury. Take it seriously.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen Peptides (10g) + Vitamin C (500mg)', 'Continue through Phase 3. The surgical site is still maturing and laying down final structural fibers. Collagen plus Vitamin C midday remains your daily support for that process.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Complex Carbohydrates + 20 oz Water', 'You are training harder this phase. Complex carbohydrates — sweet potato, oats, brown rice, legumes — become more important as fuel. Keep protein at 30–40g per meal. Aim for 3 liters of water daily.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Full Stretching Routine — 10 to 15 Minutes', 'Phase 3 flexibility work is comprehensive. Every major muscle group involved in your surgery type and recovery gets attention. Hold each stretch 45–60 seconds. This is your nightly maintenance work — the difference between waking up ready to train and waking up stiff and limited.', 0],
+            ['Ice Only If Needed', 'By Phase 3, icing is responsive rather than routine. If a session was particularly demanding or there is new swelling: ice for 15 minutes. Otherwise, 10 minutes of heat before bed supports tissue flexibility and sleep quality.', 0],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'You are training hard. Magnesium glycinate supports muscle recovery, reduces next-day soreness, and improves sleep quality. Every night.', 0],
+            ['💊 Fish Oil/Omega-3 (2–3g EPA+DHA)', 'Increase to 2–3g in Phase 3 to match the increased inflammatory load from real training. This is when the cumulative anti-inflammatory effect is most noticeable — joints move more freely, soreness resolves faster.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', 'Hit your daily protein total — 130–160g. Wild salmon or sardines for protein plus omega-3. Your body will do the most significant strength rebuilding of your entire recovery during sleep tonight. Feed it accordingly.', 0],
+          ],
+          journal: [
+            ['📓 Open Recovery Journal', 'Rate pain — it should be minimal or zero at rest by mid-Phase 3. Note functional improvements: what can you do now that you could not do at the start of this phase? Rate strength — how does the surgical side compare to the other side? Sunday check-in: Am I completing all PT exercises without significant pain? Am I doing daily activities more normally?', 0],
+          ],
+        },
+      },
+      {
+        phase: 4,
+        days: '85+',
+        title: 'Return to Life',
+        tagline: 'You did the work. Now you live the results — and protect what you built.',
+        morning: {
+          movement: [
+            ['Maintenance Strength Routine — 3 Times Per Week', 'Phase 4 is not the end of the program — it is the beginning of a permanent practice. Three times per week, do your full strengthening routine. Surgery patients who stop strengthening after reaching Phase 4 have measurably higher re-injury rates over the following two years. You are in maintenance because what you built is worth protecting.', 0],
+            ['Daily Walking — 20 to 30 Minutes', 'Walking every morning is now a permanent habit. Twenty to thirty minutes. Circulation, joint lubrication, mood, cardiovascular health, inflammation reduction. Your surgery gave you a reason to start. Keep going past it.', 0],
+          ],
+          supplements: [
+            ['💊 Creatine (3–5g) + Vitamin D3 (2000 IU)', 'Creatine every morning permanently. Vitamin D3 every morning permanently — most adults over 50 are deficient year-round. These two are your daily baseline going forward.', 0],
+            ['💊 Turmeric/Curcumin (500mg) as needed', 'On high-activity days or after any session that generates significant soreness or joint stress: curcumin. You know what your body needs now. You have been paying attention for months. Use that knowledge.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast', 'Protein needs do not decrease in Phase 4. Adults over 50 need more dietary protein than younger adults — muscle maintenance requires consistent daily protein loading at every meal. Keep hitting 130–160g per day. This is the single most impactful nutritional habit you can maintain for the rest of your life.', 0],
+          ],
+        },
+        midday: {
+          movement: [
+            ['Sport, Activity, or Functional Training — As Cleared', 'By Phase 4 most patients are cleared for the activities they were doing before surgery. Return gradually. Start at 50% of your pre-surgical level. Add 10% per session. Your body will tell you when it is ready for more. Your first session back is not a test of where you were. It is the first day of a new chapter.', 0],
+          ],
+          supplements: [
+            ['💊 Collagen Peptides (10g) on training days', 'On days with significant physical activity, collagen plus Vitamin C supports the ongoing remodeling of the surgical site — which continues for up to 18 months post-surgery. Training days: yes. Rest days: optional.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Lunch + Whole Foods', 'Keep protein at 30–40g per lunch. Anti-inflammatory whole foods are not a temporary recovery protocol. They are the baseline diet for anyone who wants to stay active past 50. You learned this during recovery. Keep it.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ['Flexibility and Mobility Maintenance', 'Ten minutes of stretching every evening. The surgical side needs this permanently — scar tissue and collagen remodeling continue for over a year. Your evening stretch routine is not something you do while you are recovering. It is something you do because you recovered.', 0],
+          ],
+          supplements: [
+            ['💊 Magnesium Glycinate (300–400mg)', 'Every night. Permanently. Sleep quality, muscle recovery, stress regulation, bone health. The benefit compounds over months and years. This is one habit worth keeping long after you feel fully healed.', 0],
+            ['💊 Fish Oil/Omega-3 (2g EPA+DHA)', 'Every night with dinner. Permanently. Cardiovascular health, joint inflammation management, brain health, mood regulation. This is not a recovery supplement anymore. This is a life supplement that you started because of your recovery.', 0],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', 'Hit your daily protein target. Eat omega-3 rich foods several times per week. Keep the anti-inflammatory food habits you built during recovery. Your surgery was the catalyst for changes that will serve you for decades. The only question is whether you keep them.', 0],
+          ],
+          journal: [
+            ['📓 Open Recovery Journal', 'Once a week — Sunday works well. Rate pain — it should be 0–1 at rest and 0–2 during normal activity. Rate function — what percentage of your pre-surgery capability do you have back? Note what you are doing now that you could not imagine doing on Day 1. Write it down. Read it back. That list is the full story of what you did. You earned every item on it.', 0],
           ],
         },
       },
