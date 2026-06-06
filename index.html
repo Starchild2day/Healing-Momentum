@@ -1048,7 +1048,7 @@
             <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);">MOMENTUM BUILT</div>
             <div style="display:flex;align-items:center;gap:2px;justify-content:center;">
               <span id="streak-fire"></span>
-              <span id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;">0</span>
+              <span id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;display:none;"></span>
             </div>
           </div>
         </div>
@@ -1834,8 +1834,13 @@
         const currentStreak = (s.streak || 0) + 1; // +1 for today (saved tomorrow)
         const streakEl = document.getElementById('streak-num');
         const fireEl = document.getElementById('streak-fire');
-        if (streakCountEl) streakCountEl.textContent = currentStreak + ' day' + (currentStreak !== 1 ? 's' : '');
-        if (fireEl) fireEl.textContent = currentStreak > 0 ? '🔥' : '';
+        if (currentStreak > 0) {
+          if (streakCountEl) { streakCountEl.textContent = currentStreak + ' day' + (currentStreak !== 1 ? 's' : ''); streakCountEl.style.display = 'inline'; }
+          if (fireEl) fireEl.textContent = '🔥';
+        } else {
+          if (streakCountEl) streakCountEl.style.display = 'none';
+          if (fireEl) fireEl.textContent = '';
+        }
       } catch(e) {}
       setTimeout(() => {
         const c = document.getElementById('evening-confetti');
@@ -2491,7 +2496,13 @@
 
       // Streak counter — always show number
       if (streakCountEl) streakCountEl.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
-      if (fireEl) fireEl.textContent = streak > 0 ? '🔥' : '○';
+      if (streak > 0) {
+        if (streakCountEl) { streakCountEl.style.display = 'inline'; }
+        if (fireEl) fireEl.textContent = '🔥';
+      } else {
+        if (streakCountEl) streakCountEl.style.display = 'none';
+        if (fireEl) fireEl.textContent = '';
+      }
 
       // Phase countdown label
       const labelEl = document.getElementById('streak-label');
