@@ -444,13 +444,15 @@
     cursor: pointer; box-shadow: var(--shadow); z-index: 50;
     display: none; align-items: center; justify-content: center;
   }
-  .signout-btn {
+    .reset-btn {
     position: fixed; bottom: 1.2rem; left: 1.2rem;
-    background: rgba(0,0,0,0.2); color: rgba(255,255,255,0.7);
+    background: rgba(0,0,0,0.18); color: rgba(255,255,255,0.55);
     border: none; border-radius: 50%; width: 36px; height: 36px;
-    font-size: 1rem; cursor: pointer; z-index: 50;
-    display: none; align-items: center; justify-content: center;
+    font-size: 0.95rem; cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+    transition: all 0.2s; z-index: 50;
   }
+  .reset-btn:active { background: rgba(200,60,60,0.4); }
   .about-overlay {
     display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
     align-items: flex-end; justify-content: center; z-index: 200;
@@ -1435,13 +1437,19 @@
 
 <!-- ABOUT BUTTON -->
 <button class="about-btn" id="about-btn" onclick="openAbout()">ℹ️</button>
-<button class="signout-btn" id="signout-btn" onclick="signOut()" title="Switch user">⟳</button>
+<button class="reset-btn" id="reset-btn" onclick="confirmReset()" title="Start over with a new injury">↺</button>
 
 <!-- ABOUT MODAL -->
 <div class="about-overlay" id="about-overlay">
   <div class="about-modal">
     <h2>About This Protocol</h2>
     <div class="about-sub">Research sources & important information</div>
+    <button onclick="emailProgress()" style="
+      width:100%; margin:12px 0 4px; padding:14px;
+      background:var(--navy); color:white; border:none; border-radius:14px;
+      font-size:1rem; font-weight:800; font-family:'Nunito',sans-serif; cursor:pointer;">
+      📧 Email My Weekly Progress
+    </button>
     <div class="about-section">
       <h3>How These Protocols Were Developed</h3>
       <p>The exercise protocols, supplement recommendations, and nutrition guidance in this app are based on published research in physical therapy, sports medicine, orthopedic rehabilitation, and nutritional science. Content was developed with AI research assistance (Claude by Anthropic).</p>
@@ -1543,11 +1551,75 @@
   function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
 
   // ── SIGN OUT ──────────────────────────────────────────────────────────
-  function signOut() {
-    if (confirm('Switch user or change injury?')) {
-      try { localStorage.removeItem('hm_user'); } catch(e){}
-      location.reload();
+  function emailProgress() {
+    try {
+      const session  = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      const log      = JSON.parse(localStorage.getItem('hm_weekly_log') || '[]');
+      const userName = session.name || 'Healing Momentum User';
+      const injury   = session.injury || 'Unknown';
+      const day      = session.day || 1;
+      const streak   = session.streak || 0;
+
+      let body = `My Healing Momentum Weekly Progress%0A`;
+      body += `===============================` + '%0A';
+      body += `Name: ${userName}%0A`;
+      body += `Injury: ${injury}%0A`;
+      body += `Current Day: Day ${day}%0A`;
+      body += `Current Streak: ${streak} day${streak !== 1 ? 's' : ''}%0A%0A`;
+      body += `Completed Days This Week:%0A`;
+
+      if (log.length === 0) {
+        body += `No full days completed yet — keep going!%0A`;
+      } else {
+        log.forEach(entry => {
+          body += `  Day ${entry.day} — ${entry.date}%0A`;
+        });
+      }
+      body += `%0ASent from the Healing Momentum app.`;
+
+      const subject = `My Healing Momentum Progress — ${userName}`;
+      const email   = session.email || '';
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${body}`;
+    } catch(e) {
+      alert('Could not open email. Please try again.');
     }
+  }
+
+  function confirmReset() {
+    // Show custom confirmation modal
+    document.getElementById('reset-modal').style.display = 'flex';
+  }
+
+  function cancelReset() {
+    document.getElementById('reset-modal').style.display = 'none';
+  }
+
+  function executeReset() {
+    // Keep name, email, and purchased status — clear everything else
+    let userName = '', userEmail = '', purchased = false;
+    try {
+      const session = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      userName  = session.name  || '';
+      userEmail = session.email || '';
+      purchased = session.purchased || false;
+    } catch(e) {}
+    // Clear all progress data
+    const keysToKeep = ['healingDarkMode', 'hm_supplies_seen'];
+    const allKeys = Object.keys(localStorage);
+    allKeys.forEach(k => {
+      if (!keysToKeep.includes(k)) {
+        try { localStorage.removeItem(k); } catch(e) {}
+      }
+    });
+    // Restore identity so they don't have to re-enter name/email
+    try {
+      localStorage.setItem('hm_user', JSON.stringify({
+        name: userName, email: userEmail, purchased: purchased,
+        day: 1, streak: 0, injury: ''
+      }));
+    } catch(e) {}
+    document.getElementById('reset-modal').style.display = 'none';
+    location.reload();
   }
 
   // ── AUTO LOGIN — runs after DOM ready ────────────────────────────────
@@ -3003,6 +3075,20 @@
       const total = document.querySelectorAll('.task-item').length;
       const isFullDay = checked.length >= total && total > 0;
       localStorage.setItem('hm_tasks', JSON.stringify({ date: today, checked, isFullDay }));
+      // Rolling weekly log — save each day's completion status
+      if (isFullDay) {
+        try {
+          const log = JSON.parse(localStorage.getItem('hm_weekly_log') || '[]');
+          const exists = log.find(e => e.date === today);
+          if (!exists) {
+            const session = JSON.parse(localStorage.getItem('hm_user') || '{}');
+            log.push({ date: today, day: session.day || 1, injury: session.injury || '', completed: true });
+            // Keep last 7 days only
+            if (log.length > 7) log.shift();
+            localStorage.setItem('hm_weekly_log', JSON.stringify(log));
+          }
+        } catch(e) {}
+      }
     } catch(e) {}
   }
 
@@ -3154,5 +3240,34 @@
   });
 
 </script>
+  <!-- RESET CONFIRMATION MODAL -->
+  <div id="reset-modal" style="display:none; position:fixed; inset:0; z-index:500;
+    background:rgba(0,0,0,0.65); align-items:center; justify-content:center; padding:24px;">
+    <div style="background:var(--white); border-radius:22px; padding:28px 24px;
+      max-width:340px; width:100%; box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+      <div style="font-size:2rem; text-align:center; margin-bottom:12px;">⚠️</div>
+      <div style="font-size:1.2rem; font-weight:900; color:var(--navy);
+        text-align:center; margin-bottom:10px;">Start Over?</div>
+      <div style="font-size:0.95rem; color:var(--text-mid); line-height:1.6;
+        margin-bottom:22px; text-align:center;">
+        This will clear all your progress — your streak, completed days, and task history.
+        Your name stays saved. You will be able to choose a new injury to work on.
+        <br><br><strong>This cannot be undone.</strong>
+      </div>
+      <button onclick="executeReset()" style="width:100%; padding:16px;
+        background:#c0392b; color:white; border:none; border-radius:14px;
+        font-size:1.1rem; font-weight:800; font-family:'Nunito',sans-serif;
+        cursor:pointer; margin-bottom:10px;">
+        Yes — clear my data and start over
+      </button>
+      <button onclick="cancelReset()" style="width:100%; padding:14px;
+        background:var(--cream); color:var(--navy); border:2px solid var(--border);
+        border-radius:14px; font-size:1rem; font-weight:700;
+        font-family:'Nunito',sans-serif; cursor:pointer;">
+        Cancel — keep my progress
+      </button>
+    </div>
+  </div>
+
 </body>
 </html>
