@@ -2706,7 +2706,20 @@
       localStorage.setItem('hm_journal', JSON.stringify(allEntries));
       // Mark journal task as done
       // Find journal task — works for both static and phase-rendered tasks
-      const journalTask = document.querySelector('[data-task-id*="journal"]') || document.querySelector('[data-task-id="e5"]') || document.querySelector('[data-task-id="e4"]');
+      // Find journal task by ID or by name content
+      let journalTask = document.querySelector('[data-task-id*="journal"]');
+      if (!journalTask) {
+        // Try e5 and e4 (PROTOCOLS path)
+        ['e5','e4'].forEach(id => {
+          if (!journalTask) {
+            const el = document.querySelector('[data-task-id="' + id + '"]');
+            if (el) {
+              const name = el.querySelector('.task-name');
+              if (name && name.textContent.includes('Journal')) journalTask = el;
+            }
+          }
+        });
+      }
       if (journalTask && !journalTask.classList.contains('done')) {
         journalTask.classList.add('done');
         doneTasks++;
@@ -3011,7 +3024,7 @@
   let timerInterval = null;
   let timerSeconds = 0;
   let timerRunning = false;
-  let totalTasks = 15;
+  let totalTasks = 16;
   let doneTasks = 0;
 
   function showTab(tab) {
@@ -3115,6 +3128,10 @@
           }
         }
       });
+      // Update totalTasks to match actual rendered items
+      totalTasks = document.querySelectorAll('.task-item').length;
+      doneTasks = 0;
+      updateProgress();
     }
 
     updateStreakBadge(currentDay);
