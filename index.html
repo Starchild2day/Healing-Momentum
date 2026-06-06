@@ -3266,21 +3266,16 @@
   }
 
   function updateProgress() {
-    const pct = Math.round((doneTasks / totalTasks) * 100);
-
-    // ── Sticky progress bar ────────────────────────────────────────────
-    const fill = document.getElementById('progress-bar-fill');
-    const barPct = document.getElementById('bar-pct');
-    const barCount = document.getElementById('bar-count');
-    if (fill) fill.style.width = pct + '%';
-    if (barPct) barPct.textContent = pct + '%';
-    if (barCount) barCount.textContent = doneTasks + ' of ' + totalTasks;
-
-    // ── Section progress counts + done badges ─────────────────────────
+    // Count everything from the DOM — single source of truth, never out of sync
+    let totalDone = 0;
+    let totalAll  = 0;
     ['morning','midday','evening'].forEach(s => {
       const items = document.getElementById(s+'-items');
-      const done = items.querySelectorAll('.task-item.done').length;
+      if (!items) return;
+      const done  = items.querySelectorAll('.task-item.done').length;
       const total = items.querySelectorAll('.task-item').length;
+      totalDone += done;
+      totalAll  += total;
       document.getElementById(s+'-prog').textContent = done + ' / ' + total;
       if (done === total && total > 0) {
         showCelebration(s);
@@ -3290,10 +3285,24 @@
       }
     });
 
+    // Keep doneTasks/totalTasks in sync for anything else that reads them
+    doneTasks  = totalDone;
+    totalTasks = totalAll;
+
+    // ── Sticky progress bar ────────────────────────────────────────────
+    const pct      = totalAll > 0 ? Math.round((totalDone / totalAll) * 100) : 0;
+    const fill     = document.getElementById('progress-bar-fill');
+    const barPct   = document.getElementById('bar-pct');
+    const barCount = document.getElementById('bar-count');
+    if (fill)     fill.style.width    = pct + '%';
+    if (barPct)   barPct.textContent  = pct + '%';
+    if (barCount) barCount.textContent = totalDone + ' of ' + totalAll;
+
     // ── 100% celebration ───────────────────────────────────────────────
-    if (pct === 100) {
+    if (pct === 100 && totalAll > 0) {
       setTimeout(() => {
-        const dq2 = document.getElementById('daily-quote'); if(dq2) dq2.textContent = '🎉 You did it! Every single item. Your body felt that. Your healing momentum is REAL and it is building. See you tomorrow.';
+        const dq2 = document.getElementById('daily-quote');
+        if (dq2) dq2.textContent = '🎉 You did it! Every single item. Your body felt that. Your healing momentum is REAL and it is building. See you tomorrow.';
         if (fill) fill.style.background = '#2d7a4f';
       }, 300);
     }
