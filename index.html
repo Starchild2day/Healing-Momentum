@@ -95,12 +95,15 @@
   .code-msg.valid { color: var(--success); }
   .code-msg.invalid { color: #c0392b; }
   .gate-btn {
-    width: 100%; padding: 1rem; background: var(--gold);
-    border: none; border-radius: 12px; color: var(--white);
-    font-size: 1.2rem; font-weight: 600; cursor: pointer;
-    font-family: 'Source Sans 3', sans-serif; transition: background 0.2s;
-    margin-top: 0.5rem;
+    width: 100%; padding: 1rem; background: #dde4ec; color: #8a9aaa;
+    border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif; transition: all 0.2s;
+    margin-top: 0.5rem; cursor: pointer; opacity: 0.7;
   }
+  .gate-btn.ready {
+    background: #c9923a; color: #ffffff; opacity: 1; cursor: pointer;
+  }
+  .gate-btn.ready:hover { background: #a87830; }
   .gate-btn:hover { background: var(--gold-light); }
   .gate-note { text-align: center; font-size: 0.9rem; color: var(--text-light); margin-top: 1rem; }
 
@@ -129,11 +132,15 @@
   .injury-label { font-size: 1.1rem; font-weight: 500; color: var(--navy); }
   .injury-sub { font-size: 0.95rem; color: var(--text-mid); }
   .injury-btn {
-    width: 100%; padding: 1rem; background: var(--navy);
-    border: none; border-radius: 12px; color: var(--white);
-    font-size: 1.05rem; font-weight: 600; cursor: pointer;
-    font-family: 'Source Sans 3', sans-serif; transition: background 0.2s;
+    width: 100%; padding: 1rem; background: #dde4ec; color: #8a9aaa;
+    border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif; transition: all 0.2s;
+    cursor: not-allowed; opacity: 0.7;
   }
+  .injury-btn.ready {
+    background: #c9923a; color: #ffffff; opacity: 1; cursor: pointer;
+  }
+  .injury-btn.ready:hover { background: #a87830; }
   .injury-btn:hover { background: var(--navy-light); }
   .injury-btn:disabled { background: var(--border); cursor: not-allowed; }
   .injury-btn { background: var(--border); cursor: not-allowed; opacity: 0.6; transition: all 0.2s; }
@@ -696,7 +703,7 @@
     background: #c9923a; color: #ffffff;
     cursor: pointer; opacity: 1;
   }
-  #disclaimer-btn.active:hover { background: #e8b86d; }
+  #disclaimer-btn.active:hover { background: #a87830; }
 
 
   body.dark .task-desc span { color: #e8f0e4 !important; }
@@ -975,9 +982,9 @@
       <button class="gate-tab" onclick="showTab('returning')">Returning User</button>
     </div>
     <div id="tab-access" class="gate-form">
-      <input type="text" id="g-name" placeholder="Your first name" autocomplete="given-name">
-      <input type="email" id="g-email" placeholder="Your email address" autocomplete="email">
-      <select id="g-injury">
+      <input type="text" id="g-name" oninput="checkGateReady()" placeholder="Your first name" autocomplete="given-name">
+      <input type="email" id="g-email" oninput="checkGateReady()" placeholder="Your email address" autocomplete="email">
+      <select id="g-injury" onchange="checkGateReady()">
         <option value="">Select your injury or condition</option>
         <option value="shoulder">Shoulder / Rotator Cuff</option>
         <option value="knee">Knee</option>
@@ -986,17 +993,17 @@
         <option value="surgery">Post-Surgery Recovery</option>
       </select>
       <div class="beta-row">
-        <input type="text" id="g-code" placeholder="Beta access code" style="text-transform:uppercase">
+        <input type="text" id="g-code" oninput="checkGateReady()" placeholder="Beta access code" style="text-transform:uppercase">
         <button class="beta-apply" onclick="checkCode()">Apply</button>
       </div>
       <div class="code-msg" id="code-msg"></div>
-      <button class="gate-btn" onclick="submitGate()">Start Healing →</button>
+      <button class="gate-btn" id="gate-submit-btn" onclick="submitGate()">Start Healing →</button>
       <p class="gate-note">🔒 Your info is private. We never share or sell your data.</p>
     </div>
     <div id="tab-returning" class="gate-form" style="display:none">
-      <input type="text" id="r-name" placeholder="Your first name">
-      <input type="text" id="r-code" placeholder="Your access code" style="text-transform:uppercase">
-      <button class="gate-btn" onclick="returningAccess()">Enter →</button>
+      <input type="text" id="r-name" oninput="checkGateReady()" placeholder="Your first name">
+      <input type="text" id="r-code" oninput="checkGateReady()" placeholder="Your access code" style="text-transform:uppercase">
+      <button class="gate-btn" id="returning-submit-btn" onclick="returningAccess()">Enter →</button>
     </div>
   </div>
 </div>
@@ -2329,10 +2336,13 @@
           ],
           prelude: [
             ['Ankle Pumps + Quad Sets — While Still in Bed', 'Still the best way to start the day for your knee — do these before you stand up. 20 ankle pumps, then 10 quad sets pressing the back of your knee into the mattress. Your knee is less swollen in the morning than it was Week 1. Notice that — you did that.', 120],
-            ['Terminal Knee Extensions (TKE)', 'Band anchored behind your knee at knee height. Slight bend in the knee. Squeeze your quad and straighten the knee against the band resistance. Hold 2 sec. Release slowly. 3 sets of 15. This is the single most important Phase 2 exercise for your knee. It targets the VMO — the teardrop-shaped quad muscle just above the inner knee — which is the one most responsible for proper kneecap tracking.', 0],
-            ['Morning Walk — 10 to 15 Minutes', 'Longer than Phase 1. Same upright posture, even stride. Your walking should feel noticeably better than Day 1. That is not an accident. That is consistent work showing up.', 0],
           ],
-          fuel: [
+          movement: [
+            ['Terminal Knee Extensions (TKE)', 'Band anchored behind your knee at knee height. Slight bend in the knee. Squeeze your quad and straighten the knee against the band resistance. Hold 2 sec. Release slowly. 3 sets of 15. This is the single most important Phase 2 exercise for your knee. It targets the VMO — the teardrop-shaped quad muscle just above the inner knee — which is the one most responsible for proper kneecap tracking.', 0],
+
+            ['Morning Walk — 10 to 15 Minutes', 'Longer than Phase 1. Same upright posture, even stride. Your walking should feel noticeably better than Day 1. That is not an accident. That is consistent work showing up.', 0],
+
+          ],          fuel: [
             ['🥗 High-Protein Breakfast', '25–40g protein at breakfast every morning. You are adding resistance work now — your quad needs the raw material to rebuild. Same targets, same foods. Consistency is the whole game.', 0],
           ],
         },
@@ -2701,63 +2711,13 @@
           ],
           prelude: [
             ['Cat-Cow + Pelvic Tilts — While Still in Bed', 'Your back is most vulnerable in the first few minutes after waking. The discs have been soaking up fluid all night and the muscles are stiff. Do not ambush your spine by just standing up. Lie flat on your back, knees bent, feet flat. Gently tighten your abs and press the small of your back into the mattress. Hold 5 sec, release. 10 slow reps. Then carefully move to hands and knees: Cat — slowly round your entire spine toward the ceiling, chin tucked, tailbone under. Cow — let your belly drop, head and tailbone lift gently. 10 slow cycles. Never force either end. Your back will thank you every single morning for the rest of your life.', 180],
-            ['Knees to Chest + Piriformis Stretch — Still in Bed', 'Stay lying flat. Knee to chest: slowly bring one knee toward your chest, hands clasped just below the kneecap — never pull on the knee joint itself. Keep your head and the other leg relaxed. Hold 30 sec, switch. The piriformis stretch: stay on your back, both knees bent. Cross one ankle over the opposite thigh — figure-4 shape. Flex that top foot. Gently press the crossed knee away until you feel a deep stretch in your hip and glute. Hold 30 sec each side. The piriformis compresses the sciatic nerve when tight. Now you know what to do about it. Then stand up slowly, drink your water, take your supplements, and eat.', 180],
-            ['Morning Walk — 5 to 10 Minutes', 'Gentle walk on flat ground. This is not optional. The research is unambiguous: complete bed rest is harmful for back pain. Gentle movement drives healing circulation through the lumbar spine and surrounding muscles. Start slow. Keep your head up, shoulders relaxed, core lightly engaged.', 0],
-          ],
-          fuel: [
-            ['🥗 High-Protein Breakfast', 'Eat 25–40g protein at breakfast. Three large eggs (18g) plus Greek yogurt (17g) = 35g. Cottage cheese (25g) plus two eggs (12g) = 37g. The bird dog and pelvic tilts you just did are actively signaling your core and glute muscles to rebuild — and those muscles are made entirely from protein. A carb-heavy breakfast is the nutritional equivalent of trying to build a house with no lumber.', 0],
-          ],
-        },
-        midday: {
-          supplements: [
-            ['🐟 Fish Oil (2–3g EPA+DHA)', 'Take with lunch. Omega-3 fatty acids have a specific and well-documented effect on spinal inflammation — they reduce the compounds that irritate nerve roots, squeeze discs, and create the kind of radiating pain that travels down your leg. Consistent daily use over 6+ weeks reduces both disc inflammation and nerve pain. The word is consistent. One dose does nothing. Thirty doses builds a measurable anti-inflammatory effect in your tissues. Today is one of those thirty.', 0],
-            ['🥄 Collagen Peptides (10g) + Vitamin C (500mg)', 'Stir collagen into a midday drink with Vitamin C. Spinal discs, the ligaments holding your vertebrae together, and the connective tissue supporting your entire spine are largely made of collagen. Vitamin C is the co-factor required to assemble collagen into new tissue. Also worth knowing: avoid long-term ibuprofen and naproxen if you can. NSAIDs manage the pain while quietly slowing the disc repair your body is trying to do. You have better tools now.', 0],
-          ],
-          fuel: [
-            ['🥗 Midday Meal — If You Eat One', '💧 Hydration check — have you had at least 32oz of water since this morning? Your discs are thirsty. Drink a glass right now before eating. If you eat midday: 30–40g protein. A 5oz chicken breast is 35g. A can of tuna is 25g. Three large eggs (18g) plus Greek yogurt (17g) = 35g. If you do two meals a day, make sure breakfast and dinner together reach 130–160g protein total. Your spine muscles need the building material.', 0],
           ],
           movement: [
-            ['Bird Dog — The Single Most Important Exercise for Your Back', 'Hands and knees, wrists under shoulders, knees under hips, back flat like a table. Tighten your core gently — not a crunch, just a brace. Slowly extend your right arm forward while simultaneously extending your left leg straight back, both parallel to the floor. Do not rotate your hips. Hold 5 sec, return slowly. 10 reps each side, 2 sets. This builds the deep stabilizers that protect your spine with every movement you make for the rest of your life.', 300],
-            ['Glute Bridge', 'On your back, knees bent at 90°, feet flat. Press through your heels, squeeze your glutes hard — really squeeze — and lift your hips until your body forms a straight line from shoulders to knees. Hold 3 sec, lower slowly. 10 reps, 2 sets. Weak glutes are behind more back pain than almost any other single factor. This is the exercise that fixes that. Do not skip it.', 0],
-            ['Movement Break — Every 45 Minutes', 'Every 45 minutes of sitting: stand up, take 5 slow steps, do 3 gentle standing back extensions (hands on hips, arch gently backward). The intervertebral disc has no direct blood supply — it relies on the pumping action of movement for nutrition. Sustained sitting starves the disc of nutrients. This simple habit protects you all day.', 0],
-          ],
-        },
-        evening: {
-          movement: [
-            ["Child's Pose + Supine Twist", "Child's pose: kneel and sit your hips back toward your heels. Reach both arms straight out, palms flat, forehead resting on the floor. Breathe slowly and deeply into your lower back and ribs. Hold 60 sec. This position decompresses every single lumbar vertebra simultaneously. No machine in any gym does what this does. Supine twist: lie on your back, both knees bent, arms in a T shape. Letting your knees fall slowly to one side. Opposite shoulder stays flat. Hold 30 sec. Other side. The day is almost done. These two moves are how you close the loop.", 180],
-            ['Moist Heat — 15 Minutes', 'Moist heat on your lower back for 15 minutes before sleep. The paraspinal muscles have been contracting and bracing all day. Moist heat releases that accumulated tension and improves circulation to the discs while you sleep. Not dry heat — moist heat. Also: put down your phone 30 minutes before bed. Blue light suppresses melatonin and melatonin coordinates the overnight repair cycle your spine depends on.', 900],
+            ['Bird Dog + Glute Bridge — Phase 1', 'Bird dog: hands and knees, back flat. Tighten your core gently. Slowly extend your right arm forward while extending your left leg back, both parallel to the floor. Do not rotate your hips. Hold 5 sec, return slowly. 2 sets of 10 each side. Glute bridge: on your back, knees bent, press through your heels and squeeze your glutes hard. Lift hips until your body forms a straight line. Hold 3 sec, lower slowly. 2 sets of 10. Weak glutes are behind more back pain than almost any other factor. This is the work that fixes that.', 300],
+            ['Morning Walk — 5 to 10 Minutes', 'Gentle walk on flat ground. This is not optional — complete bed rest is harmful for back pain. Gentle movement drives healing circulation through the lumbar spine. Start slow. Head up, shoulders relaxed, core lightly engaged.', 0],
           ],
           fuel: [
-            ['🥗 Protein Dinner + Omega-3 Source', 'Eat 30–40g protein at dinner. A 5oz salmon fillet covers both protein and omega-3. Check your daily total — aim for 130–160g. Your discs need the water you drank today. Your spine muscles need tonight protein. Give both what they need before you sleep.', 0],
-          ],
-          supplements: [
-            ['💛 Magnesium Glycinate (300–400mg)', 'Take before bed. Yes even if you took some this morning — the evening dose serves a completely different purpose. It relaxes the deep spinal muscles that stay contracted even during rest. Reduces the nighttime spasms that fragment your sleep. Dramatically improves deep sleep quality — when your body releases the growth hormone that drives tissue repair. Morning dose is daytime muscle relaxation. Evening dose is nighttime repair support. Both matter.', 0],
-          ],
-          journal: [
-            ['📓 Recovery Journal', 'Rate your back pain 1–10. Rate your stiffness 1–10 — how long did morning stiffness last? Note what made it worse today (sitting, standing, bending) and what helped. Watch for: pain that shoots down one or both legs below the knee (nerve irritation — reduce load and call your PT), any new bowel or bladder changes (contact your doctor immediately), pain above a 6 that does not reduce with rest (medical review needed). Sunday check-in: Is pain decreasing week over week? Am I standing and sitting longer than last month? Is morning stiffness improving? What is my biggest win?', 0],
-          ],
-        },
-      },
-      {
-        phase: 2,
-        days: '8–21',
-        title: 'Start Building',
-        tagline: 'Progressive core strength. Posterior chain. Functional stability.',
-        morning: {
-          hydration: [
-            ['💧 Morning Water — 16oz', '16oz before anything else. You know this by now. Resistance work increases your water needs — dehydration will show up as increased stiffness on training days. Daily target: 64–80oz.', 0],
-          ],
-          supplements: [
-            ['💛 Magnesium Glycinate (300mg) + ⚡ Creatine (3–5g)', 'Same as Phase 1. Every morning. Now that you are adding resistance work creatine is supporting both the healing AND the core and glute strength rebuild simultaneously. Double duty. Do not skip either.', 0],
-            ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Same as Phase 1. With fat. Morning only for D3. You are probably noticing less morning stiffness by now — that is this working. Keep going.', 0],
-          ],
-          prelude: [
-            ['Cat-Cow + Pelvic Tilts — While Still in Bed', 'Do these before you stand up — 10 pelvic tilts then 10 slow cat-cow cycles. Your back should feel less stiff getting out of this than it did on Day 1. Notice that — you did that.', 180],
-            ['Bird Dog — Phase 2 Volume', '3 sets of 15 bird-dogs with 5-sec holds. Significantly more volume than Phase 1. This is the single most important exercise in this entire protocol. The deep multifidus stabilizers you are building here are the foundation of a pain-free back for the rest of your life. Do not rush the movement. Slow and controlled always beats fast and sloppy.', 300],
-            ['Morning Walk — 10 to 15 Minutes', 'Longer than Phase 1. Upright posture, arms swinging naturally, core lightly engaged. Walking is one of the most effective medicines for back pain. Movement drives nutrition to the discs. Keep walking.', 0],
-          ],
-          fuel: [
-            ['🥗 High-Protein Breakfast', '25–40g protein every morning. Same targets, same foods. You are adding resistance work now — your core and glute muscles need the raw material to rebuild. Consistency is the whole game.', 0],
+            ['🥗 High-Protein Breakfast', 'Eat 25–40g protein at breakfast. The bird dog and pelvic tilts are signaling your core and glute muscles to rebuild — and those muscles are made entirely from protein. Three large eggs (18g) plus Greek yogurt (17g) = 35g. Cottage cheese (25g) plus two eggs (12g) = 37g. A carb-heavy breakfast is the nutritional equivalent of trying to build a house with no lumber.', 0],
           ],
         },
         midday: {
@@ -2777,6 +2737,60 @@
         evening: {
           movement: [
             ["Child's Pose + Thoracic Rotation", "Child's pose 60 sec, then thoracic rotation: sit in a chair, gently rotate your upper body to each side, hold 20 sec × 3 each. Thoracic stiffness forces your lumbar spine to compensate — releasing it reduces lower back pain directly. These two moves together are your most effective Phase 2 evening investment.", 300],
+            ['Moist Heat — 15 Minutes', 'After all that resistance work, your back has put in a real shift. Moist heat before bed — this is how you close the loop on a good training day.', 900],
+          ],
+          fuel: [
+            ['🥗 Protein Dinner + Omega-3 Source', 'Same targets. 30–40g protein at dinner. Check your daily total — 130–160g. You added resistance work today. Your core and glute muscles are counting on tonight meal.', 0],
+          ],
+          supplements: [
+            ['💛 Magnesium Glycinate (300–400mg)', 'Same as Phase 1. Your muscles are working harder now. Magnesium is more important, not less. The overnight muscle relaxation and deep sleep quality it supports are your recovery foundation.', 0],
+          ],
+          journal: [
+            ['📓 Recovery Journal', 'Rate your back pain 1–10. Rate stiffness 1–10. Compare to Day 1 — write the difference. Note how the resistance exercises felt — any pain above a 3 means reduce load, not push through. Watch for: sharp or shooting leg pain during exercises (nerve irritation — stop and call your PT), increased stiffness after sitting (reminder to do movement breaks). Sunday check-in: Is pain decreasing? Am I moving more freely? What is my biggest win this week?', 0],
+          ],
+        },
+      },
+      {
+        phase: 2,
+        days: '8–21',
+        title: 'Start Building',
+        tagline: 'Progressive core strength. Posterior chain. Functional stability.',
+        morning: {
+          prelude: [
+            ['Cat-Cow + Pelvic Tilts — While Still in Bed', 'Do these before you stand up — 10 pelvic tilts then 10 slow cat-cow cycles. Your back should feel less stiff getting out of this than it did on Day 1. Notice that — you did that.', 180],
+          ],
+          hydration: [
+            ['💧 Morning Water — 16oz', '16oz before anything else. You know this by now. Resistance work increases your water needs — dehydration will show up as increased stiffness on training days. Daily target: 64–80oz.', 0],
+          ],
+          supplements: [
+            ['💛 Magnesium Glycinate (300mg) + ⚡ Creatine (3–5g)', 'Same as Phase 1. Every morning. Now that you are adding resistance work creatine is supporting both the healing AND the core and glute strength rebuild simultaneously. Double duty. Do not skip either.', 0],
+            ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Same as Phase 1. With fat. Morning only for D3. You are probably noticing less morning stiffness by now — that is this working. Keep going.', 0],
+          ],
+          movement: [
+            ['Bird Dog — Phase 2 Volume', '3 sets of 15 bird-dogs with 5-sec holds. Significantly more volume than Phase 1. This is the single most important exercise in this entire protocol. The deep multifidus stabilizers you are building here are the foundation of a pain-free back for the rest of your life. Do not rush the movement. Slow and controlled always beats fast and sloppy.', 300],
+            ['Morning Walk — 10 to 15 Minutes', 'Longer than Phase 1. Upright posture, arms swinging naturally, core lightly engaged. Walking is one of the most effective medicines for back pain. Movement drives nutrition to the discs. Keep walking.', 0],
+          ],
+          fuel: [
+            ['🥗 High-Protein Breakfast', '25–40g protein every morning. Same targets, same foods. You are adding resistance work now — your core and glute muscles need the raw material to rebuild. Consistency is the whole game.', 0],
+          ],
+        },
+        midday: {
+          supplements: [
+            ['🐟 Fish Oil (2–3g EPA+DHA)', 'Same as Phase 1. With lunch. You are 8+ days in — the cumulative anti-inflammatory effect is actively building in your spinal tissue. Keep it going every day without fail.', 0],
+            ['🥄 Collagen Peptides (10g) + Vitamin C (500mg)', 'Same as Phase 1. Midday. Vitamin C. Every day. Disc and connective tissue repair takes months. You are still in the early stages of that process.', 0],
+          ],
+          fuel: [
+            ['🥗 Midday Meal — If You Eat One', 'If you eat midday: 30–40g protein, 20oz water, colorful vegetables, healthy fat. If you do two meals, make sure breakfast and dinner together cover 130–160g total. Your body does not care when you eat. It cares that it gets enough.', 0],
+          ],
+          movement: [
+            ['Deadbug + Glute Bridge Progression', 'Deadbug: lie on your back, arms and legs at 90 degrees. Slowly lower opposite arm and leg toward the floor without arching your back. 3 sets of 10 each side. This is advanced deep core stability. Glute bridge progress: single-leg. One leg extended, bridge up on the other, hold 5 sec. 3 sets of 10 each side. Together these build the core and glute strength that takes load off your discs with every movement you make.', 0],
+            ['Wall Sit + Hip Hinge Practice', 'Wall sit: back flat against wall, slide down to 45 degrees. Hold 15 sec, 3 sets. Then practice the hip hinge: feet shoulder-width, push hips back keeping your back completely flat, lower until you feel hamstring stretch, drive back up with your glutes. 10 slow reps. This is the movement that protects your disc every time you pick something up off the floor. Learn it now.', 0],
+            ['Movement Break — Every 45 Minutes', 'Every 45 minutes of sitting: stand, 5 steps, 3 standing back extensions. Non-negotiable through all phases. Your disc nutrition depends on it.', 0],
+          ],
+        },
+        evening: {
+          movement: [
+            ["Child's Pose + Thoracic Rotation", "Child's pose 60 sec, then thoracic rotation: sit in a chair, gently rotate your upper body to each side, hold 20 sec times 3 each. Thoracic stiffness forces your lumbar spine to compensate — releasing it reduces lower back pain directly. These two moves together are your most effective Phase 2 evening investment.", 300],
             ['Moist Heat — 15 Minutes', 'After all that resistance work, your back has put in a real shift. Moist heat before bed — this is how you close the loop on a good training day.', 900],
           ],
           fuel: [
@@ -3013,7 +3027,7 @@
       // Update section title with injury name
       const injuryLabels = {shoulder:'Shoulder',knee:'Knee',hip:'Hip',back:'Lower Back',surgery:'Post-Surgery'};
       const titleEl = document.getElementById(section + '-section-title');
-      if (titleEl) titleEl.textContent = sectionTitles[section] + (section === 'morning' ? ' — ' + (injuryLabels[selectedInjury] || '') : '');
+      if (titleEl) titleEl.textContent = (sectionTitles[section] || '') + (section === 'morning' ? ' — ' + (injuryLabels[selectedInjury] || '') : '');
 
       // Clear existing items
       itemsContainer.innerHTML = '';
@@ -3032,12 +3046,17 @@
         if (catTasks.length === 0) return;
 
         // Add category header
-        const catIcons = { movement: '🏃', supplements: '💊', fuel: '🥗', journal: '📓' };
-        const catLabels = { movement: 'Movement', supplements: 'Supplements', fuel: 'Fuel & Hydration', journal: 'Journal' };
+        const catIcons = { prelude: '🛏', hydration: '💧', movement: '🏃', supplements: '💊', fuel: '🥗', journal: '📓' };
+        const catLabels = { prelude: 'Before Getting Up', hydration: 'Hydration', movement: 'Movement', supplements: 'Supplements', fuel: 'Fuel', journal: 'Journal' };
 
         const catHeader = document.createElement('div');
         catHeader.className = 'cat-header' + (cat === 'hydration' ? ' cat-hydration' : cat === 'prelude' ? ' cat-prelude' : '');
-        catHeader.innerHTML = catIcons[cat] + ' ' + catLabels[cat];
+        const catIconVal = catIcons[cat] || '';
+        const catLabelVal = catLabels[cat] || '';
+        if (!catIconVal || !catLabelVal) { return; } // skip unknown categories
+        const headerText = catIconVal + ' ' + catLabelVal;
+        if (headerText.includes('undefined')) { return; } // safety net
+        catHeader.innerHTML = headerText;
         itemsContainer.appendChild(catHeader);
 
         // PT encouragement line — shows once before movement tasks each section
@@ -3698,6 +3717,23 @@
     }
   }
 
+  function checkGateReady() {
+    const name = (document.getElementById('g-name') || {}).value || '';
+    const email = (document.getElementById('g-email') || {}).value || '';
+    const injury = (document.getElementById('g-injury') || {}).value || '';
+    const code = (document.getElementById('g-code') || {}).value || '';
+    const btn = document.getElementById('gate-submit-btn');
+    if (btn) {
+      const ready = name.trim() && email.trim().includes('@') && injury && code.trim();
+      btn.classList.toggle('ready', !!ready);
+    }
+    // Returning user button
+    const rname = (document.getElementById('r-name') || {}).value || '';
+    const rcode = (document.getElementById('r-code') || {}).value || '';
+    const rbtn = document.getElementById('returning-submit-btn');
+    if (rbtn) rbtn.classList.toggle('ready', !!(rname.trim() && rcode.trim()));
+  }
+
   function submitGate() {
     const name = document.getElementById('g-name').value.trim();
     const email = document.getElementById('g-email').value.trim();
@@ -3738,7 +3774,8 @@
     selectedInjury = injury;
     document.querySelectorAll('.injury-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
-    const btn = document.getElementById('injury-btn'); btn.disabled = false; btn.removeAttribute('disabled'); btn.style.background = 'var(--navy)'; btn.style.cursor = 'pointer'; btn.style.opacity = '1';
+    const btn = document.getElementById('injury-btn');
+    if (btn) btn.classList.add('ready');
   }
 
   function goToApp() { launchApp(); }
