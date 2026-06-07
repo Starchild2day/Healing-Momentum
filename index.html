@@ -645,6 +645,12 @@
     font-size: 0.8rem; font-weight: 700; color: var(--text-light);
     letter-spacing: 0.05em; text-transform: uppercase;
   }
+  .cat-header.cat-prelude {
+    background: rgba(201,146,58,0.08);
+    color: #8a6a20;
+    border-left: 3px solid #c9923a;
+    font-style: italic;
+  }
   .cat-header.cat-hydration {
     background: rgba(100,170,220,0.10);
     color: #3a7fa8;
@@ -1048,7 +1054,7 @@
             <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);">MOMENTUM BUILT</div>
             <div style="display:flex;align-items:center;gap:2px;justify-content:center;">
               <span id="streak-fire"></span>
-              <span id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;display:none;"></span>
+              <span id="streak-count" style="font-size:1.3rem;font-weight:800;color:#e8b86d;line-height:1.1;">— Days</span>
             </div>
           </div>
         </div>
@@ -1860,7 +1866,7 @@
           if (streakCountEl) { streakCountEl.textContent = currentStreak + ' day' + (currentStreak !== 1 ? 's' : ''); streakCountEl.style.display = 'inline'; }
           if (fireEl) fireEl.textContent = '🔥';
         } else {
-          if (streakCountEl) streakCountEl.style.display = 'none';
+          if (streakCountEl) { streakCountEl.textContent = '— Days'; streakCountEl.style.display = 'inline'; }
           if (fireEl) fireEl.textContent = '';
         }
       } catch(e) {}
@@ -2266,9 +2272,11 @@
             ['⚡ Creatine (3–5g)', 'Take with breakfast. Most people associate creatine with gym bags and protein shakes. What they do not know: creatine accelerates tissue repair at the cellular level, directly supports the quad muscle rebuilding that is the most critical factor in long-term knee stability, and measurably reduces systemic inflammation. This is not a bodybuilding supplement. This is a healing supplement that bodybuilders also use.', 0],
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and something containing fat. Most curcumin supplements already come with BioPerine or piperine on the label — that is the one to buy. A 2014 study found curcumin as effective as ibuprofen for knee pain — without the gut damage and without blocking the cartilage repair process that ibuprofen quietly interferes with. D3 in the morning only — evening D3 disrupts the sleep where your knee does its best repair work.', 0],
           ],
-          movement: [
+          prelude: [
             ['Ankle Pumps + Quad Sets — While Still in Bed', 'Do these before you stand up — ideally even before the water if you can reach it. Lying flat: pump both feet up and down like pressing a gas pedal — 20 slow pumps. This moves blood back toward the knee before you load the joint. Then keep your healing leg straight, tighten your quad as hard as you can and press the back of your knee into the mattress. Hold 5 sec, release. 10 reps. That muscle you just activated is the most important muscle for your knee. Everything else you do today builds on this.', 120],
             ['Heel Slides — Still in Bed, Still Worth Everything', 'Stay lying flat. Both legs straight. Keep your heel in contact with the mattress the entire time — do not lift it. Slowly slide that heel toward you, bending the knee as far as comfortable without pain. Hold 5 sec. Slide back. 10 reps. Your PT prescribes this first because it rebuilds range of motion without loading the joint. Your knee gets to practice bending without being asked to hold up your whole body while it does it. Pain-free range only. The moment it hurts, you have gone too far.', 120],
+          ],
+          movement: [
             ['Morning Walk — 5 to 10 Minutes', 'A short gentle walk on flat ground. Upright posture, even stride, both arms swinging naturally. Walking drives circulation to healing tissue and prevents the stiffness that comes from staying still. Start with 5 minutes and add a minute each day as comfort allows.', 0],
           ],
           fuel: [
@@ -2319,7 +2327,7 @@
             ['⚡ Creatine (3–5g)', 'Same as Phase 1. Now that you are adding resistance work, creatine is supporting both the healing AND the quad strength rebuild simultaneously. Double duty. Every morning.', 0],
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Same as Phase 1. With fat. Morning only for D3. Consistent. You are probably noticing less morning stiffness by now — that is this working.', 0],
           ],
-          movement: [
+          prelude: [
             ['Ankle Pumps + Quad Sets — While Still in Bed', 'Still the best way to start the day for your knee — do these before you stand up. 20 ankle pumps, then 10 quad sets pressing the back of your knee into the mattress. Your knee is less swollen in the morning than it was Week 1. Notice that — you did that.', 120],
             ['Terminal Knee Extensions (TKE)', 'Band anchored behind your knee at knee height. Slight bend in the knee. Squeeze your quad and straighten the knee against the band resistance. Hold 2 sec. Release slowly. 3 sets of 15. This is the single most important Phase 2 exercise for your knee. It targets the VMO — the teardrop-shaped quad muscle just above the inner knee — which is the one most responsible for proper kneecap tracking.', 0],
             ['Morning Walk — 10 to 15 Minutes', 'Longer than Phase 1. Same upright posture, even stride. Your walking should feel noticeably better than Day 1. That is not an accident. That is consistent work showing up.', 0],
@@ -2372,8 +2380,10 @@
             ['⚡ Creatine (3–5g)', 'Still every morning. You are doing serious strength work now — creatine is powering the quad and glute rebuild that will keep your knee stable for life.', 0],
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Same as always. With fat. Morning D3. If you have been consistent you are well past the point where the anti-inflammatory effect is fully active in your joint.', 0],
           ],
-          movement: [
+          prelude: [
             ['Quad Sets + Full Range Heel Slides — While Still in Bed', 'Do these before standing up. Quad sets: 10 reps, 5-sec holds. Heel slides: full comfortable range — your range should be significantly greater than Day 1. Notice that. Write it down. That progress is real and you made it happen.', 120],
+          ],
+          movement: [
             ['Step-Downs with Eccentric Focus', 'Stand on a 4-inch step on your healing leg. Slowly lower your non-healing foot toward the floor — 4 full seconds down. Do not touch down. Return to standing. 3 sets of 12. This eccentric loading is the single most effective stimulus for building quad strength at the levels needed to protect your knee long-term. Slow down is the whole point.', 0],
             ['Morning Walk — 15 to 20 Minutes', 'A real walk now. Notice your posture, your stride, your confidence. You are moving differently than you were on Day 1. That is not a coincidence.', 0],
           ],
@@ -2426,7 +2436,7 @@
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Still. With fat. Morning. This is not a recovery protocol anymore — this is just how a person who wants to keep their knees for life takes care of them.', 0],
           ],
           movement: [
-            ['Full Warm-Up Circuit', 'Ankle pumps (20), quad sets (10), heel slides (10), TKE with band (15), lateral band walks (15 each way). 8 minutes. This is your warm-up now — it prepares your knee for anything the day throws at it.', 480],
+            ['Morning Warm-Up Circuit', 'After your water and supplements: ankle pumps (20), quad sets (10), heel slides (10), TKE with band (15), lateral band walks (15 each way). 8 minutes. This is your maintenance warm-up now — it prepares your knee for anything the day throws at it.', 480],
             ['Morning Walk — 20 to 30 Minutes', 'Every morning. Non-negotiable. You know why by now. Your knee needs this and so does everything attached to it.', 0],
           ],
           fuel: [
@@ -2689,7 +2699,7 @@
             ['💛 Magnesium Glycinate (300mg) + ⚡ Creatine (3–5g)', 'Take both with breakfast. Magnesium glycinate first: the muscles most likely to seize and spasm are exactly the ones wrapped around your lower back — the paraspinals, the quadratus lumborum, the psoas. Most adults over 50 are significantly deficient without knowing it. Their backs are paying for it every morning. Magnesium glycinate relaxes these muscles, dials down nerve pain sensitivity, and keeps the whole area from spending the day in a defensive crouch. Creatine: supports the energy production for disc and connective tissue repair, fuels the rebuilding of the core and glute muscles that should be protecting your spine, and reduces systemic inflammation. One relaxes the muscles. One powers the rebuild.', 0],
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Take both with breakfast and fat. Most curcumin supplements already come with BioPerine or piperine built in — check the label. That piperine increases absorption by 2000%. Curcumin blocks the inflammatory signals that irritate spinal nerves. Low Vitamin D3 is directly linked to chronic lower back pain, disc degeneration, and the kind of stiffness that never fully goes away. D3 in the morning only — evening D3 can interfere with melatonin and disrupt the sleep where your spine does its repair work.', 0],
           ],
-          movement: [
+          prelude: [
             ['Cat-Cow + Pelvic Tilts — While Still in Bed', 'Your back is most vulnerable in the first few minutes after waking. The discs have been soaking up fluid all night and the muscles are stiff. Do not ambush your spine by just standing up. Lie flat on your back, knees bent, feet flat. Gently tighten your abs and press the small of your back into the mattress. Hold 5 sec, release. 10 slow reps. Then carefully move to hands and knees: Cat — slowly round your entire spine toward the ceiling, chin tucked, tailbone under. Cow — let your belly drop, head and tailbone lift gently. 10 slow cycles. Never force either end. Your back will thank you every single morning for the rest of your life.', 180],
             ['Knees to Chest + Piriformis Stretch — Still in Bed', 'Stay lying flat. Knee to chest: slowly bring one knee toward your chest, hands clasped just below the kneecap — never pull on the knee joint itself. Keep your head and the other leg relaxed. Hold 30 sec, switch. The piriformis stretch: stay on your back, both knees bent. Cross one ankle over the opposite thigh — figure-4 shape. Flex that top foot. Gently press the crossed knee away until you feel a deep stretch in your hip and glute. Hold 30 sec each side. The piriformis compresses the sciatic nerve when tight. Now you know what to do about it. Then stand up slowly, drink your water, take your supplements, and eat.', 180],
             ['Morning Walk — 5 to 10 Minutes', 'Gentle walk on flat ground. This is not optional. The research is unambiguous: complete bed rest is harmful for back pain. Gentle movement drives healing circulation through the lumbar spine and surrounding muscles. Start slow. Keep your head up, shoulders relaxed, core lightly engaged.', 0],
@@ -2741,7 +2751,7 @@
             ['💛 Magnesium Glycinate (300mg) + ⚡ Creatine (3–5g)', 'Same as Phase 1. Every morning. Now that you are adding resistance work creatine is supporting both the healing AND the core and glute strength rebuild simultaneously. Double duty. Do not skip either.', 0],
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Same as Phase 1. With fat. Morning only for D3. You are probably noticing less morning stiffness by now — that is this working. Keep going.', 0],
           ],
-          movement: [
+          prelude: [
             ['Cat-Cow + Pelvic Tilts — While Still in Bed', 'Do these before you stand up — 10 pelvic tilts then 10 slow cat-cow cycles. Your back should feel less stiff getting out of this than it did on Day 1. Notice that — you did that.', 180],
             ['Bird Dog — Phase 2 Volume', '3 sets of 15 bird-dogs with 5-sec holds. Significantly more volume than Phase 1. This is the single most important exercise in this entire protocol. The deep multifidus stabilizers you are building here are the foundation of a pain-free back for the rest of your life. Do not rush the movement. Slow and controlled always beats fast and sloppy.', 300],
             ['Morning Walk — 10 to 15 Minutes', 'Longer than Phase 1. Upright posture, arms swinging naturally, core lightly engaged. Walking is one of the most effective medicines for back pain. Movement drives nutrition to the discs. Keep walking.', 0],
@@ -2793,8 +2803,10 @@
             ['💛 Magnesium Glycinate (300mg) + ⚡ Creatine (3–5g)', 'Still every morning. Still both. You are doing your most demanding work yet and your core and posterior chain muscles need everything you can give them. Non-negotiable.', 0],
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Same as always. With fat. Morning D3. Consistent. At this point the anti-inflammatory effect is fully established in your tissue. You are maintaining it, not building it. Keep going.', 0],
           ],
+          prelude: [
+            ['Full Morning Mobility — Start in Bed', 'Before you stand up: pelvic tilts (10), cat-cow (10 slow cycles), knees to chest (30 sec each), piriformis stretch (30 sec each side). Then stand slowly, drink your water, take your supplements. 8 minutes total. Your back is significantly more mobile than Day 1. Your morning routine should feel like waking up a healthy spine — because that is what you are doing.', 480],
+          ],
           movement: [
-            ['Full Morning Mobility — Start in Bed', 'Before you stand up: pelvic tilts (10), cat-cow (10 slow cycles), knees to chest (30 sec each), piriformis stretch (30 sec each side). Then stand slowly. 8 minutes total. Your back is significantly more mobile than Day 1. Your morning routine should feel like waking up a healthy spine — because that is what you are doing.', 480],
             ['Romanian Deadlift — Light', 'Light weight or heavy resistance band. Hip hinge: push hips back, back flat, lower until hamstring stretch. 3 sets of 12. This is the most functional posterior chain exercise available. You are rebuilding your spine for real life — picking things up, loading groceries, being a person in the world. Do it deliberately.', 0],
             ['Morning Walk — 15 to 20 Minutes', 'A real walk. Upright posture, arms swinging, core lightly engaged. Notice how your back feels walking now versus Day 1. That difference is three weeks of consistent work. It is yours.', 0],
           ],
@@ -2845,8 +2857,10 @@
             ['💛 Magnesium Glycinate (300mg) + ⚡ Creatine (3–5g)', 'Still. Both. Every morning. This is your permanent spine maintenance stack. Not recovery anymore — just how you live. Your back is paying you back every morning you are not in pain.', 0],
             ['🌿 Turmeric / Curcumin (500–1000mg) + Vitamin D3 (2000 IU)', 'Still. With fat. Morning D3. This is not a recovery protocol anymore — this is just how a person who wants to keep their spine for life takes care of it.', 0],
           ],
+          prelude: [
+            ['Morning Mobility + Core Activation — Start in Bed', 'Start in bed: cat-cow (10 slow cycles). Then move to the floor: bird dog (10 each side), glute bridge (15). Then water, supplements, walk, breakfast. 8 minutes total. This is your spine maintenance routine — the one that keeps you out of the PT office for the next decade. Never skip it.', 480],
+          ],
           movement: [
-            ['Morning Mobility + Core Activation', 'Start in bed: cat-cow (10). Then move to the floor: bird dog (10 each side), glute bridge (15). 8 minutes total. This is your spine maintenance routine — the one that keeps you out of the PT office for the next decade. Never skip it.', 480],
             ['Morning Walk — 20 to 30 Minutes', 'Every morning. Non-negotiable. Walking is the most powerful long-term back health tool available and it is free. Head up. Shoulders back. Core lightly engaged. Walk like a person who took care of their spine.', 0],
           ],
           fuel: [
@@ -2947,9 +2961,9 @@
     // Build all tasks for this phase
     const allTasks = [];
     const sections = ['morning', 'midday', 'evening'];
-    const categories = ['hydration', 'supplements', 'movement', 'fuel', 'journal'];
-    const catIcons = { hydration: '💧', movement: '🏃', supplements: '💊', fuel: '🥗', journal: '📓' };
-    const catLabels = { hydration: 'Hydration', movement: 'Movement', supplements: 'Supplements', fuel: 'Fuel', journal: 'Journal' };
+    const categories = ['prelude', 'hydration', 'supplements', 'movement', 'fuel', 'journal'];
+    const catIcons = { prelude: '🛏', hydration: '💧', movement: '🏃', supplements: '💊', fuel: '🥗', journal: '📓' };
+    const catLabels = { prelude: 'Before Getting Up', hydration: 'Hydration', movement: 'Movement', supplements: 'Supplements', fuel: 'Fuel', journal: 'Journal' };
 
     sections.forEach(section => {
       const sectionData = phase[section];
@@ -3008,6 +3022,8 @@
       // Evening order: movement first, supplements last (taken before bed)
       const categories = section === 'evening'
         ? ['movement', 'fuel', 'supplements', 'journal']
+        : section === 'morning'
+        ? ['prelude', 'hydration', 'supplements', 'movement', 'fuel', 'journal']
         : ['hydration', 'supplements', 'fuel', 'movement', 'journal'];
       let taskCounter = 0;
 
@@ -3020,7 +3036,7 @@
         const catLabels = { movement: 'Movement', supplements: 'Supplements', fuel: 'Fuel & Hydration', journal: 'Journal' };
 
         const catHeader = document.createElement('div');
-        catHeader.className = 'cat-header' + (cat === 'hydration' ? ' cat-hydration' : '');
+        catHeader.className = 'cat-header' + (cat === 'hydration' ? ' cat-hydration' : cat === 'prelude' ? ' cat-prelude' : '');
         catHeader.innerHTML = catIcons[cat] + ' ' + catLabels[cat];
         itemsContainer.appendChild(catHeader);
 
@@ -3153,10 +3169,10 @@
       // Streak counter — always show number
       if (streakCountEl) streakCountEl.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
       if (streak > 0) {
-        if (streakCountEl) { streakCountEl.style.display = 'inline'; }
+        if (streakCountEl) { streakCountEl.textContent = streak + ' day' + (streak !== 1 ? 's' : ''); streakCountEl.style.display = 'inline'; }
         if (fireEl) fireEl.textContent = '🔥';
       } else {
-        if (streakCountEl) streakCountEl.style.display = 'none';
+        if (streakCountEl) { streakCountEl.textContent = '— Days'; streakCountEl.style.display = 'inline'; }
         if (fireEl) fireEl.textContent = '';
       }
 
@@ -3263,7 +3279,12 @@
     // Check browser support
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert('Voice input is not supported on this browser. Try Safari on iPhone or Chrome on Android.');
+      alert('Voice input is not supported on this browser.\n\nTry Safari on iPhone or Chrome on Android.\n\nNote: voice input requires the app to be served over HTTPS (e.g. on Netlify). It will not work when opening the file directly.');
+      return;
+    }
+    // HTTPS check — mic won't work on local files
+    if (window.location.protocol === 'file:') {
+      alert('Voice input requires the app to be hosted online (HTTPS).\n\nUpload to Netlify first, then try again. It will work great from there.');
       return;
     }
 
@@ -3826,7 +3847,16 @@
     const isJournalTask = (taskId && taskId.includes('journal')) ||
         (taskName && taskName.textContent.includes('Journal'));
     if (isJournalTask) {
-      openJournal();
+      if (!el.classList.contains('done')) {
+        // Not yet done — open journal to complete it
+        openJournal();
+      } else {
+        // Already done — allow unchecking like a normal task
+        el.classList.remove('done');
+        doneTasks = Math.max(0, doneTasks - 1);
+        updateProgress();
+        saveTaskState();
+      }
       return;
     }
     const wasDone = el.classList.contains('done');
