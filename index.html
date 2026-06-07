@@ -2723,25 +2723,17 @@
       if (journalTask && !journalTask.classList.contains('done')) {
         journalTask.classList.add('done');
         doneTasks++;
-        updateProgress();
         saveTaskState();
+        // Delay updateProgress until after journal closes so
+        // evening section is visible and showCelebration fires correctly
+        setTimeout(() => updateProgress(), 1600);
       }
-      // Show saved message
+      // Show saved message then close — showCelebration handles the rest
       const saved = document.getElementById('journal-saved');
       saved.style.display = 'block';
       setTimeout(() => {
         saved.style.display = 'none';
         closeJournal();
-        // Reopen evening section so the filled circle is visible
-        const eveningItems = document.getElementById('evening-items');
-        const eveningArrow = document.getElementById('evening-arrow');
-        if (eveningItems && !eveningItems.classList.contains('open')) {
-          eveningItems.classList.add('open');
-          if (eveningArrow) eveningArrow.classList.add('open');
-        }
-        // Scroll evening section into view
-        const eveningSection = document.getElementById('evening');
-        if (eveningSection) eveningSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 1500);
     } catch(e) {
       alert('Could not save. Please try again.');
@@ -3199,7 +3191,6 @@
     const taskId = el.dataset.taskId;
     const taskName = el.querySelector('.task-name');
     const isJournalTask = (taskId && taskId.includes('journal')) ||
-        (taskId === 'e5') || (taskId === 'e4') ||
         (taskName && taskName.textContent.includes('Journal'));
     if (isJournalTask) {
       openJournal();
