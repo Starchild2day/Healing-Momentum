@@ -84,10 +84,18 @@
   }
   @keyframes hb-pulse {
     0%   { filter: drop-shadow(0 0 3px rgba(220,50,50,0.3)); transform: scale(1); }
-    45%  { filter: drop-shadow(0 0 14px rgba(220,50,50,0.95)); transform: scale(1.08); }
-    60%  { filter: drop-shadow(0 0 8px rgba(220,50,50,0.6)); transform: scale(0.97); }
+    40%  { filter: drop-shadow(0 0 16px rgba(220,50,50,0.95)); transform: scale(1.1); }
+    70%  { filter: drop-shadow(0 0 22px rgba(220,50,50,0.5)); transform: scale(1.04); }
     100% { filter: drop-shadow(0 0 3px rgba(220,50,50,0.3)); transform: scale(1); }
   }
+  @keyframes hb-ring {
+    0%   { box-shadow: 0 0 0px 0px rgba(201,146,58,0.0),  inset 0 0 0px rgba(201,146,58,0.0); border-color: #c9923a; }
+    40%  { box-shadow: 0 0 0px 0px rgba(201,146,58,0.0),  inset 0 0 0px rgba(201,146,58,0.0); border-color: #c9923a; }
+    65%  { box-shadow: 0 0 10px 3px rgba(201,146,58,0.7), inset 0 0 8px rgba(201,146,58,0.2); border-color: #f0c060; }
+    85%  { box-shadow: 0 0 18px 5px rgba(201,146,58,0.4), inset 0 0 4px rgba(201,146,58,0.1); border-color: #e0b050; }
+    100% { box-shadow: 0 0 0px 0px rgba(201,146,58,0.0),  inset 0 0 0px rgba(201,146,58,0.0); border-color: #c9923a; }
+  }
+  .hb-wrap { animation: hb-ring 1.5s ease-in-out infinite; }
   .landing-title { font-size: 1.9rem; font-weight: 900; color: #ffffff;
     text-align: center; margin: 0 0 0.2rem; }
   .landing-tag { font-size: 0.9rem; color: #c9923a; font-weight: 600;
@@ -1046,11 +1054,11 @@
         <svg viewBox="0 0 80 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path class="hb-ekg" d="
             M 0,15
-            L 20,15
-            L 28,15
-            L 33,4
-            L 38,26
-            L 43,15
+            L 25,15
+            L 33,15
+            L 38,4
+            L 43,26
+            L 48,15
             L 80,15
           "/>
         </svg>
