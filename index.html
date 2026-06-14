@@ -47,6 +47,47 @@
     display: flex; flex-direction: column; align-items: center;
   }
   .landing-pulse { font-size: 2.8rem; margin-bottom: 0.4rem; }
+  .hb-wrap {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 3px solid #c9923a;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 0.6rem; position: relative; overflow: hidden;
+  }
+  .hb-heart {
+    font-size: 2.4rem; line-height: 1;
+    position: relative; z-index: 2;
+    animation: hb-pulse 1.5s ease-in-out infinite;
+  }
+  .hb-line {
+    position: absolute; bottom: 24px; left: 4px; right: 4px;
+    height: 30px; z-index: 3; pointer-events: none;
+  }
+  .hb-line svg { width: 100%; height: 100%; overflow: visible; }
+  /* The EKG path total length is ~130px - draw it in 1.5s then hold reset */
+  .hb-ekg {
+    fill: none;
+    stroke: #c9923a;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.92;
+    stroke-dasharray: 130;
+    stroke-dashoffset: 130;
+    animation: hb-draw 1.5s ease-in-out infinite;
+  }
+  @keyframes hb-draw {
+    0%   { stroke-dashoffset: 130; opacity: 0.9; }
+    70%  { stroke-dashoffset: 0;   opacity: 0.9; }
+    88%  { stroke-dashoffset: 0;   opacity: 0.9; }
+    100% { stroke-dashoffset: 130; opacity: 0;   }
+  }
+  @keyframes hb-pulse {
+    0%   { filter: drop-shadow(0 0 3px rgba(220,50,50,0.3)); transform: scale(1); }
+    45%  { filter: drop-shadow(0 0 14px rgba(220,50,50,0.95)); transform: scale(1.08); }
+    60%  { filter: drop-shadow(0 0 8px rgba(220,50,50,0.6)); transform: scale(0.97); }
+    100% { filter: drop-shadow(0 0 3px rgba(220,50,50,0.3)); transform: scale(1); }
+  }
   .landing-title { font-size: 1.9rem; font-weight: 900; color: #ffffff;
     text-align: center; margin: 0 0 0.2rem; }
   .landing-tag { font-size: 0.9rem; color: #c9923a; font-weight: 600;
@@ -997,7 +1038,24 @@
 <!-- SCREEN L: LANDING -->
 <div id="landing" class="screen active">
   <div class="landing-inner">
-    <div class="landing-pulse">💙</div>
+    <div class="hb-wrap">
+      <div class="hb-heart">❤️</div>
+      <div class="hb-line">
+        <!-- EKG path: flat lead-in, spike up, spike down, flat tail -->
+        <!-- viewBox width=80 matches the circle inner width -->
+        <svg viewBox="0 0 80 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="hb-ekg" d="
+            M 0,15
+            L 20,15
+            L 28,15
+            L 33,4
+            L 38,26
+            L 43,15
+            L 80,15
+          "/>
+        </svg>
+      </div>
+    </div>
     <h1 class="landing-title">Healing Momentum</h1>
     <div class="landing-tag">Your Daily Recovery Guide</div>
     <p class="landing-hook">
@@ -1076,8 +1134,8 @@
   <div class="disclaimer-card">
     <div class="disclaimer-header">
       <div class="d-icon">💗</div>
-      <h2>Before You Begin</h2>
-      <p>Please read and agree to continue</p>
+      <h2>A quick word before we get started.</h2>
+      <p>This app was built to help you heal — and it will. But it’s a guide, not a doctor. Read the fine print below, check the box, and let’s get to work.</p>
     </div>
     <div class="scroll-hint" id="scroll-hint">↓ Scroll to read full agreement</div>
     <div class="disclaimer-scroll" id="disclaimer-scroll">
