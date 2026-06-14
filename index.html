@@ -1,4 +1,4 @@
-<!-- HM Build: 2026-06-14 | Landing page + animated heartbeat icon + accordion sections + founding member offer + disclaimer voice + gate voice + Day 1 onboarding banner + surgery 4-phase protocol + Amazon affiliate shop links + timer auto-close + scroll fixes + duplicate dropdown fix + back-to-app note -->
+<!-- HM Build: 2026-06-14 | Landing page + animated heartbeat icon + accordion sections + founding member offer + disclaimer voice + gate voice + Day 1 onboarding banner + surgery 4-phase protocol + Amazon affiliate shop links + timer auto-close + scroll fixes + duplicate dropdown fix + back-to-app note + phase transition messages -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1367,8 +1367,8 @@
 
     <!-- PHASE UNLOCK BANNER -->
     <div id="phase-unlock-banner" class="phase-unlock-banner" style="display:none;">
-      <h3>🎉 New Phase Unlocked!</h3>
-      <p>Your recovery just leveled up.</p>
+      <h3>🎉 Phase Unlocked!</h3>
+      <p></p>
     </div>
 
     <div class="section-card" id="morning">
@@ -3388,12 +3388,13 @@
   }
 
   const PHASE_DAYS = [1, 8, 22, 43];
-  const PHASE_LABELS = ['Wake It Up', 'Start Building', 'Rebuild', 'Maintain & Protect'];
+  const PHASE_LABELS = ['Rebuild Carefully', 'Strengthen & Protect', 'Live Strong', 'Living Strong'];
+  const PHASE_EMOJIS = ['🎉', '💪', '🏆', '🌟'];
   const PHASE_TAGLINES = [
-    'Gentle but purposeful. Build the habit. Control inflammation.',
-    'Add resistance. Strengthen the stabilizers.',
-    'Strength focus. Fuller range of motion.',
-    'Full strength. Make sure this never happens again.'
+    'You showed up every day when it was hardest. The inflammation is down, the tissue is stabilizing — and your body is more ready than ever to start doing some real work. Let’s take it to the next level. Hold onto this feeling — it’s only going to get better from here.',
+    'Forty-two days of showing up. Every day you did the work, something was happening — slowly, consistently, the way real repair works. Now we build on what’s coming back. Keep going — the best part is still ahead. Imagine looking back on Day 1 from the other side of this. That day is coming.',
+    'What you’ve built here goes way beyond recovery. If you’ve been putting in the work and you’re not feeling it quite yet — that sense of accomplishment we talked about a few weeks ago — you’ve gotta be getting close. Keep going.',
+    'Remember how rough Day 1 was? Look where you are now. That feeling you’re feeling right now — hold onto it. This is what full recovery feels like, and the habits that got you here will continue to serve you as long as you follow them. Hydration, protein, movement, sleep — the same habits that prevent the next injury from happening in the first place. This is what thriving looks like after 50.'
   ];
 
   function getCurrentPhase(day) {
@@ -3579,10 +3580,12 @@
   function showPhaseUnlock(phaseIdx) {
     const banner = document.getElementById('phase-unlock-banner');
     if (!banner) return;
-    banner.querySelector('h3').textContent = '🎉 Phase ' + (phaseIdx + 1) + ' Unlocked — ' + PHASE_LABELS[phaseIdx] + '!';
+    const emoji = PHASE_EMOJIS[phaseIdx] || '🎉';
+    const isPhase4 = phaseIdx === 3;
+    banner.querySelector('h3').textContent = emoji + ' Phase ' + (phaseIdx + 1) + (isPhase4 ? ' — ' : ' Unlocked — ') + PHASE_LABELS[phaseIdx] + (isPhase4 ? '' : '!');
     banner.querySelector('p').textContent = PHASE_TAGLINES[phaseIdx];
     banner.style.display = 'block';
-    setTimeout(() => banner.style.display = 'none', 8000);
+    setTimeout(() => banner.style.display = 'none', phaseIdx === 3 ? 15000 : 8000);
   }
 
   // ── ONBOARDING BANNER ─────────────────────────────────────────────────────
