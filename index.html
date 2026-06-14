@@ -1,3 +1,4 @@
+<!-- HM Build: 2026-06-14 | Landing page + animated heartbeat icon + accordion sections + founding member offer + disclaimer voice + gate voice + Day 1 onboarding banner + surgery 4-phase protocol + Amazon affiliate shop links + timer auto-close + scroll fixes + duplicate dropdown fix + back-to-app note -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1190,7 +1191,22 @@
 <div id="gate" class="screen">
   <div class="gate-card">
     <div class="gate-logo">
-      <div class="pulse-ring">💙</div>
+      <div class="hb-wrap" style="margin:0 auto 1rem;">
+        <div class="hb-heart">❤️</div>
+        <div class="hb-line">
+          <svg viewBox="0 0 80 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="hb-ekg" d="
+              M 0,15
+              L 25,15
+              L 33,15
+              L 38,4
+              L 43,26
+              L 48,15
+              L 80,15
+            "/>
+          </svg>
+        </div>
+      </div>
       <h1>Healing Momentum</h1>
       <p>Your Daily Recovery Guide</p>
       <p style="font-size:0.95rem;color:var(--text-mid);margin-top:0.6rem;line-height:1.5;">
@@ -1338,14 +1354,15 @@
     <div id="onboarding-banner" style="display:none;" class="phase-banner">
       <button class="phase-close" onclick="dismissOnboarding()">✕</button>
       <h3>👋 Welcome to Healing Momentum</h3>
-      <p>Your body knows how to do this. You just have to show up every day. Four phases — here's the plan:</p>
+      <p><strong>Something just changed.</strong></p>
+      <p>You went from hoping your recovery goes well to having a real plan for making it happen. Morning, midday, and evening — we’ve got you covered. Here’s the road ahead:</p>
       <div class="phase-timeline">
-        <div class="phase-pill current">Phase 1 · Days 1–7 · Wake It Up</div>
-        <div class="phase-pill locked">Phase 2 · Days 8–21 · Start Building</div>
-        <div class="phase-pill locked">Phase 3 · Days 22–42 · Rebuild</div>
-        <div class="phase-pill locked">Phase 4 · Day 43+ · Maintain &amp; Protect</div>
+        <div class="phase-pill current">Phase 1 · Days 1–14 · Protect &amp; Stabilize</div>
+        <div class="phase-pill locked">Phase 2 · Days 15–42 · Rebuild Carefully</div>
+        <div class="phase-pill locked">Phase 3 · Days 43–84 · Strengthen &amp; Stabilize</div>
+        <div class="phase-pill locked">Phase 4 · Day 85+ · Return to Life</div>
       </div>
-      <p style="margin-top:0.8rem;font-size:0.85rem;opacity:0.8;">You didn't need to think about healing when you were 30. Guess what? You do now. Good news — it's simpler than you think:</p>
+      <p style="margin-top:0.8rem;font-size:0.85rem;opacity:0.8;">You didn’t need to think about healing when you were 30. Now you do. Good news — you’ve got the plan. Just show up every day… and write us a great review when you get there!</p>
     </div>
 
     <!-- PHASE UNLOCK BANNER -->
