@@ -296,7 +296,7 @@
     font-size: 0.85rem; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.4;
   }
 
-  .app-body { flex: 1; padding: 0 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
+  .app-body { flex: 1; padding: 1rem 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: #f0ebe0; margin-top: 0; }
 
   .section-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
   .section-header {
@@ -1130,6 +1130,7 @@
         Get Healing Momentum — $47 →
       </a>
       <div class="offer-after">After founding spots close, monthly subscription only.</div>
+      <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;margin-top:0.3rem;">Your app stays open while you check out</div>
     </div>
     <div class="landing-code-link" onclick="showScreen('gate')">
       Already have an access code? Enter it here
@@ -1192,6 +1193,10 @@
       <div class="pulse-ring">💙</div>
       <h1>Healing Momentum</h1>
       <p>Your Daily Recovery Guide</p>
+      <p style="font-size:0.95rem;color:var(--text-mid);margin-top:0.6rem;line-height:1.5;">
+        Good call getting here.<br>
+        A lot of people just wait and hope. You’re doing something about it. Let’s go.
+      </p>
     </div>
     <div id="founding-banner" style="background:linear-gradient(135deg,#1a4028,#2d6b45);border-radius:14px;padding:1rem 1.1rem;margin-bottom:1rem;text-align:center;border:1.5px solid #c9923a;">
       <div style="font-size:0.75rem;color:#e8b86d;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.25rem;">🌟 Founding Member Offer</div>
@@ -1199,6 +1204,7 @@
       <div style="color:rgba(255,255,255,0.6);font-size:0.72rem;margin-bottom:0.7rem;">Founding member rate — limited to 50</div>
       <a href="https://buy.stripe.com/fZubJ0bvWeDk77E9gSbbG00" target="_blank" style="display:block;background:#c9923a;color:#ffffff;font-weight:700;font-size:0.95rem;padding:0.65rem 1rem;border-radius:10px;text-decoration:none;margin-bottom:0.4rem;">Get Healing Momentum — $47 →</a>
       <div style="color:rgba(255,255,255,0.35);font-size:0.68rem;">After founding spots close, monthly subscription only.</div>
+      <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;margin-top:0.3rem;">Your app stays open while you check out</div>
     </div>
     <div class="gate-tabs">
       <button class="gate-tab active" onclick="showTab('access')">New User</button>
@@ -1208,7 +1214,7 @@
       <input type="text" id="g-name" oninput="checkGateReady()" placeholder="Your first name" autocomplete="given-name">
       <input type="email" id="g-email" oninput="checkGateReady()" placeholder="Your email address" autocomplete="email">
       <select id="g-injury" onchange="checkGateReady()">
-        <option value="">Select your injury or condition</option>
+        <option value="" disabled hidden selected>Select your injury or condition</option>
         <option value="shoulder">Shoulder / Rotator Cuff</option>
         <option value="knee">Knee</option>
         <option value="hip">Hip</option>
@@ -4343,11 +4349,20 @@
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    // Scroll every screen to top on transition
+    el.scrollTop = 0;
+    window.scrollTo(0, 0);
     // Show progress bar and about/signout buttons only in app screen
     const inApp = id === 'app';
     const bar = document.getElementById('sticky-bar');
     if (bar) bar.style.display = inApp ? 'flex' : 'none';
+    // Scroll app body to top
+    if (id === 'app') {
+      const body = document.querySelector('.app-body');
+      if (body) body.scrollTop = 0;
+    }
   }
 
   function toggleSection(id) {
