@@ -956,6 +956,17 @@
     padding: 0.5rem 0; border-bottom: 1px solid rgba(212,196,168,0.2);
   }
   .supply-item:last-child { border-bottom: none; }
+  .supply-link {
+    display: inline-block; background: #c9923a; color: #fff !important;
+    font-size: 0.72rem; font-weight: 700; padding: 0.3rem 0.65rem;
+    border-radius: 6px; text-decoration: none; white-space: nowrap;
+    flex-shrink: 0; margin-left: 0.5rem; letter-spacing: 0.02em;
+  }
+  .supply-link:hover { background: #a87830; }
+  .supply-link.coming-soon {
+    background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4) !important;
+    cursor: default;
+  }
   .supply-name { flex: 1; font-size: 0.95rem; color: var(--text); font-weight: 500; }
   body.dark .supply-name { color: #e8f0e4; }
   .supply-dose { font-size: 0.8rem; color: var(--text-light); }
@@ -3868,6 +3879,34 @@
     document.getElementById('supplies-overlay').classList.remove('active');
   }
 
+  // Amazon affiliate link lookup
+  const SHOP_LINKS = {
+    'collagen':        'https://www.amazon.com/dp/B00XQ2XGAA?tag=thebullyproof-20',
+    'vitamin c':       'https://www.amazon.com/dp/B0013OQGO6?tag=thebullyproof-20',
+    'creatine':        'https://www.amazon.com/dp/B07978VPPH?tag=thebullyproof-20',
+    'turmeric':        'https://www.amazon.com/dp/B01DBTFO98?tag=thebullyproof-20',
+    'curcumin':        'https://www.amazon.com/dp/B01DBTFO98?tag=thebullyproof-20',
+    'vitamin d':       'https://www.amazon.com/dp/B00GB85JR4?tag=thebullyproof-20',
+    'fish oil':        'https://www.amazon.com/dp/B00CAZAU62?tag=thebullyproof-20',
+    'omega':           'https://www.amazon.com/dp/B00CAZAU62?tag=thebullyproof-20',
+    'magnesium':       'https://www.amazon.com/dp/B0B6CTYD6S?tag=thebullyproof-20',
+    'zinc':            'https://www.amazon.com/dp/B00FGHUAZO?tag=thebullyproof-20',
+    'glucosamine':     'https://www.amazon.com/dp/B004U1Y99C?tag=thebullyproof-20',
+    'resistance band': 'https://www.amazon.com/dp/B01AVDVHTI?tag=thebullyproof-20',
+    'dumbbell':        'https://www.amazon.com/dp/B07MVMTFQ6?tag=thebullyproof-20',
+    'foam roller':     'https://www.amazon.com/dp/B00XM2MRGI?tag=thebullyproof-20',
+    'ice pack':        'https://www.amazon.com/dp/B000052YOB?tag=thebullyproof-20',
+    'heat':            'https://www.amazon.com/dp/B09M7GDKHL?tag=thebullyproof-20',
+  };
+
+  function getShopLink(name) {
+    const n = name.toLowerCase();
+    for (const [key, url] of Object.entries(SHOP_LINKS)) {
+      if (n.includes(key)) return url;
+    }
+    return null;
+  }
+
   function buildSuppliesHTML() {
     const body = document.getElementById('supplies-body');
     if (!body || body.children.length > 1) return; // Already built
@@ -3885,10 +3924,13 @@
       if (phase.supplements.length > 0) {
         html += '<div class="supplies-category"><h4>💊 Supplements</h4>';
         phase.supplements.forEach(item => {
+          const link = getShopLink(item.name);
           html += '<div class="supply-item">';
           html += '<div><div class="supply-name">' + item.name + '</div>';
           html += '<div class="supply-dose">' + item.dose + ' · ' + item.note + '</div></div>';
-          html += '<span class="supply-link coming-soon">Shop ↗</span>';
+          if (link) {
+            html += '<a class="supply-link" href="' + link + '" target="_blank" rel="noopener">Shop ↗</a>';
+          }
           html += '</div>';
         });
         html += '</div>';
@@ -3898,10 +3940,13 @@
       if (phase.equipment.length > 0) {
         html += '<div class="supplies-category"><h4>🏋️ Equipment</h4>';
         phase.equipment.forEach(item => {
+          const link = getShopLink(item.name);
           html += '<div class="supply-item">';
           html += '<div><div class="supply-name">' + item.name + '</div>';
           html += '<div class="supply-dose">' + item.dose + ' · ' + item.note + '</div></div>';
-          html += '<span class="supply-link coming-soon">Shop ↗</span>';
+          if (link) {
+            html += '<a class="supply-link" href="' + link + '" target="_blank" rel="noopener">Shop ↗</a>';
+          }
           html += '</div>';
         });
         html += '</div>';
@@ -3922,7 +3967,7 @@
       html += '</div>'; // end phase card
     });
 
-    body.innerHTML = '<div class="supplies-note">💡 Shop links coming soon — currently being curated with our clinical partner. Every recommendation in this app is research-backed and selected for quality and value.</div>' + html;
+    body.innerHTML = '<div class="supplies-note">💡 These are the exact supplements and equipment recommended in your protocol — research-backed and selected for quality and value. Amazon affiliate links support this app at no extra cost to you.</div>' + html;
   }
 
   function getCurrentDay() {
