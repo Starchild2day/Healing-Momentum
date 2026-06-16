@@ -4659,21 +4659,54 @@
   }
 
   // ── STARTUP: check URL params and skip to gate if needed ──────────
-  (function() {
+  window.addEventListener('DOMContentLoaded', function() {
     try {
       const params = new URLSearchParams(window.location.search);
       const urlCode = params.get('code');
       const urlScreen = params.get('screen');
       if (urlCode || urlScreen === 'gate') {
-        // Mark disclaimer as agreed so we skip it
-        try { localStorage.setItem('hm_disclaimer_seen', '1'); } catch(e2) {}
-        // Slightly longer delay to let DOM fully settle, then jump to gate
-        setTimeout(() => {
-          showScreen('gate');
-        }, 100);
+        // Direct DOM manipulation — no function dependencies
+        document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+        const gateEl = document.getElementById('gate');
+        if (gateEl) gateEl.classList.add('active');
+
+        if (urlCode) {
+          const codeField = document.getElementById('g-code');
+          if (codeField) codeField.value = urlCode.toUpperCase();
+          const rField = document.getElementById('r-code');
+          if (rField) rField.value = urlCode.toUpperCase();
+          const banner = document.getElementById('founder-welcome');
+          if (banner) banner.style.display = 'block';
+          // Trigger validation after a tick to ensure functions are defined
+          setTimeout(function() {
+            try { if (typeof checkCode === 'function') checkCode(); } catch(e3) {}
+            try { if (typeof checkGateReady === 'function') checkGateReady(); } catch(e4) {}
+          }, 50);
+        }
+      }
+    } catch(e) {
+      console.error('Startup code error:', e);
+    }
+  });
+  // Fallback in case DOMContentLoaded already fired
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlCode = params.get('code');
+      const urlScreen = params.get('screen');
+      if (urlCode || urlScreen === 'gate') {
+        document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+        const gateEl = document.getElementById('gate');
+        if (gateEl) gateEl.classList.add('active');
+        if (urlCode) {
+          const codeField = document.getElementById('g-code');
+          if (codeField) codeField.value = urlCode.toUpperCase();
+          const banner = document.getElementById('founder-welcome');
+          if (banner) banner.style.display = 'block';
+        }
       }
     } catch(e) {}
-  })();
+  }
 
   </script>
 
