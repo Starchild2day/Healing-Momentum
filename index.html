@@ -4665,7 +4665,9 @@
       const urlCode = params.get('code');
       const urlScreen = params.get('screen');
       if (urlCode || urlScreen === 'gate') {
-        // Small delay to let DOM settle, then jump to gate
+        // Mark disclaimer as agreed so we skip it
+        try { localStorage.setItem('hm_disclaimer_seen', '1'); } catch(e2) {}
+        // Slightly longer delay to let DOM fully settle, then jump to gate
         setTimeout(() => {
           showScreen('gate');
         }, 100);
