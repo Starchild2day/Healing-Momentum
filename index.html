@@ -1188,6 +1188,57 @@
   </div>
 </div>
 
+<!-- SCREEN W: POST-PAYMENT WELCOME -->
+<div id="welcome" class="screen">
+  <div class="gate-card">
+    <div class="gate-logo">
+      <div class="hb-wrap" style="margin:0 auto 1rem;">
+        <div class="hb-heart">❤️</div>
+        <div class="hb-line">
+          <svg viewBox="0 0 80 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="hb-ekg" d="
+              M 0,15
+              L 25,15
+              L 33,15
+              L 38,4
+              L 43,26
+              L 48,15
+              L 80,15
+            "/>
+          </svg>
+        </div>
+      </div>
+      <h1>Healing Momentum</h1>
+      <p>Your Daily Recovery Guide</p>
+    </div>
+    <div style="background:linear-gradient(135deg,#1a4028,#2d6b45);
+      border:1.5px solid #c9923a; border-radius:14px; padding:16px 18px; margin-bottom:20px;
+      text-align:center;">
+      <div style="font-size:2rem; margin-bottom:6px;">🎉</div>
+      <div style="color:#e8b86d; font-weight:800; font-size:1.15rem; margin-bottom:6px;">Payment Confirmed — Welcome!</div>
+      <div style="color:rgba(255,255,255,0.85); font-size:0.9rem; line-height:1.5;">You're officially a Founding Member. Your access code is already applied below — just tell us a little about yourself and we'll build your personal protocol.</div>
+    </div>
+    <div class="gate-form">
+      <input type="text" id="w-name" oninput="checkWelcomeReady()" placeholder="Your first name" autocomplete="given-name">
+      <input type="email" id="w-email" oninput="checkWelcomeReady()" placeholder="Your email address" autocomplete="email">
+      <select id="w-injury" onchange="checkWelcomeReady()">
+        <option value="" disabled hidden selected>Select your injury or condition</option>
+        <option value="shoulder">Shoulder / Rotator Cuff</option>
+        <option value="knee">Knee</option>
+        <option value="hip">Hip</option>
+        <option value="back">Lower Back</option>
+        <option value="surgery">Post-Surgery Recovery (Orthopedic)</option>
+      </select>
+      <input type="hidden" id="w-code" value="">
+      <div style="background:var(--cream); border:1.5px solid var(--gold); border-radius:10px; padding:10px 14px; margin-bottom:14px; text-align:center; font-weight:700; color:var(--navy);">
+        ✓ Access code <span id="w-code-display" style="color:var(--gold);"></span> applied
+      </div>
+      <button class="gate-btn" id="welcome-submit-btn" onclick="submitWelcome()">Start Healing →</button>
+      <p class="gate-note">🔒 Your info is private. We never share or sell your data.</p>
+    </div>
+  </div>
+</div>
+
 <!-- SCREEN 1: GATE -->
 <div id="gate" class="screen">
   <div class="gate-card">
@@ -4237,6 +4288,39 @@
     if (rbtn) rbtn.classList.toggle('ready', !!(rname.trim() && rcode.trim()));
   }
 
+  // ── WELCOME SCREEN (post-payment onboarding) ───────────────────────
+  function checkWelcomeReady() {
+    const name = (document.getElementById('w-name') || {}).value || '';
+    const email = (document.getElementById('w-email') || {}).value || '';
+    const injury = (document.getElementById('w-injury') || {}).value || '';
+    const btn = document.getElementById('welcome-submit-btn');
+    if (btn) {
+      const ready = name.trim() && email.trim().includes('@') && injury;
+      btn.classList.toggle('ready', !!ready);
+    }
+  }
+
+  function submitWelcome() {
+    const name = document.getElementById('w-name').value.trim();
+    const email = document.getElementById('w-email').value.trim();
+    const injury = document.getElementById('w-injury').value;
+    const code = document.getElementById('w-code').value.trim().toUpperCase();
+    if (!name) { alert('Please enter your first name.'); return; }
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (!injury) { alert('Please select your injury or condition.'); return; }
+    userName = name;
+    selectedInjury = injury;
+    try {
+      const existing = JSON.parse(localStorage.getItem('hm_user') || '{}');
+      localStorage.setItem('hm_version', APP_VERSION);
+      localStorage.setItem('hm_last_date', new Date().toDateString());
+      localStorage.setItem('hm_user', JSON.stringify({
+        name, injury, agreed: true, day: existing.day || 1
+      }));
+    } catch(e) {}
+    launchApp();
+  }
+
   function submitGate() {
     const name = document.getElementById('g-name').value.trim();
     const email = document.getElementById('g-email').value.trim();
@@ -4658,57 +4742,43 @@
     }
   }
 
-  // ── STARTUP: check URL params and skip to gate if needed ──────────
+  // ── STARTUP: dedicated welcome screen for post-payment onboarding ──
+  function routeToWelcome(urlCode) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    const welcomeEl = document.getElementById('welcome');
+    if (welcomeEl) welcomeEl.classList.add('active');
+    if (urlCode) {
+      const codeField = document.getElementById('w-code');
+      if (codeField) codeField.value = urlCode.toUpperCase();
+      const codeDisplay = document.getElementById('w-code-display');
+      if (codeDisplay) codeDisplay.textContent = urlCode.toUpperCase();
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', function() {
     try {
       const params = new URLSearchParams(window.location.search);
       const urlCode = params.get('code');
-      const urlScreen = params.get('screen');
-      if (urlCode || urlScreen === 'gate') {
-        // Direct DOM manipulation — no function dependencies
-        document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-        const gateEl = document.getElementById('gate');
-        if (gateEl) gateEl.classList.add('active');
-
-        if (urlCode) {
-          const codeField = document.getElementById('g-code');
-          if (codeField) codeField.value = urlCode.toUpperCase();
-          const rField = document.getElementById('r-code');
-          if (rField) rField.value = urlCode.toUpperCase();
-          const banner = document.getElementById('founder-welcome');
-          if (banner) banner.style.display = 'block';
-          // Trigger validation after a tick to ensure functions are defined
-          setTimeout(function() {
-            try { if (typeof checkCode === 'function') checkCode(); } catch(e3) {}
-            try { if (typeof checkGateReady === 'function') checkGateReady(); } catch(e4) {}
-          }, 50);
-        }
+      const isWelcome = params.get('welcome') === '1' || params.get('screen') === 'welcome';
+      if (isWelcome) {
+        try { localStorage.setItem('hm_disclaimer_seen', '1'); } catch(e2) {}
+        routeToWelcome(urlCode);
       }
     } catch(e) {
       console.error('Startup code error:', e);
     }
   });
-  // Fallback in case DOMContentLoaded already fired
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     try {
       const params = new URLSearchParams(window.location.search);
       const urlCode = params.get('code');
-      const urlScreen = params.get('screen');
-      if (urlCode || urlScreen === 'gate') {
-        document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-        const gateEl = document.getElementById('gate');
-        if (gateEl) gateEl.classList.add('active');
-        if (urlCode) {
-          const codeField = document.getElementById('g-code');
-          if (codeField) codeField.value = urlCode.toUpperCase();
-          const banner = document.getElementById('founder-welcome');
-          if (banner) banner.style.display = 'block';
-        }
+      const isWelcome = params.get('welcome') === '1' || params.get('screen') === 'welcome';
+      if (isWelcome) {
+        routeToWelcome(urlCode);
       }
     } catch(e) {}
   }
-
-  </script>
+</script>
 
   <!-- RESET CONFIRMATION MODAL -->
   <div id="reset-modal" style="display:none; position:fixed; inset:0; z-index:500;
