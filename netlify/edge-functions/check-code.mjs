@@ -1,0 +1,70 @@
+import { getStore } from "@netlify/blobs";
+
+export default async (req) => {
+  const store = getStore("used-codes");
+
+  try {
+    const { code, action } = await req.json();
+    const normalizedCode = (code || "").trim().toUpperCase();
+
+    if (!normalizedCode) {
+      return new Response(JSON.stringify({ valid: false, reason: "missing_code" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    // VALID_CODES — the master list of codes that exist at all
+    const VALID_CODES = ["FOUNDER50", "HEALFREE", "BETAMARK", "DRKTRIAL"];
+
+    if (!VALID_CODES.includes(normalizedCode)) {
+      return new Response(JSON.stringify({ valid: false, reason: "unknown_code" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    const existing = await store.get(normalizedCode, { type: "json" });
+
+    if (action === "claim") {
+      // Attempt to claim the code — only succeeds if not already used
+      if (existing && existing.used) {
+        return new Response(JSON.stringify({
+          valid: false,
+          reason: "already_used",
+          message: "This code has already been used to create an account."
+        }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        });
+      }
+      await store.setJSON(normalizedCode, {
+        used: true,
+        claimedAt: new Date().toISOString()
+      });
+      return new Response(JSON.stringify({ valid: true, claimed: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    } else {
+      // Just checking status, not claiming
+      const isUsed = existing && existing.used;
+      return new Response(JSON.stringify({
+        valid: true,
+        used: !!isUsed
+      }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+  } catch (err) {
+    return new Response(JSON.stringify({ valid: false, reason: "server_error", error: String(err) }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+};
+
+export const config = {
+  path: "/api/check-code"
+};
