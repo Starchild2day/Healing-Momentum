@@ -4300,7 +4300,7 @@
     }
   }
 
-  function submitWelcome() {
+  async function submitWelcome() {
     const name = document.getElementById('w-name').value.trim();
     const email = document.getElementById('w-email').value.trim();
     const injury = document.getElementById('w-injury').value;
@@ -4308,6 +4308,34 @@
     if (!name) { alert('Please enter your first name.'); return; }
     if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
     if (!injury) { alert('Please select your injury or condition.'); return; }
+
+    const btn = document.getElementById('welcome-submit-btn');
+    const originalText = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Checking...'; btn.disabled = true; }
+
+    // ── Verify and claim the code server-side (prevents shared-link abuse) ──
+    try {
+      const res = await fetch('/api/check-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, action: 'claim' })
+      });
+      const result = await res.json();
+      if (!result.valid) {
+        if (btn) { btn.textContent = originalText; btn.disabled = false; }
+        if (result.reason === 'already_used') {
+          alert('This access code has already been used to create an account. If this is your code and you are trying to log back in, use the Returning User option, or contact support@healingmomentumapp.com.');
+        } else {
+          alert('This code is not valid. Please check your confirmation email or contact support@healingmomentumapp.com.');
+        }
+        return;
+      }
+    } catch (err) {
+      // If the verification call fails (e.g. function not deployed yet), fail open
+      // so we never block a legitimate paying customer due to a server hiccup.
+      console.warn('Code verification unavailable, proceeding:', err);
+    }
+
     userName = name;
     selectedInjury = injury;
     try {
@@ -4315,7 +4343,7 @@
       localStorage.setItem('hm_version', APP_VERSION);
       localStorage.setItem('hm_last_date', new Date().toDateString());
       localStorage.setItem('hm_user', JSON.stringify({
-        name, injury, agreed: true, day: existing.day || 1
+        name, injury, agreed: true, day: existing.day || 1, accessCode: code
       }));
     } catch(e) {}
     launchApp();
