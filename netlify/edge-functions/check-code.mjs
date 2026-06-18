@@ -15,7 +15,7 @@ export default async (req) => {
     }
 
     // VALID_CODES — the master list of codes that exist at all
-    const VALID_CODES = ["FOUNDER50", "HEALFREE", "BETAMARK", "DRKTRIAL"];
+    const VALID_CODES = ["FOUNDER50", "FOUNDER2026", "HEALFREE", "BETAMARK", "DRKTRIAL"];
 
     if (!VALID_CODES.includes(normalizedCode)) {
       return new Response(JSON.stringify({ valid: false, reason: "unknown_code" }), {
