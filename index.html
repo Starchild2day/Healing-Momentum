@@ -4771,6 +4771,12 @@
   }
 
   // ── STARTUP: dedicated welcome screen for post-payment onboarding ──
+  // Call checkSession on every app load to restore session and advance day
+  // This MUST run before routeToWelcome to ensure returning users go straight to app
+  try {
+    checkSession();
+  } catch(e) {}
+
   function routeToWelcome(urlCode) {
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     const welcomeEl = document.getElementById('welcome');
