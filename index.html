@@ -1235,6 +1235,18 @@
       </div>
       <button class="gate-btn" id="welcome-submit-btn" onclick="submitWelcome()">Start Healing →</button>
       <p class="gate-note">🔒 Your info is private. We never share or sell your data.</p>
+      <div id="resend-section" style="margin-top:18px;border-top:1px solid rgba(0,0,0,0.08);padding-top:16px;text-align:center;">
+        <p style="color:var(--text-mid);font-size:0.88rem;margin-bottom:10px;">Can't find your code? Enter your purchase email and we'll resend it.</p>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="email" id="resend-email" placeholder="Your purchase email" autocomplete="email"
+            style="flex:1;padding:10px 12px;border:1.5px solid #ddd;border-radius:10px;font-size:0.9rem;font-family:inherit;">
+          <button onclick="resendCode()" id="resend-btn"
+            style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+            Send Code
+          </button>
+        </div>
+        <p id="resend-msg" style="font-size:0.85rem;margin-top:8px;min-height:1.2em;"></p>
+      </div>
     </div>
   </div>
 </div>
@@ -4347,6 +4359,41 @@
       }));
     } catch(e) {}
     launchApp();
+  }
+
+  async function resendCode() {
+    const email = (document.getElementById('resend-email').value || '').trim();
+    const msg = document.getElementById('resend-msg');
+    const btn = document.getElementById('resend-btn');
+    if (!email || !email.includes('@')) {
+      msg.style.color = '#c0392b';
+      msg.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    msg.style.color = 'var(--text-mid)';
+    msg.textContent = '';
+    try {
+      const res = await fetch('/api/check-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'resend', email })
+      });
+      const result = await res.json();
+      if (result.success) {
+        msg.style.color = '#2d6b45';
+        msg.textContent = '✓ Check your email — your code is on its way!';
+      } else {
+        msg.style.color = '#c0392b';
+        msg.textContent = result.message || 'No purchase found for that email. Contact support@healingmomentumapp.com.';
+      }
+    } catch (err) {
+      msg.style.color = '#c0392b';
+      msg.textContent = 'Something went wrong. Please try again or contact support@healingmomentumapp.com.';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Send Code';
   }
 
   function submitGate() {
