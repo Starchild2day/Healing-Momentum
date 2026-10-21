@@ -8,7 +8,7 @@ import { getStore } from "@netlify/blobs";
 //
 // Actions:
 //   claim   — mark code as used; reject if already claimed by someone else
-//   resend  — look up buyer's code by email and return it
+//   resend  — look up buyer's code by email, fire Swipe One event to resend it
 //   (none)  — check-only, return whether code is valid/used
 
 export default async (req, context) => {
@@ -35,27 +35,9 @@ export default async (req, context) => {
         });
       }
 
-      // Re-send the email with their code
-      const firstName = (buyerRecord.name || "").split(" ")[0] || "there";
-      const appUrl = `https://healingmomentumapp.com?welcome=1&code=${buyerRecord.code}`;
-      await sendEmail({
-        to: email,
-        subject: "Your Healing Momentum access code (resent)",
-        html: `
-          <div style="font-family:Georgia,serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#f9f7f3;border-radius:16px;">
-            <h1 style="color:#1a4028;font-size:1.5rem;margin-bottom:8px;">Here's your access code, ${firstName}</h1>
-            <p style="color:#444;font-size:1rem;line-height:1.6;margin-bottom:20px;">You requested a resend of your personal entry code:</p>
-            <div style="background:#1a4028;border:2px solid #c9923a;border-radius:12px;padding:20px;text-align:center;margin-bottom:24px;">
-              <div style="color:#e8b86d;font-size:0.85rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Your Entry Code</div>
-              <div style="color:#ffffff;font-size:2rem;font-weight:900;letter-spacing:0.15em;">${buyerRecord.code}</div>
-            </div>
-            <a href="${appUrl}" style="display:block;background:#1a4028;color:#ffffff;font-weight:700;font-size:1rem;padding:14px 20px;border-radius:10px;text-decoration:none;text-align:center;margin-bottom:24px;">
-              Open My App →
-            </a>
-            <p style="color:#888;font-size:0.85rem;">If you didn't request this, you can ignore it — no changes were made to your account.</p>
-          </div>
-        `
-      });
+      // Fire a Swipe One event to re-trigger the welcome email automation
+      const appUrl = "https://healingmomentumapp.com?welcome=1&code=" + buyerRecord.code;
+      await fireSwipeOneEvent({ email, code: buyerRecord.code, appUrl, eventType: "code_resend_requested" });
 
       return json({ success: true, message: "Code sent! Check your email." });
     }
@@ -80,15 +62,15 @@ export default async (req, context) => {
 
     if (action === "claim") {
       if (existing && existing.used) {
-        // Per-buyer codes: if the same email is reclaiming, let them through
-        // (handles re-installing on a new device)
+        // Per-buyer codes: if the same email is reclaiming, let them back in
+        // (handles reinstalling on a new device with the same code)
         if (isPerBuyer && email && existing.email === email) {
           return json({ valid: true, claimed: true, returning: true });
         }
         return json({
           valid: false,
           reason: "already_used",
-          message: "This access code has already been used to create an account. If this is your code, use the 'Returning User' option or tap 'Resend my code' below."
+          message: "This access code has already been used to create an account. If this is your code, use the Returning User option or tap Resend my code below."
         });
       }
 
@@ -119,36 +101,51 @@ export default async (req, context) => {
   }
 };
 
-// ── Helpers ──────────────────────────────────────────────────────────
+// ── Swipe One: fire an event on a contact to trigger an automation ──
+async function fireSwipeOneEvent({ email, code, appUrl, eventType }) {
+  const apiKey = process.env.SWIPE_ONE_API_KEY;
+  const writeKey = process.env.SWIPE_ONE_WRITE_KEY;
+  const workspaceId = process.env.SWIPE_ONE_WORKSPACE_ID;
+  const baseUrl = "https://api.swipeone.com/api";
 
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "Content-Type": "application/json" }
-  });
+  if (!apiKey || !workspaceId) {
+    console.warn("Swipe One not configured — skipping resend event");
+    return false;
+  }
+
+  try {
+    // Look up the contact by email first
+    const searchRes = await fetch(baseUrl + "/workspaces/" + workspaceId + "/contacts?email=" + encodeURIComponent(email), {
+      headers: { "x-api-key": apiKey }
+    });
+    if (!searchRes.ok) return false;
+    const searchData = await searchRes.json();
+    const contactId = searchData?.data?.[0]?._id || searchData?.data?.[0]?.id;
+    if (!contactId) return false;
+
+    // Fire the resend event
+    const evKey = writeKey || apiKey;
+    const evRes = await fetch(baseUrl + "/workspaces/" + workspaceId + "/events", {
+      method: "POST",
+      headers: { "x-api-key": evKey, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contact: { id: contactId },
+        type: eventType || "code_resend_requested",
+        properties: { entryCode: code, appUrl }
+      })
+    });
+    return evRes.ok;
+  } catch (err) {
+    console.error("Swipe One event failed:", err);
+    return false;
+  }
 }
 
-async function sendEmail({ to, subject, html }) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM || "Healing Momentum <support@healingmomentumapp.com>";
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — skipping email");
-    return false;
-  }
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ from, to, subject, html })
-    });
-    return res.ok;
-  } catch (err) {
-    console.error("Email send failed:", err);
-    return false;
-  }
+function json(data, status) {
+  return new Response(JSON.stringify(data), {
+    status: status || 200,
+    headers: { "Content-Type": "application/json" }
+  });
 }
 
 export const config = {
