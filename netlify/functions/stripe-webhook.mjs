@@ -211,6 +211,5 @@ async function verifyStripeSignature(rawBody, sigHeader, secret) {
 }
 
 export const config = {
-  path: "/api/stripe-webhook",
-  method: "POST"
+  path: "/api/stripe-webhook"
 };
