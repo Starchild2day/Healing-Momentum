@@ -3,3 +3,15 @@
 
 [functions]
   directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/stripe-webhook"
+  to = "/.netlify/functions/stripe-webhook"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/check-code"
+  to = "/.netlify/functions/check-code"
+  status = 200
+  force = true
