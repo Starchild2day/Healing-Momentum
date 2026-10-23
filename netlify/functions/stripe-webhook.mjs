@@ -15,13 +15,9 @@ import { getStore } from "@netlify/blobs";
 //   SWIPE_ONE_EVENT_TYPE       — custom event name, e.g. "purchase_completed"
 
 export const handler = async (event, context) => {
-  // ── Only accept POST ────────────────────────────────────────────
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
-  }
-
   // ── 1. Verify Stripe signature ──────────────────────────────────
-  const sig = event.headers["stripe-signature"];
+  // (Signature verification protects us — no separate method check needed)
+  const sig = event.headers["stripe-signature"] || event.headers["Stripe-Signature"];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   const rawBody = event.body;
 
