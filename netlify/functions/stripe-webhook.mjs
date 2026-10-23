@@ -124,7 +124,8 @@ async function addToSwipeOne({ email, name, firstName, entryCode, appUrl, custom
       body: JSON.stringify({
         email,
         firstName: nameParts[0] || firstName,
-        lastName: nameParts.slice(1).join(" ") || ""
+        lastName: nameParts.slice(1).join(" ") || "",
+        tags: ["healing-momentum-buyer"]
       })
     });
 
