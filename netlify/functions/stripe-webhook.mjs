@@ -1,45 +1,51 @@
 import { getStore } from "@netlify/blobs";
 
 // ── Stripe webhook handler ──────────────────────────────────────────
+// Netlify Functions v1 format (exports.handler) for maximum compatibility.
 // Fires when Stripe confirms a payment (checkout.session.completed).
-// Generates a unique entry code for the buyer, stores it in Netlify
-// Blobs, then adds the buyer as a contact in Swipe One and fires a
-// "purchase_completed" event to trigger the welcome email automation.
+// Generates a unique entry code, stores it in Netlify Blobs,
+// then adds the buyer to Swipe One and fires a "purchase_completed"
+// event to trigger the welcome email automation.
 //
-// Required environment variables (set in Netlify site settings):
+// Required Netlify environment variables:
 //   STRIPE_WEBHOOK_SECRET      — from Stripe Dashboard → Webhooks → signing secret
 //   SWIPE_ONE_API_KEY          — Swipe One API key (Workspace Settings → API)
 //   SWIPE_ONE_WRITE_KEY        — Swipe One write key (needed to record events)
-//   SWIPE_ONE_WORKSPACE_ID     — your workspace ID (visible in the app URL)
-//   SWIPE_ONE_EVENT_TYPE       — event type you define in Swipe One, e.g. "purchase_completed"
+//   SWIPE_ONE_WORKSPACE_ID     — your workspace ID
+//   SWIPE_ONE_EVENT_TYPE       — custom event name, e.g. "purchase_completed"
 
-export default async (req, context) => {
+export const handler = async (event, context) => {
+  // ── Only accept POST ────────────────────────────────────────────
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
+
   // ── 1. Verify Stripe signature ──────────────────────────────────
-  const sig = req.headers.get("stripe-signature");
+  const sig = event.headers["stripe-signature"];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const rawBody = await req.text();
+  const rawBody = event.body;
 
-  let event;
+  let stripeEvent;
   try {
-    event = await verifyStripeSignature(rawBody, sig, webhookSecret);
+    stripeEvent = await verifyStripeSignature(rawBody, sig, webhookSecret);
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
-    return json({ error: "Invalid signature" }, 400);
+    return { statusCode: 400, body: JSON.stringify({ error: "Invalid signature" }) };
   }
 
   // ── 2. Only handle completed checkouts ─────────────────────────
-  if (event.type !== "checkout.session.completed") {
-    return json({ received: true }, 200);
+  if (stripeEvent.type !== "checkout.session.completed") {
+    return { statusCode: 200, body: JSON.stringify({ received: true }) };
   }
 
-  const session = event.data.object;
+  const session = stripeEvent.data.object;
   const email = (session.customer_details?.email || session.customer_email || "").toLowerCase().trim();
   const name = session.customer_details?.name || "";
   const customerId = session.customer || null;
 
   if (!email) {
     console.error("No email in Stripe session:", session.id);
-    return json({ error: "No email" }, 400);
+    return { statusCode: 400, body: JSON.stringify({ error: "No email" }) };
   }
 
   // ── 3. Check if this buyer already has a code (idempotency) ────
@@ -86,7 +92,10 @@ export default async (req, context) => {
     // Don't block — code is safely stored in Netlify Blobs regardless
   }
 
-  return json({ received: true, codeIssued: true }, 200);
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ received: true, codeIssued: true })
+  };
 };
 
 // ── Swipe One integration ────────────────────────────────────────────
@@ -128,7 +137,6 @@ async function addToSwipeOne({ email, name, firstName, entryCode, appUrl, custom
     const contactId = contact._id || contact.id;
 
     // Step 2: Record the purchase event — triggers the Swipe One automation
-    // The automation sends the welcome email with the entry code
     const evKey = writeKey || apiKey;
     const eventRes = await fetch(baseUrl + "/workspaces/" + workspaceId + "/events", {
       method: "POST",
@@ -166,14 +174,7 @@ function generateCode() {
   return "HM-" + rand(4) + "-" + rand(4);
 }
 
-function json(data, status) {
-  return new Response(JSON.stringify(data), {
-    status: status || 200,
-    headers: { "Content-Type": "application/json" }
-  });
-}
-
-// Manual Stripe webhook signature verification (no SDK required)
+// Manual Stripe webhook signature verification (no Stripe SDK required)
 async function verifyStripeSignature(rawBody, sigHeader, secret) {
   if (!secret) {
     console.warn("STRIPE_WEBHOOK_SECRET not set — skipping signature check (dev mode)");
@@ -209,7 +210,3 @@ async function verifyStripeSignature(rawBody, sigHeader, secret) {
 
   return JSON.parse(rawBody);
 }
-
-export const config = {
-  path: "/api/stripe-webhook"
-};
