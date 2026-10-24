@@ -3,8 +3,5 @@
   command = "npm install"
 
 [functions]
-  directory = "netlify/functions"
-
-
-# Routes are registered via 'export const config = { path }' in each function file
+  directory = "functions"
 
