@@ -205,7 +205,4 @@ async function verifyStripeSignature(rawBody, sigHeader, secret) {
   return JSON.parse(rawBody);
 }
 
-export const config = {
-  path: "/api/stripe-webhook",
-  method: ["POST", "GET"]
-};
+// Function is served at /.netlify/functions/stripe-webhook automatically
