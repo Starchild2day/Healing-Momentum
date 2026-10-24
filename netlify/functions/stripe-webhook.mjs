@@ -4,15 +4,15 @@ import { getStore } from "@netlify/blobs";
 // Netlify Functions v1 format (exports.handler) for maximum compatibility.
 // Fires when Stripe confirms a payment (checkout.session.completed).
 // Generates a unique entry code, stores it in Netlify Blobs,
-// then adds the buyer to Swipe One and fires a "purchase_completed"
-// event to trigger the welcome email automation.
+// then adds the buyer to Swipe One and fires a custom event
+// to trigger the welcome email automation.
 //
 // Required Netlify environment variables:
 //   STRIPE_WEBHOOK_SECRET      — from Stripe Dashboard → Webhooks → signing secret
 //   SWIPE_ONE_API_KEY          — Swipe One API key (Workspace Settings → API)
 //   SWIPE_ONE_WRITE_KEY        — Swipe One write key (needed to record events)
 //   SWIPE_ONE_WORKSPACE_ID     — your workspace ID
-//   SWIPE_ONE_EVENT_TYPE       — custom event name, e.g. "purchase_completed"
+//   SWIPE_ONE_EVENT_TYPE       — custom event name (set in Netlify env vars)
 
 export const handler = async (event, context) => {
   // ── 1. Verify Stripe signature ──────────────────────────────────
@@ -100,7 +100,7 @@ async function addToSwipeOne({ email, name, firstName, entryCode, appUrl, custom
   const apiKey = process.env.SWIPE_ONE_API_KEY;
   const writeKey = process.env.SWIPE_ONE_WRITE_KEY;
   const workspaceId = process.env.SWIPE_ONE_WORKSPACE_ID;
-  const eventType = process.env.SWIPE_ONE_EVENT_TYPE || "purchase_completed";
+  const eventType = process.env.SWIPE_ONE_EVENT_TYPE;
   const baseUrl = "https://api.swipeone.com/api";
 
   if (!apiKey || !workspaceId) {
