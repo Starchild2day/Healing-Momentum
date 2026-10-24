@@ -1,7 +1,8 @@
 import { getStore } from "@netlify/blobs";
+import { Context } from "@netlify/functions";
 
 // ── Stripe webhook handler ──────────────────────────────────────────
-// Netlify Functions v1 format (exports.handler) for maximum compatibility.
+// Netlify Functions v2 format.
 // Fires when Stripe confirms a payment (checkout.session.completed).
 // Generates a unique entry code, stores it in Netlify Blobs,
 // then adds the buyer to Swipe One and fires a custom event
@@ -14,24 +15,23 @@ import { getStore } from "@netlify/blobs";
 //   SWIPE_ONE_WORKSPACE_ID     — your workspace ID
 //   SWIPE_ONE_EVENT_TYPE       — custom event name (set in Netlify env vars)
 
-export const handler = async (event, context) => {
+export default async (req, context) => {
   // ── 1. Verify Stripe signature ──────────────────────────────────
-  // (Signature verification protects us — no separate method check needed)
-  const sig = event.headers["stripe-signature"] || event.headers["Stripe-Signature"];
+  const sig = req.headers.get("stripe-signature");
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const rawBody = event.body;
+  const rawBody = await req.text();
 
   let stripeEvent;
   try {
     stripeEvent = await verifyStripeSignature(rawBody, sig, webhookSecret);
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
-    return { statusCode: 400, body: JSON.stringify({ error: "Invalid signature" }) };
+    return new Response(JSON.stringify({ error: "Invalid signature" }), { status: 400, headers: { "Content-Type": "application/json" } });
   }
 
   // ── 2. Only handle completed checkouts ─────────────────────────
   if (stripeEvent.type !== "checkout.session.completed") {
-    return { statusCode: 200, body: JSON.stringify({ received: true }) };
+    return new Response(JSON.stringify({ received: true }), { status: 200, headers: { "Content-Type": "application/json" } });
   }
 
   const session = stripeEvent.data.object;
@@ -41,7 +41,7 @@ export const handler = async (event, context) => {
 
   if (!email) {
     console.error("No email in Stripe session:", session.id);
-    return { statusCode: 400, body: JSON.stringify({ error: "No email" }) };
+    return new Response(JSON.stringify({ error: "No email" }), { status: 400, headers: { "Content-Type": "application/json" } });
   }
 
   // ── 3. Check if this buyer already has a code (idempotency) ────
@@ -88,10 +88,7 @@ export const handler = async (event, context) => {
     // Don't block — code is safely stored in Netlify Blobs regardless
   }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ received: true, codeIssued: true })
-  };
+  return new Response(JSON.stringify({ received: true, codeIssued: true }), { status: 200, headers: { "Content-Type": "application/json" } });
 };
 
 // ── Swipe One integration ────────────────────────────────────────────
