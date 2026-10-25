@@ -105,6 +105,7 @@ async function addToSwipeOne({ email, name, firstName, entryCode, appUrl, custom
         email,
         firstName,
         lastName: name.split(" ").slice(1).join(" ") || "",
+        tags: ["healing-momentum"],
         customFields: {
           entry_code: entryCode,
           app_url: appUrl,
