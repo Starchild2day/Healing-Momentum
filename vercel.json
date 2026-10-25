@@ -1,0 +1,8 @@
+{
+  "outputDirectory": "public",
+  "functions": {
+    "api/stripe-webhook.js": {
+      "maxDuration": 30
+    }
+  }
+}
