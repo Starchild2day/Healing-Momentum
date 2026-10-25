@@ -205,8 +205,4 @@ async function verifyStripeSignature(rawBody, sigHeader, secret) {
   return JSON.parse(rawBody);
 }
 
-// Register explicit route so Netlify's function runner takes priority over static file serving
-export const config = {
-  path: "/.netlify/functions/stripe-webhook",
-  method: ["GET", "POST", "PUT", "DELETE"]
-};
+// Served at /.netlify/functions/stripe-webhook (auto-registered by Netlify)
