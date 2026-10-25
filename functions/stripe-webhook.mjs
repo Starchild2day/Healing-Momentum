@@ -1,5 +1,4 @@
 import { getStore } from "@netlify/blobs";
-import { Context } from "@netlify/functions";
 
 // ── Stripe webhook handler ──────────────────────────────────────────
 // Netlify Functions v2 format.
