@@ -13,7 +13,7 @@
 import { createHmac, timingSafeEqual } from "crypto";
 
 const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-export const LEGACY_CODES = ["FOUNDER50", "FOUNDER2026", "HEALFREE", "BETAMARK", "DRKTRIAL"];
+export const LEGACY_CODES = []; // Old shared beta codes retired Oct 2026
 export const BUYER_CODE = /^HM-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
 
 export function normalizeEmail(email) {

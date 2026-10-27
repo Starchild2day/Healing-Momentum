@@ -1307,7 +1307,7 @@
         <option value="surgery">Post-Surgery Recovery (Orthopedic)</option>
       </select>
       <div class="beta-row">
-        <input type="text" id="g-code" oninput="checkCode(); checkGateReady();" placeholder="Beta access code" style="text-transform:uppercase">
+        <input type="text" id="g-code" oninput="checkCode(); checkGateReady();" placeholder="Your access code" style="text-transform:uppercase">
         
       </div>
       <div class="code-msg" id="code-msg"></div>
@@ -4140,7 +4140,7 @@
     } catch(e) { return 1; }
   }
 
-  const BETA_CODES = ['HEALFREE','BETAMARK','DRKTRIAL','FOUNDER50','FOUNDER2026'];
+  const BETA_CODES = []; // Old shared beta codes retired Oct 2026; buyers use personal HM- codes
 
     const QUOTES = [
     'Your body has not stopped knowing how to heal. It just needs you to show up for it now.',
