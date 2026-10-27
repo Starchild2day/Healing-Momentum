@@ -1320,6 +1320,7 @@
     </div>
     <div id="tab-returning" class="gate-form" style="display:none">
       <input type="text" id="r-name" oninput="checkGateReady()" placeholder="Your first name">
+      <input type="email" id="r-email" oninput="checkGateReady()" placeholder="The email you paid with" autocomplete="email">
       <input type="text" id="r-code" oninput="checkGateReady()" placeholder="Your access code" style="text-transform:uppercase">
       <button class="gate-btn" id="returning-submit-btn" onclick="returningAccess()">Enter →</button>
     </div>
@@ -4345,7 +4346,7 @@
         if (result.reason === 'already_used') {
           alert('This access code has already been used to create an account. If this is your code and you are trying to log back in, use the Returning User option, or contact support@healingmomentumapp.com.');
         } else {
-          alert('This code is not valid. Please check your confirmation email or contact support@healingmomentumapp.com.');
+          alert(result.message || 'This code is not valid. Use "Lost your code?" below with the email you paid with, or contact support@healingmomentumapp.com.');
         }
         return;
       }
@@ -4409,12 +4410,12 @@
   }
 
   // Checks a personal HM-XXXX-XXXX code with the server. Returns true if it was issued after a real purchase.
-  async function verifyBuyerCode(code) {
+  async function verifyBuyerCode(code, email) {
     try {
       const res = await fetch('/api/check-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, action: 'login' })
+        body: JSON.stringify({ code, email, action: 'login' })
       });
       const result = await res.json();
       return !!result.valid;
@@ -4433,8 +4434,8 @@
     if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
     const isBuyerCode = /^HM-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code);
     if (!BETA_CODES.includes(code) && !isBuyerCode) { alert('Please enter a valid access code.'); return; }
-    if (isBuyerCode && !(await verifyBuyerCode(code))) {
-      alert('That access code was not found. Check it and try again, or contact support@healingmomentumapp.com.');
+    if (isBuyerCode && !(await verifyBuyerCode(code, email))) {
+      alert('That code doesn\'t match that email. Use the email you paid with, or contact support@healingmomentumapp.com.');
       return;
     }
     userName = name;
@@ -4457,7 +4458,9 @@
     if (!name) { alert('Please enter your name.'); return; }
     const isBuyerCode = /^HM-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code);
     if (!BETA_CODES.includes(code) && !isBuyerCode) { alert('Access code not recognized.'); return; }
-    if (isBuyerCode && !(await verifyBuyerCode(code))) { alert('Access code not recognized.'); return; }
+    const remail = ((document.getElementById('r-email') || {}).value || '').trim();
+    if (isBuyerCode && !remail) { alert('Please enter the email you paid with.'); return; }
+    if (isBuyerCode && !(await verifyBuyerCode(code, remail))) { alert('That code doesn\'t match that email. Use the email you paid with, or contact support@healingmomentumapp.com.'); return; }
     userName = name;
     // Try to restore injury from saved session
     try {
