@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const { ok, status, data: session } = await stripeGet("checkout/sessions/" + encodeURIComponent(sessionId));
     if (!ok) {
       console.error("Stripe lookup failed", status, session && session.error && session.error.message);
-      return send(res, 404, { ok: false, reason: "not_found", stripe: status + " " + String((session && session.error && session.error.message) || "").replace(/(sk|rk|pk)_(live|test)_[A-Za-z0-9*]+/g, "[key]").slice(0, 160) });
+      return send(res, 404, { ok: false, reason: "not_found", stripe: status });
     }
     if (!isPaid(session)) return send(res, 402, { ok: false, reason: "not_paid" });
 
