@@ -1128,7 +1128,7 @@
         <span class="offer-once">— one time, lifetime access</span>
       </div>
       <div class="offer-limit">Limited to the first 50</div>
-      <a href="https://buy.stripe.com/6oU9AT6RPa2fabKe2R9EI03" target="_blank" class="offer-cta">
+      <a href="https://buy.stripe.com/aFa5kF96H9RZ5Od06fdnW00" target="_blank" class="offer-cta">
         Get Healing Momentum — $37 →
       </a>
       <div class="offer-after">After founding spots close, monthly subscription only.</div>
@@ -1230,19 +1230,21 @@
         <option value="surgery">Post-Surgery Recovery (Orthopedic)</option>
       </select>
       <input type="hidden" id="w-code" value="">
-      <div style="background:var(--cream); border:1.5px solid var(--gold); border-radius:10px; padding:10px 14px; margin-bottom:14px; text-align:center; font-weight:700; color:var(--navy);">
-        ✓ Access code <span id="w-code-display" style="color:var(--gold);"></span> applied
+      <div id="w-code-box" style="background:var(--cream); border:1.5px solid var(--gold); border-radius:10px; padding:12px 14px; margin-bottom:14px; text-align:center; color:var(--navy);">
+        <div id="w-code-label" style="font-size:0.85rem; font-weight:700; color:var(--text-mid);">Your personal access code</div>
+        <div id="w-code-display" style="font-size:1.5rem; font-weight:900; letter-spacing:0.08em; color:var(--gold); margin:4px 0;">…</div>
+        <div id="w-code-note" style="font-size:0.82rem; color:var(--text-mid); line-height:1.4;">Write this down or take a screenshot. You'll use it to sign in on another phone or computer.</div>
       </div>
       <button class="gate-btn" id="welcome-submit-btn" onclick="submitWelcome()">Start Healing →</button>
       <p class="gate-note">🔒 Your info is private. We never share or sell your data.</p>
       <div id="resend-section" style="margin-top:18px;border-top:1px solid rgba(0,0,0,0.08);padding-top:16px;text-align:center;">
-        <p style="color:var(--text-mid);font-size:0.88rem;margin-bottom:10px;">Can't find your code? Enter your purchase email and we'll resend it.</p>
+        <p style="color:var(--text-mid);font-size:0.88rem;margin-bottom:10px;">Lost your code? Enter the email you paid with and we'll show it again.</p>
         <div style="display:flex;gap:8px;align-items:center;">
           <input type="email" id="resend-email" placeholder="Your purchase email" autocomplete="email"
             style="flex:1;padding:10px 12px;border:1.5px solid #ddd;border-radius:10px;font-size:0.9rem;font-family:inherit;">
           <button onclick="resendCode()" id="resend-btn"
             style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">
-            Send Code
+            Show Code
           </button>
         </div>
         <p id="resend-msg" style="font-size:0.85rem;margin-top:8px;min-height:1.2em;"></p>
@@ -1282,7 +1284,7 @@
       <div style="font-size:0.75rem;color:#e8b86d;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.25rem;">🌟 Founding Member Offer</div>
       <div style="margin-bottom:0.25rem;"><span style="color:rgba(255,255,255,0.45);font-size:0.9rem;text-decoration:line-through;">$19/mo</span>&nbsp;<span style="color:#ffffff;font-size:1.25rem;font-weight:800;">$47</span><span style="color:rgba(255,255,255,0.8);font-size:0.85rem;"> — one time, lifetime access</span></div>
       <div style="color:rgba(255,255,255,0.6);font-size:0.72rem;margin-bottom:0.7rem;">Founding member rate — limited to 50</div>
-      <a href="https://buy.stripe.com/6oU9AT6RPa2fabKe2R9EI03" target="_blank" style="display:block;background:#c9923a;color:#ffffff;font-weight:700;font-size:0.95rem;padding:0.65rem 1rem;border-radius:10px;text-decoration:none;margin-bottom:0.4rem;">Get Healing Momentum — $37 →</a>
+      <a href="https://buy.stripe.com/aFa5kF96H9RZ5Od06fdnW00" target="_blank" style="display:block;background:#c9923a;color:#ffffff;font-weight:700;font-size:0.95rem;padding:0.65rem 1rem;border-radius:10px;text-decoration:none;margin-bottom:0.4rem;">Get Healing Momentum — $37 →</a>
       <div style="color:rgba(255,255,255,0.35);font-size:0.68rem;">After founding spots close, monthly subscription only.</div>
       <div style="color:rgba(255,255,255,0.35);font-size:0.7rem;margin-top:0.3rem;">Your app stays open while you check out</div>
     </div>
@@ -4276,6 +4278,10 @@
       msg.textContent = '✓ Beta access code accepted!';
       msg.className = 'code-msg valid';
       codeValid = true;
+    } else if (/^HM-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) {
+      msg.textContent = '✓ We\'ll check your code when you tap Start.';
+      msg.className = 'code-msg valid';
+      codeValid = true;
     } else {
       msg.textContent = '✗ Code not recognized. Try again.';
       msg.className = 'code-msg invalid';
@@ -4317,6 +4323,7 @@
     const email = document.getElementById('w-email').value.trim();
     const injury = document.getElementById('w-injury').value;
     const code = document.getElementById('w-code').value.trim().toUpperCase();
+    if (!code) { alert('Your access code is still loading. Give it a moment, or use "Lost your code?" below with the email you paid with.'); return; }
     if (!name) { alert('Please enter your first name.'); return; }
     if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
     if (!injury) { alert('Please select your injury or condition.'); return; }
@@ -4330,7 +4337,7 @@
       const res = await fetch('/api/check-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, action: 'claim' })
+        body: JSON.stringify({ code, action: 'claim', email: (window.hmPurchaseEmail || email) })
       });
       const result = await res.json();
       if (!result.valid) {
@@ -4381,9 +4388,14 @@
         body: JSON.stringify({ action: 'resend', email })
       });
       const result = await res.json();
-      if (result.success) {
+      if (result.success && result.code) {
         msg.style.color = '#2d6b45';
-        msg.textContent = '✓ Check your email — your code is on its way!';
+        msg.textContent = '✓ Your code is ' + result.code + ' — it has been filled in above.';
+        window.hmPurchaseEmail = email.toLowerCase();
+        setWelcomeCode(result.code);
+        const wEmail = document.getElementById('w-email');
+        if (wEmail && !wEmail.value) wEmail.value = email;
+        checkWelcomeReady();
       } else {
         msg.style.color = '#c0392b';
         msg.textContent = result.message || 'No purchase found for that email. Contact support@healingmomentumapp.com.';
@@ -4393,17 +4405,38 @@
       msg.textContent = 'Something went wrong. Please try again or contact support@healingmomentumapp.com.';
     }
     btn.disabled = false;
-    btn.textContent = 'Send Code';
+    btn.textContent = 'Show Code';
   }
 
-  function submitGate() {
+  // Checks a personal HM-XXXX-XXXX code with the server. Returns true if it was issued after a real purchase.
+  async function verifyBuyerCode(code) {
+    try {
+      const res = await fetch('/api/check-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, action: 'login' })
+      });
+      const result = await res.json();
+      return !!result.valid;
+    } catch (e) {
+      // Server unreachable: don't lock out a paying customer
+      return true;
+    }
+  }
+
+  async function submitGate() {
     const name = document.getElementById('g-name').value.trim();
     const email = document.getElementById('g-email').value.trim();
     const injury = document.getElementById('g-injury').value;
     const code = document.getElementById('g-code').value.trim().toUpperCase();
     if (!name) { alert('Please enter your first name.'); return; }
     if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
-    if (!BETA_CODES.includes(code)) { alert('Please enter a valid beta access code.'); return; }
+    const isBuyerCode = /^HM-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code);
+    if (!BETA_CODES.includes(code) && !isBuyerCode) { alert('Please enter a valid access code.'); return; }
+    if (isBuyerCode && !(await verifyBuyerCode(code))) {
+      alert('That access code was not found. Check it and try again, or contact support@healingmomentumapp.com.');
+      return;
+    }
     userName = name;
     selectedInjury = injury;
     // Save session so returning users do not need to re-enter
@@ -4418,11 +4451,13 @@
     if (injury) { launchApp(); } else { showScreen('injury-select'); }
   }
 
-  function returningAccess() {
+  async function returningAccess() {
     const name = document.getElementById('r-name').value.trim();
     const code = document.getElementById('r-code').value.trim().toUpperCase();
     if (!name) { alert('Please enter your name.'); return; }
-    if (!BETA_CODES.includes(code)) { alert('Access code not recognized.'); return; }
+    const isBuyerCode = /^HM-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code);
+    if (!BETA_CODES.includes(code) && !isBuyerCode) { alert('Access code not recognized.'); return; }
+    if (isBuyerCode && !(await verifyBuyerCode(code))) { alert('Access code not recognized.'); return; }
     userName = name;
     // Try to restore injury from saved session
     try {
@@ -4824,40 +4859,76 @@
     checkSession();
   } catch(e) {}
 
+  function setWelcomeCode(code) {
+    const codeField = document.getElementById('w-code');
+    if (codeField) codeField.value = code ? code.toUpperCase() : '';
+    const codeDisplay = document.getElementById('w-code-display');
+    if (codeDisplay) codeDisplay.textContent = code ? code.toUpperCase() : '…';
+  }
+
+  // After payment, Stripe sends buyers back with ?welcome=1&session_id=cs_...
+  // We ask our server to confirm the payment and hand over the buyer's personal code.
+  let hmClaimStarted = false;
+  async function claimPurchase(sessionId) {
+    if (hmClaimStarted) return;
+    hmClaimStarted = true;
+    const note = document.getElementById('w-code-note');
+    const label = document.getElementById('w-code-label');
+    if (label) label.textContent = 'Getting your personal access code…';
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const res = await fetch('/api/claim-purchase', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sessionId })
+        });
+        const result = await res.json();
+        if (result.ok && result.code) {
+          setWelcomeCode(result.code);
+          if (label) label.textContent = 'Your personal access code';
+          window.hmPurchaseEmail = result.email || '';
+          const wEmail = document.getElementById('w-email');
+          if (wEmail && !wEmail.value && result.email) wEmail.value = result.email;
+          const wName = document.getElementById('w-name');
+          if (wName && !wName.value && result.firstName) wName.value = result.firstName;
+          checkWelcomeReady();
+          // Remove the session id from the address bar so a shared link can't be reused
+          try { history.replaceState(null, '', window.location.pathname + '?welcome=1'); } catch(e3) {}
+          return;
+        }
+        if (result.reason === 'not_paid' || result.reason === 'bad_session') break;
+      } catch (e) {}
+      await new Promise(function(r) { setTimeout(r, 2000); });
+    }
+    if (label) label.textContent = "We couldn't load your code automatically";
+    if (note) note.textContent = 'No worries. Enter the email you paid with under "Lost your code?" below, or contact support@healingmomentumapp.com.';
+  }
+
   function routeToWelcome(urlCode) {
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     const welcomeEl = document.getElementById('welcome');
     if (welcomeEl) welcomeEl.classList.add('active');
-    if (urlCode) {
-      const codeField = document.getElementById('w-code');
-      if (codeField) codeField.value = urlCode.toUpperCase();
-      const codeDisplay = document.getElementById('w-code-display');
-      if (codeDisplay) codeDisplay.textContent = urlCode.toUpperCase();
-    }
+    if (urlCode) setWelcomeCode(urlCode);
   }
 
-  window.addEventListener('DOMContentLoaded', function() {
+  function hmStartup() {
     try {
       const params = new URLSearchParams(window.location.search);
       const urlCode = params.get('code');
+      const sessionId = params.get('session_id');
       const isWelcome = params.get('welcome') === '1' || params.get('screen') === 'welcome';
       if (isWelcome) {
         try { localStorage.setItem('hm_disclaimer_seen', '1'); } catch(e2) {}
         routeToWelcome(urlCode);
+        if (sessionId && !urlCode) claimPurchase(sessionId);
       }
     } catch(e) {
       console.error('Startup code error:', e);
     }
-  });
+  }
+  window.addEventListener('DOMContentLoaded', hmStartup);
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const urlCode = params.get('code');
-      const isWelcome = params.get('welcome') === '1' || params.get('screen') === 'welcome';
-      if (isWelcome) {
-        routeToWelcome(urlCode);
-      }
-    } catch(e) {}
+    hmStartup();
   }
 </script>
 
