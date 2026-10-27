@@ -4854,6 +4854,22 @@
   // ── STARTUP: dedicated welcome screen for post-payment onboarding ──
   // Call checkSession on every app load to restore session and advance day
   // This MUST run before routeToWelcome to ensure returning users go straight to app
+  // Restore a day count after a move or device change: open the app with ?setday=12
+  try {
+    const sdParams = new URLSearchParams(window.location.search);
+    const sd = parseInt(sdParams.get('setday') || '', 10);
+    if (sd >= 1 && sd <= 365) {
+      const su = JSON.parse(localStorage.getItem('hm_user') || 'null');
+      if (su && su.name && su.injury) {
+        su.day = sd;
+        su.earnedPhase = getEarnedPhase(sd, su.streak || 0);
+        localStorage.setItem('hm_user', JSON.stringify(su));
+        localStorage.setItem('hm_last_date', new Date().toDateString());
+      }
+      history.replaceState(null, '', window.location.pathname);
+    }
+  } catch(e) {}
+
   try {
     checkSession();
   } catch(e) {}
